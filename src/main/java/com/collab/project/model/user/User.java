@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-@Builder(toBuilder = true)
 @Entity
 @Table(name = "user")
 @Getter
