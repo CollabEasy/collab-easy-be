@@ -28,17 +28,3 @@ CREATE TABLE IF NOT EXISTS `user-preferences` (
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )
 
-CREATE TABLE IF NOT EXISTS `user-preferences` (
-  id int primary key AUTO_INCREMENT,
-  user_id varchar(50),
-  url varchar(20),
-  updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-)
-
-CREATE TABLE IF NOT EXISTS `user-preferences` (
-  id int primary key AUTO_INCREMENT,
-  user_id varchar(50),
-  url varchar(255),
-  updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-)
-
