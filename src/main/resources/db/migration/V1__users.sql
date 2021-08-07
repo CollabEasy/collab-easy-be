@@ -14,14 +14,7 @@ CREATE TABLE IF NOT EXISTS `user-preferences` (
   setting_values blob
 )
 
-CREATE TABLE IF NOT EXISTS `user-preferences` (
-  id int primary key AUTO_INCREMENT,
-  user_id varchar(50),
-  setting_name varchar(20),
-  setting_values blob
-)
-
-CREATE TABLE IF NOT EXISTS `user-preferences` (
+CREATE TABLE IF NOT EXISTS `user-samples` (
   id int primary key AUTO_INCREMENT,
   user_id varchar(50),
   url varchar(20),
