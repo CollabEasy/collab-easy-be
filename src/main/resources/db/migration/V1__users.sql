@@ -21,3 +21,10 @@ CREATE TABLE IF NOT EXISTS `user-samples` (
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )
 
+CREATE TABLE IF NOT EXISTS `art-categories` (
+  id int primary key AUTO_INCREMENT,
+  name varchar(50),
+  description varchar(255),
+  approved boolean
+)
+
