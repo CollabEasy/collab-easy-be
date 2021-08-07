@@ -65,7 +65,12 @@
             <version>2.9.13</version>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        </dependencies>
 
     <build>
         <plugins>
