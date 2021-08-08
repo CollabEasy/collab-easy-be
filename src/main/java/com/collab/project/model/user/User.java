@@ -2,6 +2,8 @@ package com.collab.project.model.user;
 
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import lombok.*;
 import org.hibernate.annotations.TypeDef;
 
@@ -14,12 +16,13 @@ import java.sql.Timestamp;
 
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "user")
+@Table(name = "user_data")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class User implements Serializable {
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
   String userId;
 

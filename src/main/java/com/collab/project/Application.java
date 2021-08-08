@@ -1,5 +1,6 @@
 package com.collab.project;
 
+//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import java.util.Arrays;
 
 import org.springframework.boot.CommandLineRunner;
@@ -10,11 +11,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @SpringBootApplication
+@EnableWebSecurity
 @EnableJpaRepositories(basePackages = {"com.collab.project.repositories"})
 @EntityScan(basePackages = {"com.collab.project.model"})
-@ComponentScan(basePackages = {"com.collab.project"})
+@ComponentScan(basePackages = {"com.collab"})
 public class Application {
 
   public static void main(String[] args) {
