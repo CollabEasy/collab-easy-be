@@ -49,11 +49,11 @@ public class User implements Serializable {
 
   Integer age;
 
-  Long lastActive;
+  Timestamp lastActive;
 
   String gender;
 
-  Long createdAt;
+  Timestamp createdAt;
 
-  Long updatedAt;
+  Timestamp updatedAt;
 }

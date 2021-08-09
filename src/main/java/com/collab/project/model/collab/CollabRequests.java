@@ -8,6 +8,8 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "collab-requests")
@@ -26,11 +28,11 @@ public class CollabRequests {
 
     RequestData requestData;
 
-    Long scheduledAt;
+    Timestamp scheduledAt;
 
     Boolean accepted;
 
-    Long createdAt;
+    Timestamp createdAt;
 
-    Long updatedAt;
+    Timestamp updatedAt;
 }
