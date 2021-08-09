@@ -8,29 +8,30 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "collab-requests")
 @Getter
 @Setter
-public class CollabRequests {
+public class CollabRequest {
     @NonNull
     @Column(nullable = false, unique = true)
-    String requestId;
+    private String requestId;
     @NonNull
     @Column(nullable = false, unique = true)
-    String senderId;
+    private String senderId;
     @NonNull
     @Column(nullable = false, unique = true)
-    String recevierId;
+    private String recevierId;
 
-    RequestData requestData;
+    private RequestData requestData;
 
-    Long scheduledAt;
+    private Timestamp scheduledAt;
 
-    Boolean accepted;
+    private Boolean accepted;
 
-    Long createdAt;
+    private Timestamp createdAt;
 
-    Long updatedAt;
+    private Timestamp updatedAt;
 }

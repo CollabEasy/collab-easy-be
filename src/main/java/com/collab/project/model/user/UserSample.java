@@ -12,13 +12,13 @@ import javax.persistence.Table;
 @Table(name = "user-samples")
 @Getter
 @Setter
-public class UserSamples {
+public class UserSample {
     @NonNull
     @Column(nullable = false, unique = true)
-    String userId;
+    private String userId;
     @NonNull
     @Column(nullable = false, unique = true)
-    String url;
+    private String url;
 
-    Long updatedAt;
+    private Long updatedAt;
 }

@@ -13,10 +13,10 @@ import java.util.Map;
 @Table(name = "user-preferences")
 @Getter
 @Setter
-public class UserPreferences {
-    String userId;
+public class UserPreference {
+    private String userId;
 
-    String settingName;
+    private String settingName;
 
-    Map<String, Boolean> settingValues;
+    private Map<String, Boolean> settingValues;
 }
