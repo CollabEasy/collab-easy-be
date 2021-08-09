@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `user-preferences` (
   setting_values blob,
   key(id),
   primary key(user_id)
-  foreign key(user_id) references user(user_id)
+  foreign key(user_id) references users(user_id)
 )
 
 CREATE TABLE IF NOT EXISTS `user-samples` (
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `user-samples` (
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   key(id),
   primary key(user_id)
-  foreign key(user_id) references user(user_id)
+  foreign key(user_id) references users(user_id)
 )
 
 CREATE TABLE IF NOT EXISTS `art-categories` (
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `user-art-categories` (
   user_id varchar(50),
   art_id int,
   key(id),
-  foreign key(user_id) references user(user_id),
+  foreign key(user_id) references users(user_id),
   foreign key(art_id) references art-categories(id)
 )
 
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `collab-requests` (
   updated_at timestamp,
   key(id),
   primary key(request_id),
-  foreign key(sender_id) references user(user_id)
+  foreign key(sender_id) references users(user_id)
 )
 
 CREATE TABLE IF NOT EXISTS `collab-reviews` (
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `collab-reviews` (
     review varchar(512),
     key(id),
     primary key(request_id),
-    foreign key(user_id) references user(user_id)
+    foreign key(user_id) references users(user_id)
 )
 
 CREATE TABLE IF NOT EXISTS `notifications` (
@@ -88,12 +88,12 @@ CREATE TABLE IF NOT EXISTS `notifications` (
     notif_type varchar(50),
     redirect_id int,
     notification_data blob,
-    read bool,
+    notif_read bool,
     notif_view_type varchar(25),
     created_at timestamp
     key(id),
     primary key(notif_id),
-    foreign key(user_id) references user(user_id)
+    foreign key(user_id) references users(user_id)
  )
 
 

@@ -14,6 +14,7 @@ public class Notification {
     private String notifType;
     private int redirectId;
     private Map<String, String> notification_data;
+    private Boolean notifRead;
     private String notifViewType;
     private Timestamp createdAt;
 }

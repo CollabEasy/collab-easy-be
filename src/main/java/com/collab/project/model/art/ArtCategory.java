@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Table(name = "art-categories")
 @Getter
 @Setter
-public class ArtCategories {
+public class ArtCategory {
     String name;
 
     String description;

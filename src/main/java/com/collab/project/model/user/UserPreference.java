@@ -13,7 +13,7 @@ import java.util.Map;
 @Table(name = "user-preferences")
 @Getter
 @Setter
-public class UserPreferences {
+public class UserPreference {
     String userId;
 
     String settingName;

@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user-art-categories")
 @Getter
-public class UserArtCategories {
+public class UserArtCategory {
     @NonNull
     @Column(nullable = false, unique = true)
     String userId;

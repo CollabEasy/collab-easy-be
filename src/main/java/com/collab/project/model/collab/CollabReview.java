@@ -2,7 +2,7 @@ package com.collab.project.model.collab;
 
 import java.sql.Timestamp;
 
-public class CollabReviews {
+public class CollabReview {
     String requestId;
 
     String userId;

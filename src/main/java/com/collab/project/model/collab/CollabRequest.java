@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Table(name = "collab-requests")
 @Getter
 @Setter
-public class CollabRequests {
+public class CollabRequest {
     @NonNull
     @Column(nullable = false, unique = true)
     String requestId;
