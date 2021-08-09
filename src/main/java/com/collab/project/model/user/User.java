@@ -23,37 +23,37 @@ import java.sql.Timestamp;
 public class User implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
-  String userId;
+  private String userId;
 
   @NonNull
   @Column(nullable = false, unique = true)
-  String userHandle;
+  private String userHandle;
   @NonNull
   @Column(nullable = false)
-  String firstName;
+  private String firstName;
 
-  String lastName;
+  private String lastName;
   @NonNull
   @Column(nullable = false, unique = true)
-  String email;
+  private String email;
 
   Long phoneNumber;
 
-  String country;
+  private String country;
 
-  String profilePicUrl;
+  private String profilePicUrl;
 
-  String timezone;
+  private String timezone;
 
-  String bio;
+  private String bio;
 
-  Integer age;
+  private Integer age;
 
-  Timestamp lastActive;
+  private Timestamp lastActive;
 
-  String gender;
+  private String gender;
 
-  Timestamp createdAt;
+  private Timestamp createdAt;
 
-  Timestamp updatedAt;
+  private Timestamp updatedAt;
 }

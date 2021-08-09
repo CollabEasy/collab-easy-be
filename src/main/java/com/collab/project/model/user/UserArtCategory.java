@@ -14,8 +14,8 @@ import javax.persistence.Table;
 public class UserArtCategory {
     @NonNull
     @Column(nullable = false, unique = true)
-    String userId;
+    private String userId;
     @NonNull
     @Column(nullable = false, unique = true)
-    String artId;
+    private String artId;
 }

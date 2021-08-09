@@ -8,7 +8,6 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 @Entity
@@ -18,21 +17,21 @@ import java.sql.Timestamp;
 public class CollabRequest {
     @NonNull
     @Column(nullable = false, unique = true)
-    String requestId;
+    private String requestId;
     @NonNull
     @Column(nullable = false, unique = true)
-    String senderId;
+    private String senderId;
     @NonNull
     @Column(nullable = false, unique = true)
-    String recevierId;
+    private String recevierId;
 
-    RequestData requestData;
+    private RequestData requestData;
 
-    Timestamp scheduledAt;
+    private Timestamp scheduledAt;
 
-    Boolean accepted;
+    private Boolean accepted;
 
-    Timestamp createdAt;
+    private Timestamp createdAt;
 
-    Timestamp updatedAt;
+    private Timestamp updatedAt;
 }

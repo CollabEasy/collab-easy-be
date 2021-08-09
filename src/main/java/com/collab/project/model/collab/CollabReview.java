@@ -3,13 +3,13 @@ package com.collab.project.model.collab;
 import java.sql.Timestamp;
 
 public class CollabReview {
-    String requestId;
+    private String requestId;
 
-    String userId;
+    private String userId;
 
-    int rating;
+    private int rating;
 
-    String review;
+    private String review;
 
-    Timestamp createdAt;
+    private Timestamp createdAt;
 }

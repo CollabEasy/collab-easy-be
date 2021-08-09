@@ -14,9 +14,9 @@ import java.util.Map;
 @Getter
 @Setter
 public class UserPreference {
-    String userId;
+    private String userId;
 
-    String settingName;
+    private String settingName;
 
-    Map<String, Boolean> settingValues;
+    private Map<String, Boolean> settingValues;
 }

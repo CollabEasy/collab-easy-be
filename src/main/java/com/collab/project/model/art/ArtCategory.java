@@ -12,9 +12,9 @@ import javax.persistence.Table;
 @Getter
 @Setter
 public class ArtCategory {
-    String name;
+    private String name;
 
-    String description;
+    private String description;
 
-    Boolean approved;
+    private Boolean approved;
 }

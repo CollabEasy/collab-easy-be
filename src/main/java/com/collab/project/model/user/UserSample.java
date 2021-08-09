@@ -15,10 +15,10 @@ import javax.persistence.Table;
 public class UserSample {
     @NonNull
     @Column(nullable = false, unique = true)
-    String userId;
+    private String userId;
     @NonNull
     @Column(nullable = false, unique = true)
-    String url;
+    private String url;
 
-    Long updatedAt;
+    private Long updatedAt;
 }
