@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class CollabReview {
     private String requestId;
 
-    private String userId;
+    private String artistId;
 
     private int rating;
 

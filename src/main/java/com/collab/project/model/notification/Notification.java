@@ -10,7 +10,7 @@ import java.util.Map;
 @Setter
 public class Notification {
     private String notifId;
-    private String userId;
+    private String artistId;
     private String notifType;
     private int redirectId;
     private Map<String, String> notification_data;

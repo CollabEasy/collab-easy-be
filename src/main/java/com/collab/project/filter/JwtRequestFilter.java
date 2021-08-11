@@ -26,7 +26,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         final String authorizationHeader = request.getHeader("Authorization");
 
-        String username = null;
+        String artistName = null;
         String jwt = null;
 
         final String token = authorizationHeader.split(" ")[1].trim();

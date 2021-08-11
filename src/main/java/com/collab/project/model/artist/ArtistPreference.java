@@ -1,7 +1,5 @@
-package com.collab.project.model.user;
+package com.collab.project.model.artist;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,11 +8,11 @@ import javax.persistence.Table;
 import java.util.Map;
 
 @Entity
-@Table(name = "user-preferences")
+@Table(name = "artist-preferences")
 @Getter
 @Setter
-public class UserPreference {
-    private String userId;
+public class ArtistPreference {
+    private String artistId;
 
     private String settingName;
 

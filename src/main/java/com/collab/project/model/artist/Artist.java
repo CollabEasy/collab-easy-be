@@ -1,4 +1,4 @@
-package com.collab.project.model.user;
+package com.collab.project.model.artist;
 
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -15,19 +15,19 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "user_data")
+@Table(name = "artists")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-public class User implements Serializable {
+public class Artist implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
-  private String userId;
+  private String artistId;
 
   @NonNull
   @Column(nullable = false, unique = true)
-  private String userHandle;
+  private String artistHandle;
   @NonNull
   @Column(nullable = false)
   private String firstName;

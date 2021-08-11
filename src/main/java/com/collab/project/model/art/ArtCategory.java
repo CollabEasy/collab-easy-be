@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 public class ArtCategory {
-    private String name;
+    private String artName;
 
     private String description;
 

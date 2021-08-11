@@ -1,21 +1,24 @@
-package com.collab.project.model.user;
+package com.collab.project.model.artist;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user-art-categories")
+@Table(name = "art-samples")
 @Getter
-public class UserArtCategory {
+@Setter
+public class ArtSample {
     @NonNull
     @Column(nullable = false, unique = true)
-    private String userId;
+    private String artistId;
     @NonNull
     @Column(nullable = false, unique = true)
-    private String artId;
+    private String url;
+
+    private Long updatedAt;
 }

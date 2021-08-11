@@ -1,7 +1,7 @@
 package com.collab.project.controller;
 
 
-import com.collab.project.service.UserService;
+import com.collab.project.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     @Autowired
-    UserService userService;
+    ArtistService artistService;
 
     @RequestMapping("/login")
-    public void login(UserInput input) {
-        userService.createUser(input);
+    public void login(ArtistInput input) {
+        artistService.createArtist(input);
         return;
     }
 }
