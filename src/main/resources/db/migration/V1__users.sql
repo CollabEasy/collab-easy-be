@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `artist-preferences` (
   setting_name varchar(20),
   setting_values blob,
   key(id),
-  primary key(artist_id)
+  unique key(artist_id, setting_name),
   foreign key(artist_id) references artists(artist_id)
 )
 
@@ -39,11 +39,11 @@ CREATE TABLE IF NOT EXISTS `artist-samples` (
 
 CREATE TABLE IF NOT EXISTS `art-categories` (
   id int AUTO_INCREMENT,
-  name varchar(50),
+  art_name varchar(50),
   description varchar(255),
   approved boolean,
   key(id),
-  primary key(name)
+  primary key(art_name)
 )
 
 CREATE TABLE IF NOT EXISTS `artist-categories` (
@@ -67,6 +67,8 @@ CREATE TABLE IF NOT EXISTS `collab-requests` (
   updated_at timestamp,
   key(id),
   primary key(request_id),
+  key(sender_id),
+  key(receiver_id),
   foreign key(sender_id) references artists(artist_id)
 )
 
@@ -93,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `notifications` (
     created_at timestamp
     key(id),
     primary key(notif_id),
+    key(artist_id),
     foreign key(artist_id) references artists(artist_id)
  )
 

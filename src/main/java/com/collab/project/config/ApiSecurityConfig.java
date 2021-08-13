@@ -19,20 +19,21 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http
-            .csrf().disable()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/login", "/signup/")
-            .permitAll()
-            .anyRequest().authenticated()
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//        http
+//            .csrf().disable()
+//            .authorizeRequests()
+//            .antMatchers(HttpMethod.POST, "/login", "/signup/")
+//            .permitAll()
+//            .anyRequest().authenticated()
+//            .and()
+//            .sessionManagement()
+//            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+//        return super.authenticationManagerBean();
+        return null;
     }
 }
