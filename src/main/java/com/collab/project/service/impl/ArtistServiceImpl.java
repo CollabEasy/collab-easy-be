@@ -1,6 +1,6 @@
 package com.collab.project.service.impl;
 
-import com.collab.project.controller.ArtistInput;
+import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistService;

@@ -19,11 +19,12 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-//        http
-//            .csrf().disable()
-//            .authorizeRequests()
+        http
+            .csrf().disable()
+            .authorizeRequests()
+                .anyRequest()
 //            .antMatchers(HttpMethod.POST, "/login", "/signup/")
-//            .permitAll()
+            .permitAll();
 //            .anyRequest().authenticated()
 //            .and()
 //            .sessionManagement()
@@ -33,7 +34,6 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-        return null;
+        return super.authenticationManagerBean();
     }
 }

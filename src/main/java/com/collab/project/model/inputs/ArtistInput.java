@@ -1,4 +1,4 @@
-package com.collab.project.controller;
+package com.collab.project.model.inputs;
 
 import lombok.Data;
 

@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "art-categories")
+@Table(name = "art_categories")
 @Getter
 @Setter
 public class ArtCategory {

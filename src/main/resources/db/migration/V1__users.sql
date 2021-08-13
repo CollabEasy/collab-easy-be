@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS artists (
   key(id)
 )'
 
-CREATE TABLE IF NOT EXISTS `artist-preferences` (
+CREATE TABLE IF NOT EXISTS `artist_preferences` (
   id int AUTO_INCREMENT,
   artist_id varchar(50),
   setting_name varchar(20),
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `artist-samples` (
   foreign key(artist_id) references artists(artist_id)
 )
 
-CREATE TABLE IF NOT EXISTS `art-categories` (
+CREATE TABLE IF NOT EXISTS `art_categories` (
   id int AUTO_INCREMENT,
   art_name varchar(50),
   description varchar(255),
@@ -46,16 +46,16 @@ CREATE TABLE IF NOT EXISTS `art-categories` (
   primary key(art_name)
 )
 
-CREATE TABLE IF NOT EXISTS `artist-categories` (
+CREATE TABLE IF NOT EXISTS `artist_categories` (
   id int AUTO_INCREMENT,
   artist_id varchar(50),
   art_id int,
   key(id),
   foreign key(artist_id) references artists(artist_id),
-  foreign key(art_id) references art-categories(id)
+  foreign key(art_id) references art_categories(id)
 )
 
-CREATE TABLE IF NOT EXISTS `collab-requests` (
+CREATE TABLE IF NOT EXISTS `collab_requests` (
   id int AUTO_INCREMENT,
   request_id varchar(50),
   sender_id varchar(50),
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `collab-requests` (
   foreign key(sender_id) references artists(artist_id)
 )
 
-CREATE TABLE IF NOT EXISTS `collab-reviews` (
+CREATE TABLE IF NOT EXISTS `collab_reviews` (
     id int AUTO_INCREMENT,
     request_id varchar(50),
     artist_id varchar(50),

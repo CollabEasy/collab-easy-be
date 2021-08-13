@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "collab-reviews")
+@Table(name = "collab_reviews")
 @Getter
 @Setter
 public class CollabReview {

@@ -6,7 +6,7 @@ import lombok.NonNull;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "artist-categories")
+@Table(name = "artist_categories")
 @Getter
 public class ArtistCategory {
     @Id

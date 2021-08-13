@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "collab-requests")
+@Table(name = "collab_requests")
 @Getter
 @Setter
 public class CollabRequest {

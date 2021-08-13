@@ -1,37 +1,44 @@
 package com.collab.project.model.artist;
 
-import com.collab.project.helpers.SerdeHelper;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
 
 @Entity
-@Table(name = "artist-preferences")
+@Table(name = "artist_preferences")
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class ArtistPreference {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    private static final long serialVersionUID = 1L;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    private String artistId;
+    @EmbeddedId
+    private ArtistPreferenceId artistPreferenceId;
 
-    @NotNull
-    private String settingName;
-
+    @Column(name = "setting_values")
     private String settingValues;
 
     public ArtistPreference(String artistId, String settingName, String settingValues)  {
-        this.artistId = artistId;
-        this.settingName = settingName;
+        this.artistPreferenceId = new ArtistPreferenceId(artistId, settingName);
         this.settingValues = settingValues;
+    }
+
+    @Override
+    public String toString() {
+        return "ArtistPreference{" +
+                "id=" + id +
+                ", artistPreferenceId=" + artistPreferenceId +
+                ", settingValues='" + settingValues + '\'' +
+                '}';
     }
 }

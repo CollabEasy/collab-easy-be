@@ -1,6 +1,7 @@
 package com.collab.project.controller;
 
 
+import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
