@@ -29,7 +29,7 @@ public class ArtistPreferencesImpl implements ArtistPreferencesService {
 
     @Override
     public List<ArtistPreference> getArtistPreferences(String artistId) throws RecordNotFoundException {
-        List<ArtistPreference> existing = artistPreferenceRepository.findPreferencesByArtistId(artistId);
+        List<ArtistPreference> existing = artistPreferenceRepository.findByArtistId(artistId);
         if (Collections.isEmpty(existing)) throw new RecordNotFoundException("No artist preferences exist for given artist ID");
         return existing;
     }

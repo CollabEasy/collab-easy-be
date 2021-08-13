@@ -17,8 +17,7 @@ public interface ArtistPreferenceRepository extends JpaRepository<ArtistPreferen
                                         @Param("settingName") String settingName,
                                         @Param("settingValue") Object settingValue);
 
-    @Query(value = "SELECT * FROM artist-preferences where artistId = ?1", nativeQuery = true)
-    public List<ArtistPreference> findPreferencesByArtistId(String artistId);
+    public List<ArtistPreference> findByArtistId(String artistId);
 
     public ArtistPreference findByArtistIdAndSettingName(String artistId, String settingName);
 }
