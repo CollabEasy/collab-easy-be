@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.collab.project.helpers.Constants.FALLBACK_ID;
+
 @Service
 public class ArtistPreferencesImpl implements ArtistPreferencesService {
 
@@ -29,7 +31,7 @@ public class ArtistPreferencesImpl implements ArtistPreferencesService {
             Object prefValueObj = artistPreferences.get(prefName);
             String prefValue = SerdeHelper.getJsonStringFromObject(prefValueObj);
             ArtistPreference preference = new ArtistPreference(artistId, prefName, prefValue);
-            preference.setId((long)0);
+            preference.setId(FALLBACK_ID);
             artistPreferenceList.add(preference);
             System.out.println(preference);
         }
@@ -39,7 +41,7 @@ public class ArtistPreferencesImpl implements ArtistPreferencesService {
     @Override
     public void updateArtistPreferences(ArtistPreference artistPreference) {
         System.out.println(artistPreference.toString());
-        artistPreference.setId((long)0);
+        artistPreference.setId(FALLBACK_ID);
         artistPreferenceRepository.save(artistPreference);
     }
 

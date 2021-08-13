@@ -41,19 +41,19 @@ public class ArtistPreferencesController {
 
     @GetMapping
     @RequestMapping(value = "/preference/{settingName}", method = RequestMethod.GET)
-    public ResponseEntity<ArtistPrefResponse> getArtistPreferences(@PathVariable String artistId,
+    public ResponseEntity<SuccessResponse> getArtistPreferences(@PathVariable String artistId,
                                                                    @PathVariable String settingName) {
         ArtistPreference artistPreference = artistPreferencesService.getArtistPreferences(artistId, settingName);
         ArtistPrefResponse artistPrefResponse = new ArtistPrefResponse(artistPreference);
         System.out.println(artistPrefResponse.toString());
-        return new ResponseEntity<>(artistPrefResponse, HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessResponse(artistPrefResponse), HttpStatus.OK);
     }
 
     @GetMapping
     @RequestMapping(value = "/preferences", method = RequestMethod.GET)
-    public ResponseEntity<ArtistPrefResponse> getArtistPreferences(@PathVariable String artistId) {
+    public ResponseEntity<SuccessResponse> getArtistPreferences(@PathVariable String artistId) {
         List<ArtistPreference> artistPreferences = artistPreferencesService.getArtistPreferences(artistId);
-        return new ResponseEntity<>(new ArtistPrefResponse(artistPreferences), HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessResponse(new ArtistPrefResponse(artistPreferences)), HttpStatus.OK);
     }
 
 }

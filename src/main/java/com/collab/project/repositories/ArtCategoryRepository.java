@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ArtCategoryRepository extends JpaRepository<ArtCategory, String> {
+public interface ArtCategoryRepository extends JpaRepository<ArtCategory, Long> {
+    public ArtCategory findByArtName(String artName);
 }
