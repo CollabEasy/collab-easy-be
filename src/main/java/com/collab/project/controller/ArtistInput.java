@@ -3,9 +3,9 @@ package com.collab.project.controller;
 import lombok.Data;
 
 @Data
-public class UserInput {
+public class ArtistInput {
 
-    String userHandle;
+    String artistHandle;
     String firstName;
     String lastName;
     String email;

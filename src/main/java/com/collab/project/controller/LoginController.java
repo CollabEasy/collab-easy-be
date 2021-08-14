@@ -2,9 +2,10 @@ package com.collab.project.controller;
 
 
 import com.auth0.AuthenticationController;
-import com.collab.project.service.UserService;
+//import com.collab.project.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import com.collab.project.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +21,11 @@ public class LoginController {
     @Autowired
     private AuthenticationController controller;
 
+//    @Autowired
+//    UserService userService;
+
     @Autowired
-    UserService userService;
+    ArtistService artistService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, final HttpServletRequest req) {
@@ -36,5 +40,11 @@ public class LoginController {
             .withScope("openid profile email")
             .build();
         return "redirect:" + authorizeUrl;
+    }
+
+    @RequestMapping("/Login")
+    public void login(ArtistInput input) {
+        artistService.createArtist(input);
+        return;
     }
 }

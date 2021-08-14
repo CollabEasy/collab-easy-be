@@ -13,7 +13,7 @@ public class JwtUtils {
 
     private String SECRET_KEY = "secret";
 
-    public String extractUsername(String token) {
+    public String extractArtistName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -46,7 +46,7 @@ public class JwtUtils {
     }
 
     public Boolean validateToken(String token) {
-        final String username = extractUsername(token);
+        final String artistName = extractArtistName(token);
         return (!isTokenExpired(token));
     }
 
