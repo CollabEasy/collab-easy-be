@@ -10,6 +10,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
@@ -18,6 +20,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableJpaRepositories(basePackages = {"com.collab.project.repositories"})
 @EntityScan(basePackages = {"com.collab.project.model"})
 @ComponentScan(basePackages = {"com.collab"})
+@PropertySources({
+    @PropertySource("classpath:auth0.properties")
+})
 public class Application {
 
   public static void main(String[] args) {
