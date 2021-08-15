@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS artists (
   last_name varchar(50),
   email varchar(100) not null unique,
   phone_number varchar(15) unique,
-  county varchar(20),
+  country varchar(20),
+  gender varchar(10),
   profile_pic_url varchar(255),
   timezone varchar(5),
   bio varchar(512),
@@ -16,6 +17,8 @@ CREATE TABLE IF NOT EXISTS artists (
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   key(id)
 )'
+
+CREATE INDEX IF NOT EXISTS `slug_index` ON `artists` (slug);
 
 CREATE TABLE IF NOT EXISTS `artist_preferences` (
   id int AUTO_INCREMENT,
