@@ -10,20 +10,46 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "artist_preferences")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class ArtistPreference {
+    private static final long serialVersionUID = 1L;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    Long id;
-    @Column(name="artist_id")
-    private String artistId;
-    @Column(name = "setting_name")
-    private String settingName;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Long id;
+
+    @EmbeddedId
+    private ArtistPreferenceId artistPreferenceId;
 
     @Column(name = "setting_values")
     private String settingValues;
+
+    public ArtistPreference(String artistId, String settingName, String settingValues)  {
+        this.artistPreferenceId = new ArtistPreferenceId(artistId, settingName);
+        this.settingValues = settingValues;
+    }
+
+    @Override
+    public String toString() {
+        return "ArtistPreference{" +
+                "id=" + id +
+                ", artistPreferenceId=" + artistPreferenceId +
+                ", settingValues='" + settingValues + '\'' +
+                '}';
+    }
 }

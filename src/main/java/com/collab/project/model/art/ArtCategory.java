@@ -1,15 +1,11 @@
 package com.collab.project.model.art;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import io.jsonwebtoken.lang.Strings;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Locale;
 
 @Entity
 @Table(name = "art_categories")
@@ -17,16 +13,42 @@ import javax.persistence.Table;
 @Setter
 public class ArtCategory {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    Long id;
+    @Basic(optional = false)
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "name")
+    @NotNull
+    @Column(name = "art_name")
     private String artName;
+
+    @Column(name = "slug")
+    private String slug;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "approved")
     private Boolean approved;
+
+    public ArtCategory() {
+        updateSlug();
+    }
+
+    public ArtCategory(Long id, String artName, String slug, String description, Boolean approved) {
+        this.id = id;
+        this.artName = artName;
+        updateSlug();
+        this.description = description;
+        this.approved = approved;
+    }
+
+    private void updateSlug() {
+        if (artName == null) {
+            return;
+        }
+        this.slug = Strings.replace(artName.toLowerCase(Locale.ROOT), " ", "-");
+    }
 }

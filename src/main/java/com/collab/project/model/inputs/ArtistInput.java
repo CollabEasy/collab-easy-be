@@ -1,15 +1,12 @@
-package com.collab.project.controller;
+package com.collab.project.model.inputs;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ArtistInput {
 
     String artistHandle;
+    String artistId;
     String firstName;
     String lastName;
     String email;

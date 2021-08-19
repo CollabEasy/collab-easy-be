@@ -1,28 +1,37 @@
 package com.collab.project.model.artist;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import lombok.Getter;
-import lombok.NonNull;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Entity
 @Table(name = "artist_categories")
 @Getter
+
+@AllArgsConstructor
+@NoArgsConstructor
 public class ArtistCategory {
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    Long id;
+    @Basic(optional = false)
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
     @NonNull
-    @Column(name = "artist_id", nullable = false, unique = true)
+    @Column(name = "artist_id", nullable = false)
     private String artistId;
+
     @NonNull
-    @Column(name = "art_id", nullable = false, unique = true)
-    private String artId;
+    @Column(name = "art_id", nullable = false)
+    private Long artId;
 }

@@ -2,11 +2,16 @@ package com.collab.project.controller;
 
 
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.inputs.ArtistInput;
+import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 import com.collab.project.util.JwtUtils;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,7 +46,8 @@ public class LoginController {
             new UsernamePasswordAuthenticationToken(artist.getArtistId(), ""));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtils.generateJwtToken(authentication);
-        return ResponseEntity.ok(token);
+        JSONObject object = new JSONObject("token", token);
+        return new ResponseEntity<>(new SuccessResponse(token), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/get/Details", method = RequestMethod.GET)

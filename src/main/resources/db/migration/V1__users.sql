@@ -6,7 +6,12 @@ CREATE TABLE IF NOT EXISTS artists (
   last_name varchar(50),
   email varchar(100) not null unique,
   phone_number varchar(15) unique,
+<<<<<<< HEAD
   county varchar(20),
+=======
+  country varchar(20),
+  gender varchar(10),
+>>>>>>> apis
   profile_pic_url varchar(255),
   timezone varchar(5),
   bio varchar(512),
@@ -17,13 +22,23 @@ CREATE TABLE IF NOT EXISTS artists (
   key(id)
 )'
 
+<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS `artist-preferences` (
+=======
+CREATE INDEX IF NOT EXISTS `slug_index` ON `artists` (slug);
+
+CREATE TABLE IF NOT EXISTS `artist_preferences` (
+>>>>>>> apis
   id int AUTO_INCREMENT,
   artist_id varchar(50),
   setting_name varchar(20),
   setting_values blob,
   key(id),
+<<<<<<< HEAD
   primary key(artist_id)
+=======
+  unique key(artist_id, setting_name),
+>>>>>>> apis
   foreign key(artist_id) references artists(artist_id)
 )
 
@@ -37,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `artist-samples` (
   foreign key(artist_id) references artists(artist_id)
 )
 
+<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS `art-categories` (
   id int AUTO_INCREMENT,
   name varchar(50),
@@ -47,15 +63,34 @@ CREATE TABLE IF NOT EXISTS `art-categories` (
 )
 
 CREATE TABLE IF NOT EXISTS `artist-categories` (
+=======
+CREATE TABLE IF NOT EXISTS `art_categories` (
+  id int AUTO_INCREMENT,
+  art_name varchar(50),
+  description varchar(255),
+  approved boolean,
+  key(id),
+  primary key(art_name)
+)
+
+CREATE TABLE IF NOT EXISTS `artist_categories` (
+>>>>>>> apis
   id int AUTO_INCREMENT,
   artist_id varchar(50),
   art_id int,
   key(id),
   foreign key(artist_id) references artists(artist_id),
+<<<<<<< HEAD
   foreign key(art_id) references art-categories(id)
 )
 
 CREATE TABLE IF NOT EXISTS `collab-requests` (
+=======
+  foreign key(art_id) references art_categories(id)
+)
+
+CREATE TABLE IF NOT EXISTS `collab_requests` (
+>>>>>>> apis
   id int AUTO_INCREMENT,
   request_id varchar(50),
   sender_id varchar(50),
@@ -67,10 +102,19 @@ CREATE TABLE IF NOT EXISTS `collab-requests` (
   updated_at timestamp,
   key(id),
   primary key(request_id),
+<<<<<<< HEAD
   foreign key(sender_id) references artists(artist_id)
 )
 
 CREATE TABLE IF NOT EXISTS `collab-reviews` (
+=======
+  key(sender_id),
+  key(receiver_id),
+  foreign key(sender_id) references artists(artist_id)
+)
+
+CREATE TABLE IF NOT EXISTS `collab_reviews` (
+>>>>>>> apis
     id int AUTO_INCREMENT,
     request_id varchar(50),
     artist_id varchar(50),
@@ -93,6 +137,10 @@ CREATE TABLE IF NOT EXISTS `notifications` (
     created_at timestamp
     key(id),
     primary key(notif_id),
+<<<<<<< HEAD
+=======
+    key(artist_id),
+>>>>>>> apis
     foreign key(artist_id) references artists(artist_id)
  )
 

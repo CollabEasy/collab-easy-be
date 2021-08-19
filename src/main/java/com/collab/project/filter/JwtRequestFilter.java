@@ -18,7 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 @Slf4j
-public class JwtRequestFilter extends OncePerRequestFilter {
+public class JwtRequestFilter  extends OncePerRequestFilter {
 
     @Autowired
     JwtUtils jwtUtils;

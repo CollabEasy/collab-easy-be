@@ -1,8 +1,8 @@
 package com.collab.project.service;
 
 
-import com.collab.project.controller.ArtistInput;
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.inputs.ArtistInput;
 
 public interface ArtistService {
 
