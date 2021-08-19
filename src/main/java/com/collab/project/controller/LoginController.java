@@ -1,50 +1,52 @@
 package com.collab.project.controller;
 
 
-import com.auth0.AuthenticationController;
-//import com.collab.project.service.UserService;
-import javax.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import com.collab.project.model.artist.Artist;
 import com.collab.project.service.ArtistService;
+import com.collab.project.util.AuthUtils;
+import com.collab.project.util.JwtUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-//@RestController
 @Slf4j
-@Controller
+@RequestMapping(method = RequestMethod.POST, value = "/api")
+@RestController()
 public class LoginController {
-
-    @Autowired
-    private AuthenticationController controller;
-
-//    @Autowired
-//    UserService userService;
 
     @Autowired
     ArtistService artistService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model, final HttpServletRequest req) {
-        log.debug("Performing login");
-        String redirectUri = req.getScheme() + "://" + req.getServerName();
-        if ((req.getScheme().equals("http") && req.getServerPort() != 80) || (
-            req.getScheme().equals("https") && req.getServerPort() != 443)) {
-            redirectUri += ":" + req.getServerPort();
-        }
-        redirectUri += "/callback";
-        String authorizeUrl = controller.buildAuthorizeUrl(req, redirectUri)
-            .withScope("openid profile email")
-            .build();
-        return "redirect:" + authorizeUrl;
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JwtUtils jwtUtils;
+
+    @Autowired
+    AuthUtils authUtils;
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<?> login(@RequestBody ArtistInput input) {
+        Artist artist = artistService.createArtist(input);
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(artist.getArtistId(), ""));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtUtils.generateJwtToken(authentication);
+        return ResponseEntity.ok(token);
     }
 
-    @RequestMapping("/Login")
-    public void login(ArtistInput input) {
-        artistService.createArtist(input);
-        return;
+    @RequestMapping(value = "/get/Details", method = RequestMethod.GET)
+    public ResponseEntity<?> update() {
+        String artistId = authUtils.getArtistId();
+        return ResponseEntity.ok(artistId);
     }
 }

@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, String> {
 
+    Artist findByArtistId(String artistId);
+    Artist findByArtistHandle(String artistHandle);
+
 }

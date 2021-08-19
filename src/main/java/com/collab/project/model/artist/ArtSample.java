@@ -1,5 +1,8 @@
 package com.collab.project.model.artist;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -9,10 +12,14 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "art-samples")
+@Table(name = "art_samples")
 @Getter
 @Setter
 public class ArtSample {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    Long id;
     @NonNull
     @Column(nullable = false, unique = true)
     private String artistId;

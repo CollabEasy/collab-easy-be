@@ -1,5 +1,8 @@
 package com.collab.project.model.collab;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -15,6 +18,9 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 public class CollabRequest {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    Long id;
     @NonNull
     @Column(nullable = false, unique = true)
     private String requestId;
@@ -25,7 +31,7 @@ public class CollabRequest {
     @Column(nullable = false, unique = true)
     private String recevierId;
 
-    private RequestData requestData;
+    private String requestData;
 
     private Timestamp scheduledAt;
 
