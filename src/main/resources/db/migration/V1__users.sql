@@ -35,10 +35,14 @@ CREATE TABLE IF NOT EXISTS `artist_preferences` (
   setting_values blob,
   key(id),
 <<<<<<< HEAD
+<<<<<<< HEAD
   primary key(artist_id)
 =======
   unique key(artist_id, setting_name),
 >>>>>>> apis
+=======
+  primary key(artist_id),
+>>>>>>> 4441c94f61d4c250496431c44cdad2f0cdade1b1
   foreign key(artist_id) references artists(artist_id)
 )
 
@@ -48,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `artist-samples` (
   url varchar(20),
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   key(id),
-  primary key(artist_id)
+  primary key(artist_id),
   foreign key(artist_id) references artists(artist_id)
 )
 
@@ -62,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `art-categories` (
   primary key(name)
 )
 
+--not yet added.
 CREATE TABLE IF NOT EXISTS `artist-categories` (
 =======
 CREATE TABLE IF NOT EXISTS `art_categories` (
@@ -134,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `notifications` (
     notification_data blob,
     notif_read bool,
     notif_view_type varchar(25),
-    created_at timestamp
+    created_at timestamp,
     key(id),
     primary key(notif_id),
 <<<<<<< HEAD
