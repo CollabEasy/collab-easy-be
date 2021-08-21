@@ -1,12 +1,13 @@
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS artists (
   id int AUTO_INCREMENT not null,
-  user_id varchar(40) primary key not null,
-  user_handle varchar(15) unique,
+  artist_id varchar(40) primary key not null,
+  artist_handle varchar(15) unique,
   first_name varchar(50) not null,
   last_name varchar(50),
   email varchar(100) not null unique,
   phone_number varchar(15) unique,
-  county varchar(20),
+  country varchar(20),
+  gender varchar(10),
   profile_pic_url varchar(255),
   timezone varchar(5),
   bio varchar(512),
@@ -17,45 +18,47 @@ CREATE TABLE IF NOT EXISTS users (
   key(id)
 )'
 
-CREATE TABLE IF NOT EXISTS `user-preferences` (
+CREATE INDEX IF NOT EXISTS `slug_index` ON `artists` (slug);
+
+CREATE TABLE IF NOT EXISTS `artist_preferences` (
   id int AUTO_INCREMENT,
-  user_id varchar(50),
+  artist_id varchar(50),
   setting_name varchar(20),
   setting_values blob,
   key(id),
-  primary key(user_id)
-  foreign key(user_id) references users(user_id)
+  unique key(artist_id, setting_name),
+  foreign key(artist_id) references artists(artist_id)
 )
 
-CREATE TABLE IF NOT EXISTS `user-samples` (
+CREATE TABLE IF NOT EXISTS `artist-samples` (
   id int AUTO_INCREMENT,
-  user_id varchar(50),
+  artist_id varchar(50),
   url varchar(20),
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   key(id),
-  primary key(user_id)
-  foreign key(user_id) references users(user_id)
+  primary key(artist_id)
+  foreign key(artist_id) references artists(artist_id)
 )
 
-CREATE TABLE IF NOT EXISTS `art-categories` (
+CREATE TABLE IF NOT EXISTS `art_categories` (
   id int AUTO_INCREMENT,
-  name varchar(50),
+  art_name varchar(50),
   description varchar(255),
   approved boolean,
   key(id),
-  primary key(name)
+  primary key(art_name)
 )
 
-CREATE TABLE IF NOT EXISTS `user-art-categories` (
+CREATE TABLE IF NOT EXISTS `artist_categories` (
   id int AUTO_INCREMENT,
-  user_id varchar(50),
+  artist_id varchar(50),
   art_id int,
   key(id),
-  foreign key(user_id) references users(user_id),
-  foreign key(art_id) references art-categories(id)
+  foreign key(artist_id) references artists(artist_id),
+  foreign key(art_id) references art_categories(id)
 )
 
-CREATE TABLE IF NOT EXISTS `collab-requests` (
+CREATE TABLE IF NOT EXISTS `collab_requests` (
   id int AUTO_INCREMENT,
   request_id varchar(50),
   sender_id varchar(50),
@@ -67,24 +70,26 @@ CREATE TABLE IF NOT EXISTS `collab-requests` (
   updated_at timestamp,
   key(id),
   primary key(request_id),
-  foreign key(sender_id) references users(user_id)
+  key(sender_id),
+  key(receiver_id),
+  foreign key(sender_id) references artists(artist_id)
 )
 
-CREATE TABLE IF NOT EXISTS `collab-reviews` (
+CREATE TABLE IF NOT EXISTS `collab_reviews` (
     id int AUTO_INCREMENT,
     request_id varchar(50),
-    user_id varchar(50),
+    artist_id varchar(50),
     rating int,
     review varchar(512),
     key(id),
     primary key(request_id),
-    foreign key(user_id) references users(user_id)
+    foreign key(artist_id) references artists(artist_id)
 )
 
 CREATE TABLE IF NOT EXISTS `notifications` (
     id int AUTO_INCREMENT,
     notif_id varchar(50),
-    user_id varchar(50),
+    artist_id varchar(50),
     notif_type varchar(50),
     redirect_id int,
     notification_data blob,
@@ -93,8 +98,8 @@ CREATE TABLE IF NOT EXISTS `notifications` (
     created_at timestamp
     key(id),
     primary key(notif_id),
-    foreign key(user_id) references users(user_id)
+    key(artist_id),
+    foreign key(artist_id) references artists(artist_id)
  )
-
 
 

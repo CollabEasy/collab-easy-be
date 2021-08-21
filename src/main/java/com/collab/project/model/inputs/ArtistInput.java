@@ -1,11 +1,12 @@
-package com.collab.project.controller;
+package com.collab.project.model.inputs;
 
 import lombok.Data;
 
 @Data
-public class UserInput {
+public class ArtistInput {
 
-    String userHandle;
+    String artistHandle;
+    String artistId;
     String firstName;
     String lastName;
     String email;

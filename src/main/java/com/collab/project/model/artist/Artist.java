@@ -1,9 +1,11 @@
-package com.collab.project.model.user;
+package com.collab.project.model.artist;
 
 
+import com.collab.project.security.Role;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Transient;
 import lombok.*;
 import org.hibernate.annotations.TypeDef;
 
@@ -15,19 +17,20 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "user_data")
+@Table(name = "artists")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-public class User implements Serializable {
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Artist implements Serializable {
   @Id
-  private String userId;
+  private String artistId;
 
   @NonNull
   @Column(nullable = false, unique = true)
-  private String userHandle;
+  private String artistHandle;
+  private String slug;
   @NonNull
   @Column(nullable = false)
   private String firstName;
@@ -51,9 +54,15 @@ public class User implements Serializable {
 
   private Timestamp lastActive;
 
-  private String gender;
+//  private String gender;
 
   private Timestamp createdAt;
 
   private Timestamp updatedAt;
+
+  @Transient
+  public Role getRole(){
+    return Role.DEFAULT;
+  }
+
 }

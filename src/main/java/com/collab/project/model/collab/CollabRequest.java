@@ -1,20 +1,21 @@
 package com.collab.project.model.collab;
 
-import lombok.Builder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "collab-requests")
+@Table(name = "collab_requests")
 @Getter
 @Setter
 public class CollabRequest {
+    @Id
     @NonNull
     @Column(nullable = false, unique = true)
     private String requestId;
@@ -25,6 +26,8 @@ public class CollabRequest {
     @Column(nullable = false, unique = true)
     private String recevierId;
 
+    @Lob
+    @Convert(converter = RequestDataConvertor.class)
     private RequestData requestData;
 
     private Timestamp scheduledAt;
@@ -34,4 +37,38 @@ public class CollabRequest {
     private Timestamp createdAt;
 
     private Timestamp updatedAt;
+
+
+    @Slf4j
+    static
+    class RequestDataConvertor implements AttributeConverter<RequestData, String> {
+
+        private final ObjectMapper objectMapper = new ObjectMapper();
+
+        @Override
+        public String convertToDatabaseColumn(RequestData customObject) {
+            String jsonObject = null;
+            try {
+                jsonObject = objectMapper.writeValueAsString(customObject);
+            } catch (final JsonProcessingException e) {
+                log.error("JSON writing error", e);
+            }
+            return jsonObject;
+        }
+
+        @Override
+        public RequestData convertToEntityAttribute(String customObject) {
+            RequestData jsonObject = null;
+            try {
+                if (null == customObject) {
+                    return null;
+                }
+                jsonObject = objectMapper.readValue(customObject, RequestData.class);
+            } catch (final Exception e) {
+                log.error("JSON reading error", e);
+            }
+            return jsonObject;
+        }
+
+    }
 }
