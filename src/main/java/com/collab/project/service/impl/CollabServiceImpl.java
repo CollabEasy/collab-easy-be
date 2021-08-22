@@ -21,7 +21,6 @@ public class CollabServiceImpl implements CollabService {
     @Autowired
     private CollabRequestRepository collabRequestRepository;
 
-
     @Override
     public CollabRequest sendRequest(String artistId, CollabRequestInput collabRequestInput) {
         //TODO: Add validation on receiver id and handle idempotency on requestId
