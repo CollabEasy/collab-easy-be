@@ -24,6 +24,7 @@ public class CollabServiceImpl implements CollabService {
 
     @Override
     public CollabRequest sendRequest(String artistId, CollabRequestInput collabRequestInput) {
+        //TODO: Add validation on receiver id and handle idempotency on requestId
         List<String> status =  Arrays.asList( Enums.CollabStatus.PENDING.toString(),
                 Enums.CollabStatus.ACTIVE.toString(), Enums.CollabStatus.REJECTED.toString());
 
@@ -32,7 +33,7 @@ public class CollabServiceImpl implements CollabService {
         List<CollabRequest> collabRequestByReceiver = collabRequestRepository
                                                               .findBySenderIdAndRecevierIdAndStatusIn(collabRequestInput.getRecevierId(), artistId, status);
         if(!collabRequestBySender.isEmpty() || !collabRequestByReceiver.isEmpty()) {
-            throw new CollabRequestException(String.format("Collabaration already happened"));
+            throw new CollabRequestException(String.format("Collabaration already happened or Rejected"));
         }
         CollabRequest saveCollabRequest = CollabRequest.builder().requestId(collabRequestInput.getRequestId())
                 .senderId(artistId).recevierId(collabRequestInput.getRecevierId())
@@ -46,11 +47,24 @@ public class CollabServiceImpl implements CollabService {
 
     @Override
     public CollabRequest rejectRequest(String artistId, RejectRequestInput rejectRequestInput) {
-        return null;
+        //TODO: Add validation on receiver id and handle idempotency on requestId
+        CollabRequest rejectCollabRequest = CollabRequest.builder().requestId(rejectRequestInput.getRequestId())
+                                                  .senderId(artistId).recevierId(rejectRequestInput.getRecevierId())
+                                                  .status(Enums.CollabStatus.REJECTED.toString())
+                                                  .build();
+        collabRequestRepository.save(rejectCollabRequest);
+
+        return rejectCollabRequest;
     }
 
     @Override
     public CollabRequest acceptRequest(String artistId, AcceptRequestInput acceptRequestInput) {
-       return null;
+        //TODO: Add validation on receiver id and handle idempotency on requestId
+        CollabRequest acceptCollabRequest = CollabRequest.builder().requestId(acceptRequestInput.getRequestId())
+                                                    .senderId(artistId).recevierId(acceptRequestInput.getRecevierId())
+                                                    .status(Enums.CollabStatus.ACTIVE.toString())
+                                                    .build();
+        collabRequestRepository.save(acceptCollabRequest);
+        return acceptCollabRequest;
     }
 }

@@ -2,7 +2,9 @@ package com.collab.project.controller;
 
 import com.collab.project.model.artist.ArtistCategory;
 import com.collab.project.model.collab.CollabRequest;
+import com.collab.project.model.inputs.AcceptRequestInput;
 import com.collab.project.model.inputs.CollabRequestInput;
+import com.collab.project.model.inputs.RejectRequestInput;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.ArtistCategoryService;
 import com.collab.project.service.CollabService;
@@ -32,6 +34,21 @@ public class CollabController {
         CollabRequest collabRequest = collabService.sendRequest("1", collabRequestInput);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
+
+    @PostMapping(value = "/reject")
+    public ResponseEntity<SuccessResponse> rejectRequest(@RequestBody @Validated RejectRequestInput rejectRequestInput) {
+        CollabRequest collabRequest = collabService.rejectRequest("1", rejectRequestInput);
+        return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/accept")
+    public ResponseEntity<SuccessResponse> acceptRequest(@RequestBody @Validated AcceptRequestInput acceptRequestInput) {
+        CollabRequest collabRequest = collabService.acceptRequest("1", acceptRequestInput);
+        return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
+    }
+
+
+
 
 
 }

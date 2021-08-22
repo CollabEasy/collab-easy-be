@@ -7,7 +7,5 @@ import org.json.JSONObject;
 public class AcceptRequestInput {
 
     private final String requestId;
-    private final String senderId;
     private final String recevierId;
-    private final JSONObject description;
 }
