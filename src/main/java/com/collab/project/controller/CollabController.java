@@ -47,8 +47,4 @@ public class CollabController {
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
-
-
-
-
 }

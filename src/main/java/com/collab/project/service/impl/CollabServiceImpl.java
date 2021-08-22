@@ -47,6 +47,7 @@ public class CollabServiceImpl implements CollabService {
     @Override
     public CollabRequest rejectRequest(String artistId, RejectRequestInput rejectRequestInput) {
         //TODO: Add validation on receiver id and handle idempotency on requestId
+        //TODO: Check if request with PENDING exists
         CollabRequest rejectCollabRequest = CollabRequest.builder().requestId(rejectRequestInput.getRequestId())
                                                   .senderId(artistId).recevierId(rejectRequestInput.getRecevierId())
                                                   .status(Enums.CollabStatus.REJECTED.toString())
@@ -59,6 +60,7 @@ public class CollabServiceImpl implements CollabService {
     @Override
     public CollabRequest acceptRequest(String artistId, AcceptRequestInput acceptRequestInput) {
         //TODO: Add validation on receiver id and handle idempotency on requestId
+        //TODO: Check if request with PENDING exists
         CollabRequest acceptCollabRequest = CollabRequest.builder().requestId(acceptRequestInput.getRequestId())
                                                     .senderId(artistId).recevierId(acceptRequestInput.getRecevierId())
                                                     .status(Enums.CollabStatus.ACTIVE.toString())
