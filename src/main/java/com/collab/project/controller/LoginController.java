@@ -7,7 +7,6 @@ import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 import com.collab.project.util.JwtUtils;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
