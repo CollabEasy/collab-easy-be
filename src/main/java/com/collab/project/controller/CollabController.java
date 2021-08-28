@@ -4,6 +4,7 @@ import com.collab.project.model.artist.ArtistCategory;
 import com.collab.project.model.collab.CollabRequest;
 import com.collab.project.model.inputs.AcceptRequestInput;
 import com.collab.project.model.inputs.CollabRequestInput;
+import com.collab.project.model.inputs.CollabRequestSearch;
 import com.collab.project.model.inputs.RejectRequestInput;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.ArtistCategoryService;
@@ -45,6 +46,12 @@ public class CollabController {
     public ResponseEntity<SuccessResponse> acceptRequest(@RequestBody @Validated AcceptRequestInput acceptRequestInput) {
         CollabRequest collabRequest = collabService.acceptRequest("1", acceptRequestInput);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<SuccessResponse> collabRequestsSearch(@RequestBody @Validated CollabRequestSearch collabRequestSearch) {
+       List<CollabRequest> collabRequest = collabService.collabRequestsSearch("1", collabRequestSearch);
+       return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
 }
