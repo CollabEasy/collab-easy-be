@@ -14,7 +14,7 @@ public class CollabRequestInput  {
 
     //private final String requestId;
     //private final String senderId;
-    private final String recevierId;
+    private final String receiverId;
     private final LocalDateTime collabDate;
     @Valid
     private final RequestData requestData;

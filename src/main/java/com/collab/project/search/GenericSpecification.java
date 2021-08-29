@@ -27,7 +27,7 @@ public class GenericSpecification<T> implements Specification<T> {
     else if (criteria.getOperation().equalsIgnoreCase(":")) {
       if (root.get(criteria.getKey()).getJavaType() == String.class) {
         return builder.like(
-                root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
+                root.<String>get(criteria.getKey()), criteria.getValue().toString());
       } else {
         return builder.equal(root.get(criteria.getKey()), criteria.getValue());
       }

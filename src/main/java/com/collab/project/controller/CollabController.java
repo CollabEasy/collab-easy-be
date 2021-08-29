@@ -14,16 +14,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
 // TODO : authenticate request from current user_id.
+@Validated
 @RequestMapping(value = "/api/v1/collab", headers = "Accept=application/json")
 public class CollabController {
 
@@ -36,15 +39,17 @@ public class CollabController {
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/reject")
-    public ResponseEntity<SuccessResponse> rejectRequest(@RequestBody @Validated RejectRequestInput rejectRequestInput) {
-        CollabRequest collabRequest = collabService.rejectRequest("1", rejectRequestInput);
+    @PostMapping(value = "/reject/requestId/{requestId}")
+    public ResponseEntity<SuccessResponse> rejectRequest(
+            @PathVariable("requestId") @Positive(message = "rejectRequestId should be greater than 0") long rejectRequestId) {
+        CollabRequest collabRequest = collabService.rejectRequest("1", rejectRequestId);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/accept")
-    public ResponseEntity<SuccessResponse> acceptRequest(@RequestBody @Validated AcceptRequestInput acceptRequestInput) {
-        CollabRequest collabRequest = collabService.acceptRequest("1", acceptRequestInput);
+    @PostMapping(value = "/accept/requestId/{requestId}")
+    public ResponseEntity<SuccessResponse> acceptRequest(@PathVariable("requestId") @Positive(message = "rejectRequestId should be greater than 0")
+                                                                     long acceptRequestId) {
+        CollabRequest collabRequest = collabService.acceptRequest("1", acceptRequestId);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
@@ -53,5 +58,7 @@ public class CollabController {
        List<CollabRequest> collabRequest = collabService.collabRequestsSearch("1", collabRequestSearch);
        return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
+
+
 
 }

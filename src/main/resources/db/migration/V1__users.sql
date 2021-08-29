@@ -30,13 +30,13 @@ CREATE TABLE IF NOT EXISTS `artist_preferences` (
   foreign key(artist_id) references artists(artist_id)
 )
 
-CREATE TABLE IF NOT EXISTS `artist-samples` (
+CREATE TABLE IF NOT EXISTS `artist_samples` (
   id int AUTO_INCREMENT,
   artist_id varchar(50),
   url varchar(20),
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   key(id),
-  primary key(artist_id)
+  primary key(artist_id),
   foreign key(artist_id) references artists(artist_id)
 )
 
@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `artist_categories` (
   foreign key(art_id) references art_categories(id)
 )
 
+--add indexing on sender_id and receiver_id
 CREATE TABLE IF NOT EXISTS `collab_requests` (
   id int AUTO_INCREMENT,
   request_id varchar(50),
@@ -75,6 +76,26 @@ CREATE TABLE IF NOT EXISTS `collab_requests` (
   foreign key(sender_id) references artists(artist_id)
 )
 
+--// getting all the current collab pending request, optional filter on user_id on
+--// get all the request firsst time using auth of current user
+--// create request
+--// accept request
+--// reject request
+--
+--// blocked request
+--1, 1234, 4321, pending
+--
+--
+--2, 1234, 5768, rejected
+--2, 1234, 5768, blocked
+--
+--1, 1234, 4321, pending
+--
+--
+--2, 1234, 4356, pending
+
+
+2, 1234, 4321
 CREATE TABLE IF NOT EXISTS `collab_reviews` (
     id int AUTO_INCREMENT,
     request_id varchar(50),

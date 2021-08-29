@@ -6,6 +6,6 @@ import org.json.JSONObject;
 @Data
 public class RejectRequestInput {
 //    private final String requestId;
-//    private final String recevierId;
-   Long collabRequestId;
+//    private final String receiverId;
+   private final Long rejectRequestId;
 }

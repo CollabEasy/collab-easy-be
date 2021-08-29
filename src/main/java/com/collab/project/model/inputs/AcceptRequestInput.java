@@ -8,6 +8,6 @@ public class AcceptRequestInput {
 
     //private final String requestId;
     //
-    //private final String recevierId;
-    Long collabRequestId; //auto increment
+    //private final String receiverId;
+    private final Long collabRequestId; //auto increment
 }

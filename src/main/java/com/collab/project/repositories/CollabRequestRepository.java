@@ -21,7 +21,7 @@ public interface CollabRequestRepository extends PagingAndSortingRepository<Coll
 //  @Query("SELECT c from CollabRequest c WHERE c.sender_id=:senderId and receiver_id=:receiverId and status in :status")
 //  public List<CollabRequest> findByReceiverAndSender(@Param("receiverId")  String receiverId, @Param("senderId") String senderId, @Param("status") List<String> status);
 
-  public List<CollabRequest> findBySenderIdAndRecevierIdAndStatusIn(String senderId, String receiverId, List<String> status);
+  public List<CollabRequest> findBySenderIdAndReceiverIdAndStatusIn(String senderId, String receiverId, List<String> status);
   //public CollabRequest findById(String senderId, String receiverId, List<String> status);
 
 

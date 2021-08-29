@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "collab_requests")
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -27,7 +27,6 @@ public class CollabRequest {
 
     @Id
     @Basic(optional = false)
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
@@ -37,7 +36,7 @@ public class CollabRequest {
     private String senderId;
     @NonNull
     @Column(name = "receiver_id", nullable = false, unique = true)
-    private String recevierId;
+    private String receiverId;
 
     @Column(name = "scheduled_at")
     private Timestamp collabDate;
