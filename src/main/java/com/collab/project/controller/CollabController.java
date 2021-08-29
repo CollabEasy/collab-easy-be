@@ -1,24 +1,18 @@
 package com.collab.project.controller;
 
-import com.collab.project.model.artist.ArtistCategory;
 import com.collab.project.model.collab.CollabRequest;
-import com.collab.project.model.inputs.AcceptRequestInput;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
-import com.collab.project.model.inputs.RejectRequestInput;
 import com.collab.project.model.response.SuccessResponse;
-import com.collab.project.service.ArtistCategoryService;
 import com.collab.project.service.CollabService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;

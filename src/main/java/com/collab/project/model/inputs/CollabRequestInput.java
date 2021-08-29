@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @Data
 public class CollabRequestInput  {
 
-    //private final String requestId;
-    //private final String senderId;
     private final String receiverId;
     private final LocalDateTime collabDate;
     @Valid

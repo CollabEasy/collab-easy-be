@@ -76,26 +76,6 @@ CREATE TABLE IF NOT EXISTS `collab_requests` (
   foreign key(sender_id) references artists(artist_id)
 )
 
---// getting all the current collab pending request, optional filter on user_id on
---// get all the request firsst time using auth of current user
---// create request
---// accept request
---// reject request
---
---// blocked request
---1, 1234, 4321, pending
---
---
---2, 1234, 5768, rejected
---2, 1234, 5768, blocked
---
---1, 1234, 4321, pending
---
---
---2, 1234, 4356, pending
-
-
-2, 1234, 4321
 CREATE TABLE IF NOT EXISTS `collab_reviews` (
     id int AUTO_INCREMENT,
     request_id varchar(50),
