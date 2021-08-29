@@ -3,32 +3,38 @@ package com.collab.project.model.artist;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "art_samples")
+@Table(name = "artist_samples")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ArtSample {
 
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Id
-//    Long id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @NonNull
-    @Column(nullable = false, unique = true)
-    private String artistId;
-    @NonNull
-    @Column(nullable = false, unique = true)
-    private String url;
+    Long id;
 
-    private Long updatedAt;
+    @NonNull
+    @Column(nullable = false)
+    private String artistId;
+
+    @NonNull
+    @Column(nullable = false, unique = true)
+    private String originalUrl;
+
+    @NonNull
+    @Column(nullable = false, unique = true)
+    private String thumbnailUrl;
+
+    private Timestamp createdAt;
 }

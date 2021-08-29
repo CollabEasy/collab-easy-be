@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@RequestMapping(method = RequestMethod.POST, value = "/api")
+@RequestMapping(method = RequestMethod.POST, value = "/api/v1/artist")
 @RestController()
 public class LoginController {
 
@@ -47,10 +47,11 @@ public class LoginController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtils.generateJwtToken(authentication);
         JSONObject object = new JSONObject("token", token);
+        System.out.println("token : " + token);
         return new ResponseEntity<>(new SuccessResponse(token), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/get/Details", method = RequestMethod.GET)
+    @RequestMapping(value = "/details", method = RequestMethod.GET)
     public ResponseEntity<?> update() {
         String artistId = authUtils.getArtistId();
         return ResponseEntity.ok(artistId);
