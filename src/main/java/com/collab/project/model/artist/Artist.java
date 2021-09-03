@@ -3,6 +3,7 @@ package com.collab.project.model.artist;
 
 import com.collab.project.security.Role;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Transient;
@@ -15,54 +16,80 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "artists")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Artist implements Serializable {
-  @Id
-  private String artistId;
 
-  @NonNull
-  @Column(nullable = false, unique = true)
-  private String artistHandle;
-  private String slug;
-  @NonNull
-  @Column(nullable = false)
-  private String firstName;
+    @Id
+    private String artistId;
 
-  private String lastName;
-  @NonNull
-  @Column(nullable = false, unique = true)
-  private String email;
+    @Column(nullable = true, unique = true)
+    private String artistHandle;
+    private String slug;
+    @NonNull
+    @Column(nullable = false)
+    private String firstName;
 
-  Long phoneNumber;
+    private String lastName;
+    @NonNull
+    @Column(nullable = false, unique = true)
+    private String email;
 
-  private String country;
+    Long phoneNumber;
 
-  private String profilePicUrl;
+    private String country;
 
-  private String timezone;
+    private String profilePicUrl;
 
-  private String bio;
+    private String timezone;
 
-  private Integer age;
+    private String bio;
 
-  private Timestamp lastActive;
+    private Integer age;
 
-//  private String gender;
+    private Timestamp lastActive;
 
-  private Timestamp createdAt;
+  private String gender;
 
-  private Timestamp updatedAt;
+    private Timestamp createdAt;
 
-  @Transient
-  public Role getRole(){
-    return Role.DEFAULT;
-  }
+    private Timestamp updatedAt;
+
+    @Transient
+    private Boolean newUser = false;
+
+    @Transient
+    public Role getRole() {
+        return Role.DEFAULT;
+    }
+
+    @Transient
+    public Boolean areDetailsUpdated() {
+        return !StringUtils.isEmpty(getPhoneNumber());
+    }
+
+    public Boolean getNewUser() {
+        return newUser;
+    }
+
+    public void setNewUser(Boolean newUser) {
+        this.newUser = newUser;
+    }
+
+
+
+
+
+
+
+
 
 }

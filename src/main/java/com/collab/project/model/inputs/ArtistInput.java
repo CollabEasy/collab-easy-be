@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ArtistInput {
-
+    String idToken;
     String artistHandle;
     String artistId;
     String firstName;
@@ -17,4 +17,5 @@ public class ArtistInput {
     String bio;
     Integer age;
     String gender;
+    Boolean valid;
 }

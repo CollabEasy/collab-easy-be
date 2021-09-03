@@ -15,6 +15,7 @@ public interface ArtistRepository extends JpaRepository<Artist, String> {
 
     Artist findByArtistId(String artistId);
     Artist findByArtistHandle(String artistHandle);
+    Artist findByEmail(String email);
 
     List<Artist> findBySlug(String queryStr);
 
