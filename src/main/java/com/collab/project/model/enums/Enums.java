@@ -5,4 +5,10 @@ public class Enums {
         ARTIST,
         ART,
     }
+
+    public enum CollabStatus {
+        PENDING,
+        REJECTED,
+        ACTIVE
+    }
 }

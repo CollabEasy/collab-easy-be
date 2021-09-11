@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-// TODO : Fetch artist ID from JWT token instead of path variable.
 @RequestMapping(value = "/api/v1/artist")
 public class ArtistPreferencesController {
 

@@ -10,6 +10,7 @@ import com.collab.project.repositories.ArtistPreferenceRepository;
 import com.collab.project.service.ArtistPreferencesService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.lang.Collections;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +22,15 @@ import java.util.Optional;
 import static com.collab.project.helpers.Constants.FALLBACK_ID;
 
 @Service
+@Slf4j
 public class ArtistPreferencesImpl implements ArtistPreferencesService {
 
     @Autowired
     ArtistPreferenceRepository artistPreferenceRepository;
 
     @Override
-    public void updateArtistPreferences(String artistId, Map<String, Object> artistPreferences) throws JsonProcessingException {
+    public void updateArtistPreferences(String artistId, Map<String, Object> artistPreferences)
+        throws JsonProcessingException {
         List<ArtistPreference> artistPreferenceList = new ArrayList<>();
         for (String prefName : artistPreferences.keySet()) {
             Object prefValueObj = artistPreferences.get(prefName);
@@ -38,6 +41,7 @@ public class ArtistPreferencesImpl implements ArtistPreferencesService {
             System.out.println(preference);
         }
         artistPreferenceRepository.saveAll(artistPreferenceList);
+        log.info("Artist preference update for aId {}", artistId);
     }
 
     @Override
@@ -48,18 +52,27 @@ public class ArtistPreferencesImpl implements ArtistPreferencesService {
     }
 
     @Override
-    public List<ArtistPreference> getArtistPreferences(String artistId) throws RecordNotFoundException {
+    public List<ArtistPreference> getArtistPreferences(String artistId)
+        throws RecordNotFoundException {
         System.out.println("artist id : " + artistId);
-        List<ArtistPreference> existing = artistPreferenceRepository.findByArtistPreferenceId_ArtistId(artistId);
-        System.out.println("returned results : " + existing.size()) ;
-        if (Collections.isEmpty(existing)) throw new RecordNotFoundException("No artist preferences exist for given artist ID");
+        List<ArtistPreference> existing = artistPreferenceRepository
+            .findByArtistPreferenceId_ArtistId(artistId);
+        System.out.println("returned results : " + existing.size());
+        if (Collections.isEmpty(existing)) {
+            throw new RecordNotFoundException("No artist preferences exist for given artist ID");
+        }
         return existing;
     }
 
     @Override
-    public ArtistPreference getArtistPreferences(String artistId, String settingName) throws RecordNotFoundException {
-        Optional<ArtistPreference> existing = artistPreferenceRepository.findById(new ArtistPreferenceId(artistId, settingName));
-        if (!existing.isPresent()) throw new RecordNotFoundException("No artist preferences exist for given artist ID and setting name");
+    public ArtistPreference getArtistPreferences(String artistId, String settingName)
+        throws RecordNotFoundException {
+        Optional<ArtistPreference> existing = artistPreferenceRepository
+            .findById(new ArtistPreferenceId(artistId, settingName));
+        if (!existing.isPresent()) {
+            throw new RecordNotFoundException(
+                "No artist preferences exist for given artist ID and setting name");
+        }
         return existing.get();
     }
 }
