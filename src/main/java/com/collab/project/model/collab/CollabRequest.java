@@ -2,41 +2,56 @@ package com.collab.project.model.collab;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "collab_requests")
-@Getter
-@Setter
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class CollabRequest {
+
     @Id
+    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
     @NonNull
-    @Column(nullable = false, unique = true)
-    private String requestId;
-    @NonNull
-    @Column(nullable = false, unique = true)
+    @Column(name = "sender_id", nullable = false, unique = true)
     private String senderId;
     @NonNull
-    @Column(nullable = false, unique = true)
-    private String recevierId;
+    @Column(name = "receiver_id", nullable = false, unique = true)
+    private String receiverId;
+
+    @Column(name = "scheduled_at")
+    private Timestamp collabDate;
 
     @Lob
     @Convert(converter = RequestDataConvertor.class)
     private RequestData requestData;
 
-    private Timestamp scheduledAt;
+    private String status;
 
-    private Boolean accepted;
+    @Column(name = "created_At")
+    private LocalDateTime createdAt;
 
-    private Timestamp createdAt;
-
-    private Timestamp updatedAt;
+    @Column(name = "updated_At")
+    private LocalDateTime updatedAt;
 
 
     @Slf4j
@@ -60,7 +75,7 @@ public class CollabRequest {
         public RequestData convertToEntityAttribute(String customObject) {
             RequestData jsonObject = null;
             try {
-                if (null == customObject) {
+                if (null == customObject || "null" == customObject) {
                     return null;
                 }
                 jsonObject = objectMapper.readValue(customObject, RequestData.class);

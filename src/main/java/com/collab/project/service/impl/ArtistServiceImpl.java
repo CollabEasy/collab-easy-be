@@ -4,12 +4,16 @@ import com.collab.project.model.artist.Artist;
 import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistService;
+import com.collab.project.util.AuthUtils;
 import java.util.Objects;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
+@Slf4j
 public class ArtistServiceImpl implements ArtistService {
 
     @Autowired
@@ -17,7 +21,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Artist createArtist(ArtistInput inp) {
-        Artist artist = artistRepository.findByArtistHandle(inp.getArtistHandle());
+        Artist artist = artistRepository.findByEmail(inp.getEmail());
         if (Objects.isNull(artist)) {
             artist = Artist.builder().
                 artistId(UUID.randomUUID().toString())
@@ -33,12 +37,34 @@ public class ArtistServiceImpl implements ArtistService {
                 .phoneNumber(inp.getPhoneNumber())
                 .build();
             artist = artistRepository.save(artist);
+            artist.setNewUser(true);
         }
         return artist;
     }
 
     @Override
-    public void updateArtist() {
-
+    public Boolean updateArtist(ArtistInput inp) {
+        Artist artist = artistRepository.findByArtistId(AuthUtils.getArtistId());
+        if (Objects.nonNull(inp.getPhoneNumber()) && inp.getPhoneNumber() > 0) {
+            artist.setPhoneNumber(inp.getPhoneNumber());
+        }
+        if (Objects.nonNull(inp.getAge()) && inp.getAge() > 0) {
+            artist.setAge(inp.getAge());
+        }
+        if (!StringUtils.isEmpty(inp.getCountry())) {
+            artist.setCountry(inp.getCountry());
+        }
+        if (!StringUtils.isEmpty(inp.getTimezone())) {
+            artist.setTimezone(inp.getTimezone());
+        }
+        if (!StringUtils.isEmpty(inp.getBio())) {
+            artist.setBio(inp.getBio());
+        }
+        if (!StringUtils.isEmpty(inp.getGender())) {
+            artist.setGender(inp.getGender());
+        }
+        artistRepository.save(artist);
+        log.info("Update Artist Details with Id {}", artist.getArtistId());
+        return true;
     }
 }

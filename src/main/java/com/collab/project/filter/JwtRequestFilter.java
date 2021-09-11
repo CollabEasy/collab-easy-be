@@ -1,10 +1,12 @@
 package com.collab.project.filter;
 
-import com.collab.project.util.JwtUtils;
+
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.collab.project.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +74,7 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
     }
 
     private boolean isAuthRequired(HttpServletRequest request) {
-        if (request.getServletPath().contains("/login")) {
+        if (request.getServletPath().contains("/login") || request.getServletPath().contains("/api/v1/collab")) {
             return false;
         }
         return true;

@@ -14,6 +14,11 @@ public class SuccessResponse {
         this.status = "success";
     }
 
+    public SuccessResponse(Object data, String status) {
+        this.data = data;
+        this.status = status;
+    }
+
     public SuccessResponse() {
         this.status = "success";
     }

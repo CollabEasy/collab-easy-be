@@ -60,14 +60,15 @@ CREATE TABLE IF NOT EXISTS `artist_categories` (
   foreign key(art_id) references art_categories(id)
 );
 
+--add indexing on sender_id and receiver_id
 CREATE TABLE IF NOT EXISTS `collab_requests` (
   id int AUTO_INCREMENT,
   request_id varchar(50),
   sender_id varchar(50),
   receiver_id varchar(50),
-  request_data blob,
+  request_data JSON,
   scheduled_at timestamp,
-  accepted bool,
+  status varchar(20),
   created_at timestamp,
   updated_at timestamp,
   key(id),
