@@ -2,6 +2,9 @@ package com.collab.project.util;
 
 import com.collab.project.helpers.Constants;
 import lombok.extern.slf4j.Slf4j;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.Java2DFrameConverter;
 import org.imgscalr.Scalr;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,6 +44,25 @@ public class FileUtils {
         } finally {
             Objects.requireNonNull(fos).close();
         }
+    }
+
+    public static boolean createThumbnailFromVideo(String videoFile, String imageFileName) throws IOException {
+        FFmpegFrameGrabber grabber  = new FFmpegFrameGrabber(videoFile);
+        try {
+            grabber.start();
+            ImageIO.write(new Java2DFrameConverter().convert(grabber.grab()), "png", new File(imageFileName));
+        } catch (FrameGrabber.Exception e) {
+            // TODO: Add a log printing unable to fetch thumbnail
+            return false;
+        }
+
+        try {
+            grabber.stop();
+        } catch (FrameGrabber.Exception e) {
+            // TODO: Add a log printing unable to fetch thumbnail
+            return false;
+        }
+        return true;
     }
 
 }
