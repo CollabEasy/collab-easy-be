@@ -5,9 +5,11 @@ import com.collab.project.model.collab.CollabRequest;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
+import com.collab.project.model.notification.Notification;
 import com.collab.project.repositories.CollabRequestRepository;
 import com.collab.project.search.SpecificationBuilder;
 import com.collab.project.service.CollabService;
+import com.collab.project.service.NotificationService;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,6 +25,9 @@ public class CollabServiceImpl implements CollabService {
 
     @Autowired
     private CollabRequestRepository collabRequestRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public CollabRequest sendRequest(String artistId, CollabRequestInput collabRequestInput) {
@@ -44,6 +49,16 @@ public class CollabServiceImpl implements CollabService {
                 .requestData(collabRequestInput.getRequestData())
                 .build();
         saveCollabRequest = collabRequestRepository.save(saveCollabRequest);
+
+        notificationService.addNotification(Notification.builder()
+                                                    .artistId(artistId)
+                                                    .redirectId(collabRequestInput.getReceiverId())
+                                                    .notifType("collabRequest")
+                                                    .notifRead(false)
+                                                    .notificationData(String.format("%s send you a collab request", artistId))
+                                                    .build());
+
+
         return saveCollabRequest;
     }
 
