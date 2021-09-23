@@ -51,18 +51,6 @@ public class LoginController {
     @Autowired
     ObjectMapper mapper;
 
-    @RequestMapping(value = "/test1", method = RequestMethod.POST)
-    public ResponseEntity<?> login(@RequestBody ArtistInput input) {
-        Artist artist = artistService.createArtist(input);
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(artist.getArtistId(), ""));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtUtils.generateJwtToken(authentication);
-        JSONObject object = new JSONObject("token", token);
-        System.out.println("token : " + token);
-        return new ResponseEntity<>(new SuccessResponse(token), HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/details", method = RequestMethod.GET)
     public ResponseEntity<?> update() {
         String artistId = authUtils.getArtistId();
@@ -95,5 +83,13 @@ public class LoginController {
             new SuccessResponse(artistService.updateArtist(input) ? "Details Updated SuccessFully"
                 : "Failure while Details Update",
                 "SUCCESS"), HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/login/delete", method = RequestMethod.POST)
+    public ResponseEntity<?> delete(@RequestBody ArtistInput input) {
+        artistService.delete(input);
+        return new ResponseEntity<>(new SuccessResponse("Deleted", "SUCCESS"),
+            HttpStatus.OK);
     }
 }
