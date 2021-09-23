@@ -17,6 +17,7 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableWebSecurity
@@ -27,6 +28,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @PropertySources({
     @PropertySource("classpath:auth0.properties")
 })
+@EnableTransactionManagement
 public class Application {
 
   public static void main(String[] args) {

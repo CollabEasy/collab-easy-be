@@ -7,9 +7,11 @@ import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 import java.util.Objects;
 import java.util.UUID;
+import javax.persistence.Transient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Service
@@ -66,5 +68,11 @@ public class ArtistServiceImpl implements ArtistService {
         artistRepository.save(artist);
         log.info("Update Artist Details with Id {}", artist.getArtistId());
         return true;
+    }
+
+    @Override
+    @Transactional
+    public void delete(ArtistInput artistInput) {
+        artistRepository.deleteByArtistId(artistInput.getArtistId());
     }
 }
