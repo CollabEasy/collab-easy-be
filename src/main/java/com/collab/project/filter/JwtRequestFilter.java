@@ -32,10 +32,8 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
         HttpServletResponse response, FilterChain chain) {
         try {
-            if (isAuthRequired(request)) {
-
-                final String authorizationHeader = request.getHeader("Authorization");
-
+            final String authorizationHeader = request.getHeader("Authorization");
+            if (isAuthRequired(request) && authorizationHeader != null) {
                 final String jwt = authorizationHeader.split(" ")[1].trim();
 
                 if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
