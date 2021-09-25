@@ -5,6 +5,7 @@ import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.CollabService;
+import com.collab.project.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class CollabController {
 
     @PostMapping(value = "/request")
     public ResponseEntity<SuccessResponse> sendRequest(@RequestBody @Validated CollabRequestInput collabRequestInput) {
-        CollabRequest collabRequest = collabService.sendRequest("1", collabRequestInput);
+        CollabRequest collabRequest = collabService.sendRequest(AuthUtils.getArtistId(), collabRequestInput);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
@@ -43,16 +44,15 @@ public class CollabController {
     @PostMapping(value = "/accept/requestId/{requestId}")
     public ResponseEntity<SuccessResponse> acceptRequest(@PathVariable("requestId") @Positive(message = "rejectRequestId should be greater than 0")
                                                                      long acceptRequestId) {
-        CollabRequest collabRequest = collabService.acceptRequest("1", acceptRequestId);
+        CollabRequest collabRequest = collabService.acceptRequest(AuthUtils.getArtistId(), acceptRequestId);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
     @PostMapping(value = "/search")
     public ResponseEntity<SuccessResponse> collabRequestsSearch(@RequestBody @Validated CollabRequestSearch collabRequestSearch) {
-       List<CollabRequest> collabRequest = collabService.collabRequestsSearch("1", collabRequestSearch);
+       List<CollabRequest> collabRequest = collabService.collabRequestsSearch(AuthUtils.getArtistId(), collabRequestSearch);
        return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
-
 
 
 }

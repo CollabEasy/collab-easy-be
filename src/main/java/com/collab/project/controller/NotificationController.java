@@ -8,6 +8,7 @@ import com.collab.project.model.notification.Notification;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.CollabService;
 import com.collab.project.service.NotificationService;
+import com.collab.project.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class NotificationController {
 
     @PostMapping(value = "/search")
     public ResponseEntity<SuccessResponse> getNotifications(@RequestBody @Validated NotificationSearch notificationSearch) {
-        List<Notification> notifications = notificationService.getNotifications("192994",notificationSearch);
+        List<Notification> notifications = notificationService.getNotifications(AuthUtils.getArtistId(),notificationSearch);
         return new ResponseEntity<>(new SuccessResponse(notifications), HttpStatus.OK);
     }
 
