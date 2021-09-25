@@ -39,7 +39,7 @@ public class CollabController {
     @PostMapping(value = "/reject/requestId/{requestId}")
     public ResponseEntity<SuccessResponse> rejectRequest(
             @PathVariable("requestId") @Positive(message = "rejectRequestId should be greater than 0") long rejectRequestId) {
-        CollabRequest collabRequest = collabService.rejectRequest("1", rejectRequestId);
+        CollabRequest collabRequest = collabService.rejectRequest(AuthUtils.getArtistId(), rejectRequestId);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
