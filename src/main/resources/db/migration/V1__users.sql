@@ -63,7 +63,6 @@ CREATE TABLE IF NOT EXISTS `artist_categories` (
 --add indexing on sender_id and receiver_id
 CREATE TABLE IF NOT EXISTS `collab_requests` (
   id int AUTO_INCREMENT,
-  request_id varchar(50),
   sender_id varchar(50),
   receiver_id varchar(50),
   request_data JSON,
@@ -91,14 +90,14 @@ CREATE TABLE IF NOT EXISTS `collab_reviews` (
 
 CREATE TABLE IF NOT EXISTS `notifications` (
     id int AUTO_INCREMENT,
-    notif_id varchar(50),
     artist_id varchar(50),
     notif_type varchar(50),
-    redirect_id int,
+    redirect_id varchar(50),
     notification_data blob,
     notif_read bool,
     notif_view_type varchar(25),
     created_at timestamp,
+    updated_at timestamp,
     key(id),
     primary key(notif_id),
     key(artist_id),
