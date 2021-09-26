@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS artists (
   artist_handle varchar(15) unique,
   first_name varchar(50) not null,
   last_name varchar(50),
+  slug varchar(120),
   email varchar(100) not null unique,
   phone_number varchar(15) unique,
   country varchar(20),
@@ -47,9 +48,12 @@ CREATE TABLE IF NOT EXISTS `art_categories` (
   art_name varchar(50),
   description varchar(255),
   approved boolean,
+  slug varchar(70);
   key(id),
   primary key(art_name)
 );
+
+CREATE INDEX `art_category_index` ON `art_categories` (slug);
 
 CREATE TABLE IF NOT EXISTS `artist_categories` (
   id int AUTO_INCREMENT,

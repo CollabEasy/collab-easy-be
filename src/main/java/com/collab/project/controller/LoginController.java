@@ -11,7 +11,10 @@ import com.collab.project.util.JwtUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import io.jsonwebtoken.lang.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +65,8 @@ public class LoginController {
         Boolean isValid = googleUtils.isValid(input);
         if (isValid) {
             Artist artist = artistService.createArtist(input);
+            String firstLastName = artist.getFirstName().trim() + " " + artist.getLastName();
+            artist.setSlug(Strings.replace(firstLastName.toLowerCase(Locale.ROOT), " ", "-"));
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(artist.getArtistId(), ""));
             SecurityContextHolder.getContext().setAuthentication(authentication);
