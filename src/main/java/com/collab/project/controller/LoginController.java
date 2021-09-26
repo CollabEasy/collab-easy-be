@@ -67,8 +67,8 @@ public class LoginController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtUtils.generateJwtToken(authentication);
             Map<String, Object> hashMap = mapper.convertValue(artist, Map.class);
-            hashMap.put("detailsUpdated", artist.areDetailsUpdated());
-            hashMap.put("isNewUser", artist.getNewUser());
+
+            hashMap.put("details_updated", artist.areDetailsUpdated());
             hashMap.put("token", token);
 
             return new ResponseEntity<>(new SuccessResponse(hashMap, "SUCCESS"), HttpStatus.OK);

@@ -57,7 +57,7 @@ public class Artist implements Serializable {
 
     private Timestamp lastActive;
 
-  private String gender;
+    private String gender;
 
     private Timestamp createdAt;
 
@@ -73,11 +73,8 @@ public class Artist implements Serializable {
 
     @Transient
     public Boolean areDetailsUpdated() {
+        this.newUser = StringUtils.isEmpty(getPhoneNumber());
         return !StringUtils.isEmpty(getPhoneNumber());
-    }
-
-    public Boolean getNewUser() {
-        return newUser;
     }
 
     public void setNewUser(Boolean newUser) {
