@@ -72,7 +72,7 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
     }
 
     private boolean isAuthRequired(HttpServletRequest request) {
-        if (request.getServletPath().contains("/login") || request.getServletPath().contains("/api/v1/collab")) {
+        if (request.getServletPath().contains("/login")) {
             return false;
         }
         return true;
