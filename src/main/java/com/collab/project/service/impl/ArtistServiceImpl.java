@@ -5,9 +5,13 @@ import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
+
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Transient;
+
+import io.jsonwebtoken.lang.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,22 +25,27 @@ public class ArtistServiceImpl implements ArtistService {
     @Autowired
     ArtistRepository artistRepository;
 
+    private String getSlug(String firstName, String lastName) {
+        String firstLastName = firstName.trim() + " " + lastName.trim();
+        return Strings.replace(firstLastName.toLowerCase(Locale.ROOT), " ", "-");
+    }
     @Override
     public Artist createArtist(ArtistInput inp) {
         Artist artist = artistRepository.findByEmail(inp.getEmail());
         if (Objects.isNull(artist)) {
             artist = Artist.builder().
                 artistId(UUID.randomUUID().toString())
-                .artistHandle(inp.getArtistHandle())
-                .age(inp.getAge())
-                .email(inp.getEmail())
-                .firstName(inp.getFirstName())
-                .lastName(inp.getLastName())
-                .country(inp.getCountry())
-                .bio(inp.getBio())
-                .profilePicUrl(inp.getProfilePicUrl())
-                .timezone(inp.getTimezone())
-                .phoneNumber(inp.getPhoneNumber())
+                    .artistHandle(inp.getArtistHandle())
+                    .age(inp.getAge())
+                    .email(inp.getEmail())
+                    .firstName(inp.getFirstName())
+                    .lastName(inp.getLastName())
+                    .country(inp.getCountry())
+                    .bio(inp.getBio())
+                    .profilePicUrl(inp.getProfilePicUrl())
+                    .timezone(inp.getTimezone())
+                    .phoneNumber(inp.getPhoneNumber())
+                    .slug(getSlug(inp.getFirstName(), inp.getLastName()))
                 .build();
             artist = artistRepository.save(artist);
             artist.setNewUser(true);

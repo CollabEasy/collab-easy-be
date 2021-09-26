@@ -33,6 +33,7 @@ public class Artist implements Serializable {
 
     @Column(nullable = true, unique = true)
     private String artistHandle;
+
     private String slug;
     @NonNull
     @Column(nullable = false)

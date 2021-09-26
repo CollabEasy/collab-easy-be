@@ -65,8 +65,6 @@ public class LoginController {
         Boolean isValid = googleUtils.isValid(input);
         if (isValid) {
             Artist artist = artistService.createArtist(input);
-            String firstLastName = artist.getFirstName().trim() + " " + artist.getLastName();
-            artist.setSlug(Strings.replace(firstLastName.toLowerCase(Locale.ROOT), " ", "-"));
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(artist.getArtistId(), ""));
             SecurityContextHolder.getContext().setAuthentication(authentication);
