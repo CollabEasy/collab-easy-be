@@ -56,8 +56,8 @@ public class LoginController {
 
     @RequestMapping(value = "/details", method = RequestMethod.GET)
     public ResponseEntity<?> update() {
-        String artistId = authUtils.getArtistId();
-        return ResponseEntity.ok(artistId);
+        Artist artist = artistService.getArtistById(authUtils.getArtistId());
+        return ResponseEntity.ok(artist);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
