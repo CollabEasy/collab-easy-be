@@ -3,6 +3,7 @@ package com.collab.project.controller;
 
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.inputs.ArtistInput;
+import com.collab.project.model.response.ErrorResponse;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
@@ -55,9 +56,12 @@ public class LoginController {
     ObjectMapper mapper;
 
     @RequestMapping(value = "/details", method = RequestMethod.GET)
-    public ResponseEntity<?> update() {
-        String artistId = authUtils.getArtistId();
-        return ResponseEntity.ok(artistId);
+    public ResponseEntity<?> fetchDetails() {
+        Artist artist = artistService.getArtistById(authUtils.getArtistId());
+        if(artist == null) {
+            return new ResponseEntity<>(new ErrorResponse("User not found", "NOT_FOUND"), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(new SuccessResponse(artist), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
