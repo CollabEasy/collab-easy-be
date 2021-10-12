@@ -3,6 +3,8 @@ package com.collab.project.model.artist;
 
 import com.collab.project.security.Role;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+
+import java.sql.Date;
 import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -59,6 +61,8 @@ public class Artist implements Serializable {
     private Timestamp lastActive;
 
     private String gender;
+
+    private Date dateOfBirth;
 
     private Timestamp createdAt;
 

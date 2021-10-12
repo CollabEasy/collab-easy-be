@@ -36,5 +36,9 @@ public class ArtSample {
     @Column(nullable = false, unique = true)
     private String thumbnailUrl;
 
+    @NonNull
+    @Column(nullable = false)
+    private String fileType;
+
     private Timestamp createdAt;
 }
