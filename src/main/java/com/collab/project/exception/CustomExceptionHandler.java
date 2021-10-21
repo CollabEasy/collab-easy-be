@@ -38,4 +38,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse error = new ErrorResponse("IO Exception while processing.", e.getLocalizedMessage());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(CollabRequestException.class)
+    public final ResponseEntity<Object> handleCollabRequestException(CollabRequestException ce, WebRequest request) {
+        ErrorResponse error = new ErrorResponse("Error while processing collab request.", ce.getLocalizedMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }

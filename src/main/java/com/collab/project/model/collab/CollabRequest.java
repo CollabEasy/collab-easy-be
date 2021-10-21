@@ -27,9 +27,8 @@ public class CollabRequest {
 
     @Id
     @Basic(optional = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @NonNull
     @Column(name = "sender_id", nullable = false, unique = true)

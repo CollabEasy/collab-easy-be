@@ -1,6 +1,8 @@
 package com.collab.project.helpers;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Constants {
@@ -43,5 +45,19 @@ public class Constants {
     public static final String IMAGE = "image";
 
 
+    public static enum ACTIONS {
+        FETCH_NOTIFICATIONS
+    }
+
+    public static enum NOTIFICATION_TYPES {
+        COLLAB_REQUEST,
+    }
+
+    public static final String COLLAB_PAGE_URL = "collab_page";
+    public static final String IDEAS_PAGE_URL = "ideas_page";
+    public static Map<String ,String> REDIRECT_URL_MAP = new HashMap<String, String>() {{
+        put(COLLAB_PAGE_URL, "/artist/collab-details/%s");
+        put(IDEAS_PAGE_URL, "/discover/ideas");
+    }};
 
 }

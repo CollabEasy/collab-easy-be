@@ -13,14 +13,13 @@ import com.collab.project.search.SpecificationBuilder;
 import com.collab.project.service.CollabService;
 import com.collab.project.service.NotificationService;
 import com.google.common.base.Strings;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
@@ -40,11 +39,48 @@ public class NotificationServiceImpl implements NotificationService {
             builder.with("notifRead", ":", notificationSearch.getNotifRead());
         }
 
-        return notificationRepository.findAll(builder.build());
+        return sortNotifications(notificationRepository.findAll(builder.build()));
+    }
+
+    @Override
+    public List<Notification> getAllNotifications(String artistId) {
+        return sortNotifications(notificationRepository.findByArtistId(artistId));
     }
 
     public void addNotification(Notification notification) {
         notificationRepository.save(notification);
+    }
+
+    @Override
+    public List<Notification> getNewNotifications(String artistId, Timestamp lastFetchedTs) {
+        List<Notification> notifications = notificationRepository.findByArtistId(artistId);
+        List<Notification> newNotifications = new ArrayList<>();
+
+        for (Notification notification : notifications) {
+            if (notification.getCreatedAt().after(lastFetchedTs)) {
+                newNotifications.add(notification);
+            }
+        }
+
+        return sortNotifications(newNotifications);
+    }
+
+    @Override
+    public void markRead(List<String> notificationIds) {
+        for (String notifId : notificationIds) {
+            Optional<Notification> notificationOptional = notificationRepository.findById(notifId);
+            if (notificationOptional.isPresent()) {
+                Notification notification = notificationOptional.get();
+                notification.setNotifRead(true);
+                notificationRepository.save(notification);
+            }
+        }
+    }
+
+    private List<Notification> sortNotifications(List<Notification> notifications) {
+        if (notifications == null) return new ArrayList<>();
+        notifications.sort(Comparator.comparing(Notification::getCreatedAt, Comparator.reverseOrder()));
+        return notifications;
     }
 
 }

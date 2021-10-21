@@ -20,9 +20,8 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class ArtSample {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    Long id;
+    String id;
 
     @NonNull
     @Column(nullable = false)

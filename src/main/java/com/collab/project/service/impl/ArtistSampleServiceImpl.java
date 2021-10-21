@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ArtistSampleServiceImpl implements ArtistSampleService {
@@ -74,7 +75,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
         thumbFile.delete();
         file.delete();
         ArtSample artSample = new ArtSample(
-                Constants.FALLBACK_ID,
+                UUID.randomUUID().toString(),
                 artistId, originalURL,
                 thumbnailURL, Constants.IMAGE,
                 new Timestamp(System.currentTimeMillis()));
@@ -89,7 +90,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
         file.delete();
 
         ArtSample artSample = new ArtSample(
-                Constants.FALLBACK_ID,
+                UUID.randomUUID().toString(),
                 artistId, fileURL,
                 fileURL, Constants.AUDIO,
                 new Timestamp(System.currentTimeMillis()));
@@ -112,7 +113,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
         }
 
         ArtSample artSample = new ArtSample(
-                Constants.FALLBACK_ID,
+                UUID.randomUUID().toString(),
                 artistId, originalURL,
                 thumbnailURL, Constants.VIDEO,
                 new Timestamp(System.currentTimeMillis()));
