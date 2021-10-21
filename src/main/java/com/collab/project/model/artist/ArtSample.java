@@ -20,9 +20,8 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class ArtSample {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    Long id;
+    String id;
 
     @NonNull
     @Column(nullable = false)
@@ -35,6 +34,10 @@ public class ArtSample {
     @NonNull
     @Column(nullable = false, unique = true)
     private String thumbnailUrl;
+
+    @NonNull
+    @Column(nullable = false)
+    private String fileType;
 
     private Timestamp createdAt;
 }

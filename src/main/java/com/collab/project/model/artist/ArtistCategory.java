@@ -16,7 +16,6 @@ import lombok.NonNull;
 @Entity
 @Table(name = "artist_categories")
 @Getter
-
 @AllArgsConstructor
 @NoArgsConstructor
 public class ArtistCategory {

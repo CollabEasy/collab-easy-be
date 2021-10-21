@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -28,7 +29,6 @@ public class Notification {
 
     @Id
     @Basic(optional = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private String id;
 
@@ -38,8 +38,8 @@ public class Notification {
     @Column(name = "notif_type")
     private String notifType;
 
-    @Column(name = "redirect_id")
-    private String redirectId;
+    @Column(name = "redirect_url")
+    private String redirectUrl;
 
     @Column(name = "notification_data")
     private String notificationData;
@@ -54,5 +54,5 @@ public class Notification {
     private Timestamp createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
 }

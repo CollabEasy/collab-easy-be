@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ArtistSampleServiceImpl implements ArtistSampleService {
@@ -73,7 +74,11 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
 
         thumbFile.delete();
         file.delete();
-        ArtSample artSample = new ArtSample(Constants.FALLBACK_ID, artistId, originalURL, thumbnailURL, new Timestamp(System.currentTimeMillis()));
+        ArtSample artSample = new ArtSample(
+                UUID.randomUUID().toString(),
+                artistId, originalURL,
+                thumbnailURL, Constants.IMAGE,
+                new Timestamp(System.currentTimeMillis()));
         artistSampleRepository.save(artSample);
     }
 
@@ -84,7 +89,11 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
         String fileURL = s3Utils.uploadFileToS3Bucket(bucketName, file, artistId + "/originals", fileName + "." + fileExtension);
         file.delete();
 
-        ArtSample artSample = new ArtSample(Constants.FALLBACK_ID, artistId, fileURL, fileURL, new Timestamp(System.currentTimeMillis()));
+        ArtSample artSample = new ArtSample(
+                UUID.randomUUID().toString(),
+                artistId, fileURL,
+                fileURL, Constants.AUDIO,
+                new Timestamp(System.currentTimeMillis()));
         artistSampleRepository.save(artSample);
     }
 
@@ -103,7 +112,11 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
             thumbFile.delete();
         }
 
-        ArtSample artSample = new ArtSample(Constants.FALLBACK_ID, artistId, originalURL, thumbnailURL, new Timestamp(System.currentTimeMillis()));
+        ArtSample artSample = new ArtSample(
+                UUID.randomUUID().toString(),
+                artistId, originalURL,
+                thumbnailURL, Constants.VIDEO,
+                new Timestamp(System.currentTimeMillis()));
         artistSampleRepository.save(artSample);
     }
 

@@ -1,11 +1,15 @@
 package com.collab.project.service.impl;
 
 import com.collab.project.exception.CollabRequestException;
+import com.collab.project.exception.RecordNotFoundException;
+import com.collab.project.helpers.Constants;
+import com.collab.project.model.artist.Artist;
 import com.collab.project.model.collab.CollabRequest;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
 import com.collab.project.model.notification.Notification;
+import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.CollabRequestRepository;
 import com.collab.project.search.SpecificationBuilder;
 import com.collab.project.service.CollabService;
@@ -19,9 +23,13 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CollabServiceImpl implements CollabService {
+
+    @Autowired
+    private ArtistRepository artistRepository;
 
     @Autowired
     private CollabRequestRepository collabRequestRepository;
@@ -40,9 +48,12 @@ public class CollabServiceImpl implements CollabService {
         List<CollabRequest> collabRequestByReceiver = collabRequestRepository
                                                               .findBySenderIdAndReceiverIdAndStatusIn(collabRequestInput.getReceiverId(), artistId, status);
         if(!collabRequestBySender.isEmpty() || !collabRequestByReceiver.isEmpty()) {
-            throw new CollabRequestException(String.format("Collabaration already happened or Rejected"));
+            throw new CollabRequestException("Collabaration already happened or Rejected");
         }
+
+        String collabId = UUID.randomUUID().toString();
         CollabRequest saveCollabRequest = CollabRequest.builder()
+                .id(collabId)
                 .senderId(artistId).receiverId(collabRequestInput.getReceiverId())
                 .collabDate(Timestamp.valueOf(collabRequestInput.getCollabDate()))
                 .status(Enums.CollabStatus.PENDING.toString())
@@ -50,14 +61,20 @@ public class CollabServiceImpl implements CollabService {
                 .build();
         saveCollabRequest = collabRequestRepository.save(saveCollabRequest);
 
+        Artist receiverArtist = artistRepository.findByArtistId(collabRequestInput.getReceiverId());
+        if (receiverArtist == null) {
+            throw new RecordNotFoundException("No artist found for the receiver id.");
+        }
+
         notificationService.addNotification(Notification.builder()
                                                     .artistId(artistId)
-                                                    .redirectId(collabRequestInput.getReceiverId())
-                                                    .notifType("collabRequest")
+                                                    .redirectUrl(String.format(Constants.REDIRECT_URL_MAP.get(
+                                                            Constants.COLLAB_PAGE_URL), collabId))
+                                                    .notifType(Constants.NOTIFICATION_TYPES.COLLAB_REQUEST.toString())
                                                     .notifRead(false)
-                                                    .notificationData(String.format("%s send you a collab request", artistId))
+                                                    .notificationData(String.format("%s send you a collab request",
+                                                            receiverArtist.getFirstName()))
                                                     .build());
-
 
         return saveCollabRequest;
     }
@@ -76,15 +93,15 @@ public class CollabServiceImpl implements CollabService {
                 return collabRequest;
             } else {
                 if(!collabRequest.getReceiverId().equals(artistId)) {
-                    throw new CollabRequestException(String.format("user not authorized to reject request"));
+                    throw new CollabRequestException("user not authorized to reject request");
                 }
                 else if(!collabRequest.getStatus().equals(Enums.CollabStatus.PENDING.toString())) {
-                    throw new CollabRequestException(String.format("collab request status is not in pending state"));
+                    throw new CollabRequestException("collab request status is not in pending state");
                 }
-                throw new CollabRequestException(String.format("error while rejecting request"));
+                throw new CollabRequestException("error while rejecting request");
             }
         } else {
-            throw new CollabRequestException(String.format("collab request id is not present"));
+            throw new CollabRequestException("collab request id is not present");
         }
     }
 
@@ -102,24 +119,24 @@ public class CollabServiceImpl implements CollabService {
                 return collabRequest;
             } else {
                 if(!collabRequest.getReceiverId().equals(artistId)) {
-                    throw new CollabRequestException(String.format("user not authorized to accept request"));
+                    throw new CollabRequestException("user not authorized to accept request");
                 }
                 else if(!collabRequest.getStatus().equals(Enums.CollabStatus.PENDING.toString())) {
-                    throw new CollabRequestException(String.format("collab request status is not in pending state"));
+                    throw new CollabRequestException("collab request status is not in pending state");
                 }
-                throw new CollabRequestException(String.format("error while accepting request"));
+                throw new CollabRequestException("error while accepting request");
             }
         } else {
-            throw new CollabRequestException(String.format("collab request id is not present"));
+            throw new CollabRequestException("collab request id is not present");
         }
     }
 
     @Override
     public List<CollabRequest> collabRequestsSearch(String artistId, CollabRequestSearch collabRequestSearch) {
         SpecificationBuilder<CollabRequest> builder =
-                new SpecificationBuilder();
+                new SpecificationBuilder<CollabRequest>();
         if (collabRequestSearch.getCollabRequestId() != null) {
-            builder.with("id", ":", new Long(collabRequestSearch.getCollabRequestId()));
+            builder.with("id", ":", collabRequestSearch.getCollabRequestId());
         }
 
         //get all collab request by sender id and authorizing it with the current user.
