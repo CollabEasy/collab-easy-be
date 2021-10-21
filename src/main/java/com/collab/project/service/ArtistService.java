@@ -11,4 +11,6 @@ public interface ArtistService {
     public Boolean updateArtist(ArtistInput artistInput);
 
     public void delete(ArtistInput artistInput);
+
+    public Artist getArtistById(String artistId);
 }

@@ -29,6 +29,13 @@ public class ArtistServiceImpl implements ArtistService {
         String firstLastName = firstName.trim() + " " + lastName.trim();
         return Strings.replace(firstLastName.toLowerCase(Locale.ROOT), " ", "-");
     }
+
+    @Override
+    public Artist getArtistById(String artistId) {
+        Artist artist = artistRepository.findByArtistId(artistId);
+        return artist;
+    }
+
     @Override
     public Artist createArtist(ArtistInput inp) {
         Artist artist = artistRepository.findByEmail(inp.getEmail());

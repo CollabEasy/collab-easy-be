@@ -2,6 +2,8 @@ package com.collab.project.model.inputs;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class ArtistInput {
     String idToken;
@@ -17,5 +19,6 @@ public class ArtistInput {
     String bio;
     Integer age;
     String gender;
+    Date dateOfBirth;
     Boolean valid;
 }

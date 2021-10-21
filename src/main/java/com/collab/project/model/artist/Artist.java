@@ -62,6 +62,8 @@ public class Artist implements Serializable {
 
     private String gender;
 
+    private Date dateOfBirth;
+
     private Timestamp createdAt;
 
     private Timestamp updatedAt;

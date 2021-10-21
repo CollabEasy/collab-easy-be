@@ -37,7 +37,7 @@ public class NotificationController {
 
     @PostMapping(value = "/search")
     public ResponseEntity<SuccessResponse> getNotifications(@RequestBody @Validated NotificationSearch notificationSearch) {
-        String artistId = AuthUtils.getArtistId();
+        String artistId = "ae7c46fa-3228-11ec-8d3d-0242ac130003";
         List<Notification> notifications = notificationService.getNotifications(artistId, notificationSearch);
         return new ResponseEntity<>(new SuccessResponse(notifications), HttpStatus.OK);
     }
@@ -50,7 +50,8 @@ public class NotificationController {
 
     @GetMapping(value = "/all")
     public ResponseEntity<SuccessResponse> getAllNotifications() {
-        String artistId = AuthUtils.getArtistId();
+//        String artistId = AuthUtils.getArtistId();
+        String artistId = "ae7c46fa-3228-11ec-8d3d-0242ac130003";
         List<Notification> notifications = notificationService.getAllNotifications(artistId);
         ArtistAction artistAction = artistActionService.getArtistActionDetails(artistId, ACTIONS.FETCH_NOTIFICATIONS.toString());
         NotificationResponse response = new NotificationResponse(notifications, artistAction);
@@ -60,7 +61,7 @@ public class NotificationController {
 
     @GetMapping(value = "/new")
     public ResponseEntity<SuccessResponse> getNewNotifications() {
-        String artistId = AuthUtils.getArtistId();
+        String artistId = "ae7c46fa-3228-11ec-8d3d-0242ac130003";
         ArtistAction artistAction = artistActionService.getArtistActionDetails(artistId, ACTIONS.FETCH_NOTIFICATIONS.toString());
         List<Notification> notifications = notificationService.getNewNotifications(artistId, artistAction == null ? Timestamp.from(Instant.EPOCH) : artistAction.getUpdatedAt());
         return new ResponseEntity<>(new SuccessResponse(notifications), HttpStatus.OK);
