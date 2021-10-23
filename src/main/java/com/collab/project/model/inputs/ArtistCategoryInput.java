@@ -8,4 +8,9 @@ import lombok.Data;
 public class ArtistCategoryInput {
     List<String> artNames;
     Map<String,Boolean> artNamesMap;
+    String artCategory;
+    Integer page;
+    Integer size;
+
+
 }
