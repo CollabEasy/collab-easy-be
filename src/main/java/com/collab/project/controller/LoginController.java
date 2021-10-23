@@ -8,6 +8,7 @@ import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 import com.collab.project.util.GoogleUtils;
 import com.collab.project.util.JwtUtils;
+import com.collab.project.util.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
@@ -43,7 +44,8 @@ public class LoginController {
     JwtUtils jwtUtils;
 
     @Autowired
-    AuthUtils authUtils;
+    Utils utils;
+
 
     @Autowired
     GoogleUtils googleUtils;
@@ -51,16 +53,11 @@ public class LoginController {
     @Autowired
     ObjectMapper mapper;
 
-    @RequestMapping(value = "/details", method = RequestMethod.GET)
-    public ResponseEntity<?> update() {
-        String artistId = authUtils.getArtistId();
-        return ResponseEntity.ok(artistId);
-    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> validate(@RequestBody ArtistInput input) {
-        Boolean isValid = googleUtils.isValid(input);
-        if (isValid) {
+//        Boolean isValid = googleUtils.isValid(input);
+        if (true) {
             Artist artist = artistService.createArtist(input);
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(artist.getArtistId(), ""));
@@ -68,7 +65,7 @@ public class LoginController {
             String token = jwtUtils.generateJwtToken(authentication);
             Map<String, Object> hashMap = mapper.convertValue(artist, Map.class);
             hashMap.put("detailsUpdated", artist.areDetailsUpdated());
-            hashMap.put("isNewUser", artist.getNewUser());
+            hashMap.put("isNewUser", utils.isNewUser(artist));
             hashMap.put("token", token);
 
             return new ResponseEntity<>(new SuccessResponse(hashMap, "SUCCESS"), HttpStatus.OK);
@@ -77,19 +74,5 @@ public class LoginController {
             HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseEntity<?> update(@RequestBody ArtistInput input) {
-        return new ResponseEntity<>(
-            new SuccessResponse(artistService.updateArtist(input) ? "Details Updated SuccessFully"
-                : "Failure while Details Update",
-                "SUCCESS"), HttpStatus.OK);
-    }
 
-
-    @RequestMapping(value = "/login/delete", method = RequestMethod.POST)
-    public ResponseEntity<?> delete(@RequestBody ArtistInput input) {
-        artistService.delete(input);
-        return new ResponseEntity<>(new SuccessResponse("Deleted", "SUCCESS"),
-            HttpStatus.OK);
-    }
 }

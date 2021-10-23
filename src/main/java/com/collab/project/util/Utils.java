@@ -1,10 +1,23 @@
 package com.collab.project.util;
 
+import com.collab.project.model.artist.Artist;
+import com.collab.project.model.artist.ArtistCategory;
+import com.collab.project.repositories.ArtistCategoryRepository;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Utils {
+
+
+    @Autowired
+    ArtistCategoryRepository artistCategoryRepository;
+
+
 
     public static String getSHA256(String originalString) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -21,4 +34,11 @@ public class Utils {
         }
         return hexString.toString();
     }
+
+    public Boolean isNewUser(Artist artist) {
+        List<ArtistCategory> artistCategoryList = artistCategoryRepository
+            .findByArtistId(artist.getArtistId());
+        return artistCategoryList.stream().filter(k -> k.getArtId() > 1).count() == 0;
+    }
+
 }

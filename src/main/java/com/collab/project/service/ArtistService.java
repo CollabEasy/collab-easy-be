@@ -8,7 +8,9 @@ public interface ArtistService {
 
     public Artist createArtist(ArtistInput artistInput);
 
-    public Boolean updateArtist(ArtistInput artistInput);
+    public Artist updateArtist(ArtistInput artistInput);
 
     public void delete(ArtistInput artistInput);
+
+    public Artist getArtist();
 }

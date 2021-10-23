@@ -42,6 +42,14 @@ public class Constants {
     public static final String VIDEO = "video";
     public static final String IMAGE = "image";
 
+    public static final String REF_ID = "refId";
+    public static final String CURRENT_TIME = "timestamp";
 
+
+    public static final String API_NAME ="apiName" ;
+    public static final String ALLCONTROLLERS = "allControllers())";
+
+    public static final String POINTCUT ="execution(* com.collab..controller*..*(..))";
+    public static final  String EXCEPTION_POINT = "@within(com.collab.project.helpers.Monitor)";
 
 }

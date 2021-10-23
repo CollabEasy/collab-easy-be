@@ -17,4 +17,8 @@ public class AuthUtils {
             .getPrincipal());
     }
 
+    public String getEmail() {
+        return getUser().getEmail();
+    }
+
 }

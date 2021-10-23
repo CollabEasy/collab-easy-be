@@ -46,6 +46,7 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                    log.info("Auth Successful for artistId {}", artistId);
                 } else {
                     replyWithValidationFailure(response);
                     return;
@@ -72,6 +73,7 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
     }
 
     private boolean isAuthRequired(HttpServletRequest request) {
+        log.info("Validating AuthRequired for serverletPath {}",request.getServletPath());
         if (request.getServletPath().contains("/login")) {
             return false;
         }

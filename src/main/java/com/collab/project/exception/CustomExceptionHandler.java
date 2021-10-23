@@ -1,5 +1,6 @@
 package com.collab.project.exception;
 
+import com.collab.project.helpers.Monitor;
 import com.collab.project.model.response.ErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.io.IOException;
 
+@Monitor
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 

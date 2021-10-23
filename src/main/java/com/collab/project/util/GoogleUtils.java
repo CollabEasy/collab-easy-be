@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class GoogleUtils {
 
-
     @Autowired
     RequestInstanceImpl requestInstance;
 
@@ -32,16 +31,6 @@ public class GoogleUtils {
                 .makeRequest(url, HttpMethod.GET, requestEntity, String.class);
 
             JSONObject resObject = new JSONObject(responseEntity.getBody());
-
-//            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
-//                new NetHttpTransport(),
-//                new GsonFactory())
-//                // Specify the CLIENT_ID of the app that accesses the backend:
-//                .setAudience(Collections.singletonList(
-//                    "265324139647-lv38dkdpnqq06e66mkt9a6ab6i4r1cik.apps.googleusercontent.com"))
-//                // Or, if multiple clients access the backend:
-//                //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
-//                .build();
             if (clientId.equals(resObject.optString("aud"))) {
                 artistInput.setValid(true);
                 // Get profile information from payload

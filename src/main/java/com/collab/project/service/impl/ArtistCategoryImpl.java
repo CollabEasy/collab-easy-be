@@ -7,6 +7,10 @@ import com.collab.project.model.inputs.ArtistCategoryInput;
 import com.collab.project.repositories.ArtCategoryRepository;
 import com.collab.project.repositories.ArtistCategoryRepository;
 import com.collab.project.service.ArtistCategoryService;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,7 @@ import java.util.Optional;
 import static com.collab.project.helpers.Constants.FALLBACK_ID;
 
 @Service
+@Slf4j
 public class ArtistCategoryImpl implements ArtistCategoryService {
 
     @Autowired
@@ -30,14 +35,16 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
     private List<String> BASIC_ART_CATEGORIES;
 
     @Override
-    public List<ArtistCategory> addCategory(String artistId, ArtistCategoryInput artistCategoryInput) {
+    public List<ArtistCategory> addCategory(String artistId,
+        ArtistCategoryInput artistCategoryInput) {
         List<ArtistCategory> savedResults = new ArrayList<>();
         for (String artName : artistCategoryInput.getArtNames()) {
             ArtCategory artCategory = artCategoryRepository.findByArtName(artName);
             if (artCategory == null) {
                 continue;
             }
-            ArtistCategory category = new ArtistCategory(FALLBACK_ID, artistId, artCategory.getId());
+            ArtistCategory category = new ArtistCategory(FALLBACK_ID, artistId, artCategory.getId(),
+                true);
             savedResults.add(artistCategoryRepository.save(category));
         }
         return savedResults;
@@ -57,5 +64,32 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
     @Override
     public List<String> getDefaultCategories() {
         return BASIC_ART_CATEGORIES;
+    }
+
+    @Override
+    public Map<String, Boolean> updateCategory(String artistId,
+        ArtistCategoryInput artistCategoryInput) {
+        Map<String, Boolean> outMap = new HashMap<>();
+        artistCategoryInput.getArtNamesMap().forEach((key, value) -> {
+            ArtCategory artCategory = artCategoryRepository.findByArtName(key);
+            ArtistCategory category;
+            if (artCategory != null) {
+                category = artistCategoryRepository
+                    .findByArtistIdAndArtId(artistId, artCategory.getId());
+                if (Objects.nonNull(category)) {
+                    category.setEnabled(value);
+                    log.info("Updating Value for ArtistCategoryId {} to value {}", category.getId(),
+                        value);
+                } else {
+                    category = new ArtistCategory(FALLBACK_ID, artistId,
+                        artCategory.getId(), true);
+                    log.info("Inserting Value for ArtistId {} with artName {}", artistId, key);
+                }
+                outMap.put(key, value);
+                artistCategoryRepository.save(category);
+            }
+        });
+
+        return outMap;
     }
 }

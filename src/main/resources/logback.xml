@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <charset>UTF-8</charset>
+      <Pattern> %d{yyyy-MM-dd HH:mm:ss.SSS} [%X{refId}] %-5level %logger{36} - %msg %n
+      </Pattern>
+    </encoder>
+  </appender>
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <charset>UTF-8</charset>
+      <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}  [%X{refId}] %-5level %logger{36} - %msg %n</Pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>${user.home}/logs/%d{yyyy_MM_dd}_collab.log</FileNamePattern>
+    </rollingPolicy>
+  </appender>
+
+  <logger name="com.collab" level="DEBUG" additivity="false">
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="FILE" />
+  </logger>
+  <logger name="org.apache.kafka" level="ERROR"/>
+  <root level="INFO">
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="FILE" />
+  </root>
+</configuration>

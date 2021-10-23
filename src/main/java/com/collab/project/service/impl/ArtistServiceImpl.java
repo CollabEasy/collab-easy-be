@@ -21,6 +21,9 @@ public class ArtistServiceImpl implements ArtistService {
     @Autowired
     ArtistRepository artistRepository;
 
+    @Autowired
+    AuthUtils authUtils;
+
     @Override
     public Artist createArtist(ArtistInput inp) {
         Artist artist = artistRepository.findByEmail(inp.getEmail());
@@ -45,7 +48,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Boolean updateArtist(ArtistInput inp) {
+    public Artist updateArtist(ArtistInput inp) {
         Artist artist = artistRepository.findByArtistId(AuthUtils.getArtistId());
         if (Objects.nonNull(inp.getPhoneNumber()) && inp.getPhoneNumber() > 0) {
             artist.setPhoneNumber(inp.getPhoneNumber());
@@ -65,14 +68,27 @@ public class ArtistServiceImpl implements ArtistService {
         if (!StringUtils.isEmpty(inp.getGender())) {
             artist.setGender(inp.getGender());
         }
-        artistRepository.save(artist);
+
+        if (!StringUtils.isEmpty(inp.getFirstName())) {
+            artist.setFirstName(inp.getFirstName());
+        }
+        if (!StringUtils.isEmpty(inp.getLastName())) {
+            artist.setLastName(inp.getLastName());
+        }
+
+        artist = artistRepository.save(artist);
         log.info("Update Artist Details with Id {}", artist.getArtistId());
-        return true;
+        return artist;
     }
 
     @Override
     @Transactional
     public void delete(ArtistInput artistInput) {
         artistRepository.deleteByArtistId(artistInput.getArtistId());
+    }
+
+    @Override
+    public Artist getArtist() {
+        return artistRepository.findByEmail(authUtils.getEmail());
     }
 }

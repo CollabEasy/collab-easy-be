@@ -25,7 +25,7 @@ public class ArtistCategoryController {
     @PostMapping
     @RequestMapping(value = "/arts", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> addArtistCategory(@RequestBody ArtistCategoryInput artistCategoryInput) {
-        List<ArtistCategory> savedResults = artistCategoryService.addCategory(AuthUtils.getArtistId(), artistCategoryInput);
+        Map<String,Boolean> savedResults = artistCategoryService.updateCategory(AuthUtils.getArtistId(), artistCategoryInput);
         return new ResponseEntity<>(new SuccessResponse(savedResults), HttpStatus.OK);
     }
 
