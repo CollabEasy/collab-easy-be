@@ -16,6 +16,6 @@ public interface ArtistCategoryService {
 
     public Map<String,Boolean> updateCategory(String artistId, ArtistCategoryInput artistCategoryInput);
 
-    public List<String> fetchArtistByArtName(ArtistCategoryInput artistCategoryInput);
+    public Map<String,Object> fetchArtistByArtName(ArtistCategoryInput artistCategoryInput);
 
 }

@@ -46,7 +46,7 @@ public class ArtistCategoryController {
     @RequestMapping(value = "/fetchByCategory", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> getBasicCategories(
         @RequestBody ArtistCategoryInput artistCategoryInput) {
-        List<String> arts = artistCategoryService.fetchArtistByArtName(artistCategoryInput);
+        Map<String,Object> arts = artistCategoryService.fetchArtistByArtName(artistCategoryInput);
         return new ResponseEntity<>(new SuccessResponse(arts), HttpStatus.OK);
     }
 

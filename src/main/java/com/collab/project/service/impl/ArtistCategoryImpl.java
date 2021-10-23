@@ -2,15 +2,18 @@ package com.collab.project.service.impl;
 
 import com.collab.project.exception.RecordNotFoundException;
 import com.collab.project.model.art.ArtCategory;
+import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistCategory;
 import com.collab.project.model.inputs.ArtistCategoryInput;
 import com.collab.project.repositories.ArtCategoryRepository;
 import com.collab.project.repositories.ArtistCategoryRepository;
+import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistCategoryService;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,9 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
 
     @Value("${basic.art.categories:DANCING,PAINTING,CRAFT,MUSIC,VIDEO EDITING}")
     private List<String> BASIC_ART_CATEGORIES;
+
+    @Autowired
+    ArtistRepository artistRepository;
 
     @Override
     public List<ArtistCategory> addCategory(String artistId,
@@ -98,18 +104,20 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
     }
 
     @Override
-    public List<String> fetchArtistByArtName(ArtistCategoryInput artistCategoryInput) {
+    public Map<String,Object> fetchArtistByArtName(ArtistCategoryInput artistCategoryInput) {
         Pageable pageableRequest = PageRequest.of(artistCategoryInput.getPage(),
             artistCategoryInput.getSize());
         ArtCategory artCategory = artCategoryRepository
             .findByArtName(artistCategoryInput.getArtCategory());
         if (Objects.isNull(artCategory)) {
             log.error("No Category with name {} exist ", artistCategoryInput.getArtCategory());
-            return Collections.EMPTY_LIST;
+            return Collections.EMPTY_MAP;
         }
         List<ArtistCategory> artistByArtId = artistCategoryRepository
             .findByArtId(artCategory.getId(), pageableRequest);
-        return artistByArtId.stream().map(k -> k.getArtistId()).collect(Collectors.toList());
+        return artistByArtId.stream().map(k -> artistRepository.findByArtistId(k.getArtistId()))
+            .filter(k -> Objects.nonNull(k))
+            .collect(Collectors.toMap(Artist::getArtistId, Function.identity()));
 
     }
 }
