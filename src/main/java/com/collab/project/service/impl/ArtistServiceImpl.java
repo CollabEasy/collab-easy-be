@@ -41,10 +41,10 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public String getNewSlug(String slug) {
         String lastSlug = artistRepository.findLastSlugStartsWith(slug);
-        if (lastSlug == null) return slug + "-1";
+        if (lastSlug == null) return slug + "1";
         lastSlug = lastSlug.replace(slug, "");
         Integer lastNum = (lastSlug.equals("") ? 0 : Integer.valueOf(lastSlug)) + 1;
-        return slug + "-" + lastNum;
+        return slug + lastNum;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ArtistServiceImpl implements ArtistService {
         Artist artist = artistRepository.findByEmail(inp.getEmail());
         if (Objects.isNull(artist)) {
             String slug = getSlug(inp.getFirstName(), inp.getLastName());
-            String newSlug = getNewSlug(slug);
+            String newSlug = getNewSlug(slug + "-");
             artist = Artist.builder().
                 artistId(UUID.randomUUID().toString())
                     .artistHandle(inp.getArtistHandle())
