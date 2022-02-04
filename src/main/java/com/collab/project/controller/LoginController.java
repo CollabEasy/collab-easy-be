@@ -61,7 +61,9 @@ public class LoginController {
         if(artist == null) {
             return new ResponseEntity<>(new ErrorResponse("User not found", "NOT_FOUND"), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(new SuccessResponse(artist), HttpStatus.OK);
+
+        Map<String, Object> hashMap = mapper.convertValue(artist, Map.class);
+        return new ResponseEntity<>(new SuccessResponse(hashMap), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

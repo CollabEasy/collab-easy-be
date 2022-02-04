@@ -13,4 +13,6 @@ public interface ArtistService {
     public void delete(ArtistInput artistInput);
 
     public Artist getArtistById(String artistId);
+
+    public String getNewSlug(String slug);
 }

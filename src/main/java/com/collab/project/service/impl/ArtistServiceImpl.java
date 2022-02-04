@@ -6,6 +6,7 @@ import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
@@ -37,9 +38,20 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    public String getNewSlug(String slug) {
+        String lastSlug = artistRepository.findLastSlugStartsWith(slug);
+        if (lastSlug == null) return slug + "1";
+        lastSlug = lastSlug.replace(slug, "");
+        Integer lastNum = (lastSlug == "" ? 0 : Integer.valueOf(lastSlug)) + 1;
+        return slug + lastNum;
+    }
+
+    @Override
     public Artist createArtist(ArtistInput inp) {
         Artist artist = artistRepository.findByEmail(inp.getEmail());
         if (Objects.isNull(artist)) {
+            String slug = getSlug(inp.getFirstName(), inp.getLastName());
+            String newSlug = getNewSlug(slug);
             artist = Artist.builder().
                 artistId(UUID.randomUUID().toString())
                     .artistHandle(inp.getArtistHandle())
@@ -52,7 +64,7 @@ public class ArtistServiceImpl implements ArtistService {
                     .profilePicUrl(inp.getProfilePicUrl())
                     .timezone(inp.getTimezone())
                     .phoneNumber(inp.getPhoneNumber())
-                    .slug(getSlug(inp.getFirstName(), inp.getLastName()))
+                    .slug(newSlug)
                 .build();
             artist = artistRepository.save(artist);
             artist.setNewUser(true);

@@ -19,6 +19,9 @@ public interface ArtistRepository extends JpaRepository<Artist, String> {
 
     List<Artist> findBySlug(String queryStr);
 
+    @Query(value = "SELECT slug FROM artists WHERE slug like ?1% order by created_at desc limit 1", nativeQuery = true)
+    String findLastSlugStartsWith(String queryStr);
+
     @Query(value = "SELECT * FROM artists WHERE slug like ?1%", nativeQuery = true)
     List<Artist> findBySlugStartsWith(String queryStr);
 
