@@ -42,7 +42,7 @@ public class ArtistServiceImpl implements ArtistService {
         String lastSlug = artistRepository.findLastSlugStartsWith(slug);
         if (lastSlug == null) return slug + "1";
         lastSlug = lastSlug.replace(slug, "");
-        Integer lastNum = (lastSlug == "" ? 0 : Integer.valueOf(lastSlug)) + 1;
+        Integer lastNum = (lastSlug.equals("") ? 0 : Integer.valueOf(lastSlug)) + 1;
         return slug + lastNum;
     }
 
@@ -67,7 +67,6 @@ public class ArtistServiceImpl implements ArtistService {
                     .slug(newSlug)
                 .build();
             artist = artistRepository.save(artist);
-            artist.setNewUser(true);
         }
         return artist;
     }

@@ -68,7 +68,8 @@ public class Artist implements Serializable {
 
     private Timestamp updatedAt;
 
-    @Transient
+    @NonNull
+    @Column(nullable = false)
     private Boolean newUser = false;
 
     @Transient

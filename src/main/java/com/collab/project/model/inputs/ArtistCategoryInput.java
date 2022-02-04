@@ -6,4 +6,6 @@ import lombok.Data;
 @Data
 public class ArtistCategoryInput {
     List<String> artNames;
+
+    Boolean initial;
 }
