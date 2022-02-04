@@ -66,6 +66,7 @@ public class ArtistServiceImpl implements ArtistService {
                     .phoneNumber(inp.getPhoneNumber())
                     .slug(newSlug)
                 .build();
+            artist.setNewUser(true);
             artist = artistRepository.save(artist);
         }
         return artist;
