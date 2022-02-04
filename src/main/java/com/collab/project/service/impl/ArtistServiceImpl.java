@@ -6,6 +6,7 @@ import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -65,6 +66,7 @@ public class ArtistServiceImpl implements ArtistService {
                     .timezone(inp.getTimezone())
                     .phoneNumber(inp.getPhoneNumber())
                     .slug(newSlug)
+                    .createdAt(new Timestamp(System.currentTimeMillis()))
                 .build();
             artist.setNewUser(true);
             artist = artistRepository.save(artist);

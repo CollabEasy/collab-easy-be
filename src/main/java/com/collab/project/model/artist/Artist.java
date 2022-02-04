@@ -65,7 +65,7 @@ public class Artist implements Serializable {
 
     private Date dateOfBirth;
 
-    private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
+    private Timestamp createdAt;
 
     private Timestamp updatedAt;
 
