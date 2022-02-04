@@ -41,7 +41,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public String getNewSlug(String slug) {
         String lastSlug = artistRepository.findLastSlugStartsWith(slug);
-        if (lastSlug == null) return slug + "1";
+        if (lastSlug == null) return slug + "-1";
         lastSlug = lastSlug.replace(slug, "");
         Integer lastNum = (lastSlug.equals("") ? 0 : Integer.valueOf(lastSlug)) + 1;
         return slug + "-" + lastNum;
