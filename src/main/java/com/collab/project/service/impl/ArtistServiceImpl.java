@@ -66,7 +66,6 @@ public class ArtistServiceImpl implements ArtistService {
                     .timezone(inp.getTimezone())
                     .phoneNumber(inp.getPhoneNumber())
                     .slug(newSlug)
-                    .createdAt(new Timestamp(System.currentTimeMillis()))
                 .build();
             artist.setNewUser(true);
             artist = artistRepository.save(artist);

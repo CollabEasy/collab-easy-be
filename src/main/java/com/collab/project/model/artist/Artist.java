@@ -65,8 +65,10 @@ public class Artist implements Serializable {
 
     private Date dateOfBirth;
 
+    @Column(name="created_at", updatable = false, insertable = false, nullable = false)
     private Timestamp createdAt;
 
+    @Column(name="updated_at", updatable = false, insertable = false, nullable = false)
     private Timestamp updatedAt;
 
     @Column
