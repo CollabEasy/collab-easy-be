@@ -66,6 +66,9 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
 
     @Override
     public List<String> getDefaultCategories() {
-        return BASIC_ART_CATEGORIES;
+        List<ArtCategory> categories = artCategoryRepository.findAll();
+        List<String> artNames = new ArrayList<String>();
+        for (ArtCategory category : categories) artNames.add(category.getArtName());
+        return artNames;
     }
 }
