@@ -54,7 +54,6 @@ public class ArtistPreferencesImpl implements ArtistPreferencesService {
     @Override
     public List<ArtistPreference> getArtistPreferences(String artistId)
         throws RecordNotFoundException {
-        System.out.println("artist id : " + artistId);
         List<ArtistPreference> existing = artistPreferenceRepository
             .findByArtistPreferenceId_ArtistId(artistId);
         if (Collections.isEmpty(existing)) {
