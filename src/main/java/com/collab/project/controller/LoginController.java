@@ -53,7 +53,7 @@ public class LoginController {
     ObjectMapper mapper;
 
     @RequestMapping(value = "/details", method = RequestMethod.GET)
-    public ResponseEntity<?> fetchDetails(@RequestParam String handle) {
+    public ResponseEntity<?> fetchDetails(@RequestParam(required = false) String handle) {
         Artist artist = null;
         if (handle == null || handle.equals("")) {
            artist = artistService.getArtistById(authUtils.getArtistId());
