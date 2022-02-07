@@ -57,7 +57,6 @@ public class ArtistPreferencesImpl implements ArtistPreferencesService {
         System.out.println("artist id : " + artistId);
         List<ArtistPreference> existing = artistPreferenceRepository
             .findByArtistPreferenceId_ArtistId(artistId);
-        System.out.println("returned results : " + existing.size());
         if (Collections.isEmpty(existing)) {
             throw new RecordNotFoundException("No artist preferences exist for given artist ID");
         }
