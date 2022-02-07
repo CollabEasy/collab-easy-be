@@ -38,13 +38,19 @@ public class ArtistServiceImpl implements ArtistService {
         return artist;
     }
 
-    @Override
     public String getNewSlug(String slug) {
         String lastSlug = artistRepository.findLastSlugStartsWith(slug);
         if (lastSlug == null) return slug + "1";
         lastSlug = lastSlug.replace(slug, "");
         Integer lastNum = (lastSlug.equals("") ? 0 : Integer.valueOf(lastSlug)) + 1;
         return slug + lastNum;
+    }
+
+    @Override
+    public Artist getArtistBySlug(String slug) {
+        List<Artist> artists = artistRepository.findBySlug(slug);
+        if (artists.size() > 0) return artists.get(0);
+        return null;
     }
 
     @Override

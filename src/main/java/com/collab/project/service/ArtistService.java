@@ -14,5 +14,5 @@ public interface ArtistService {
 
     public Artist getArtistById(String artistId);
 
-    public String getNewSlug(String slug);
+    Artist getArtistBySlug(String handle);
 }

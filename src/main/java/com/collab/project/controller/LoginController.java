@@ -2,6 +2,7 @@ package com.collab.project.controller;
 
 
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.artist.SearchedArtistOutput;
 import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.model.response.ErrorResponse;
 import com.collab.project.model.response.SuccessResponse;
@@ -25,11 +26,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @CrossOrigin
@@ -56,13 +53,24 @@ public class LoginController {
     ObjectMapper mapper;
 
     @RequestMapping(value = "/details", method = RequestMethod.GET)
-    public ResponseEntity<?> fetchDetails() {
-        Artist artist = artistService.getArtistById(authUtils.getArtistId());
+    public ResponseEntity<?> fetchDetails(@RequestParam String handle) {
+        Artist artist = null;
+        if (handle == null || handle.equals("")) {
+           artist = artistService.getArtistById(authUtils.getArtistId());
+        } else {
+            artist = artistService.getArtistBySlug(handle);
+        }
         if(artist == null) {
             return new ResponseEntity<>(new ErrorResponse("User not found", "NOT_FOUND"), HttpStatus.NOT_FOUND);
         }
 
-        Map<String, Object> hashMap = mapper.convertValue(artist, Map.class);
+        Map<String, Object> hashMap = new HashMap<>();
+        if (handle == null || handle.equals("")) {
+            hashMap = mapper.convertValue(artist, Map.class);
+        } else {
+            SearchedArtistOutput output = new SearchedArtistOutput(artist);
+            hashMap = mapper.convertValue(output, Map.class);
+        }
         return new ResponseEntity<>(new SuccessResponse(hashMap), HttpStatus.OK);
     }
 
