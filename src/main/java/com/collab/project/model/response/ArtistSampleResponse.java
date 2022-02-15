@@ -24,7 +24,12 @@ public class ArtistSampleResponse implements Serializable {
         artSamples.sort((o1, o2) -> -o1.getCreatedAt().compareTo(o2.getCreatedAt()));
 
         for (ArtSample sample : artSamples) {
-            artList.add(new ArtInfo(sample.getOriginalUrl(), sample.getThumbnailUrl(), sample.getCreatedAt()));
+            artList.add(new ArtInfo(
+                    sample.getCaption(),
+                    sample.getOriginalUrl(),
+                    sample.getThumbnailUrl(),
+                    sample.getCreatedAt())
+            );
         }
     }
 }
@@ -32,6 +37,8 @@ public class ArtistSampleResponse implements Serializable {
 @Getter
 @AllArgsConstructor
 class ArtInfo {
+
+    String caption;
 
     String originalUrl;
 

@@ -6,6 +6,7 @@ import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Locale;
@@ -99,6 +100,11 @@ public class ArtistServiceImpl implements ArtistService {
         }
         if (!StringUtils.isEmpty(inp.getGender())) {
             artist.setGender(inp.getGender());
+        }
+
+        if (inp.getDateOfBirth() != null) {
+
+            artist.setDateOfBirth(inp.getDateOfBirth());
         }
         artistRepository.save(artist);
         log.info("Update Artist Details with Id {}", artist.getArtistId());
