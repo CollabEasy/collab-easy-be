@@ -26,6 +26,7 @@ public class ArtistSampleResponse implements Serializable {
         for (ArtSample sample : artSamples) {
             artList.add(new ArtInfo(
                     sample.getCaption(),
+                    sample.getFileType(),
                     sample.getOriginalUrl(),
                     sample.getThumbnailUrl(),
                     sample.getCreatedAt())
@@ -39,6 +40,8 @@ public class ArtistSampleResponse implements Serializable {
 class ArtInfo {
 
     String caption;
+
+    String fileType;
 
     String originalUrl;
 
