@@ -2,6 +2,8 @@ package com.collab.project.service.impl;
 
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.ArtSample;
+import com.collab.project.model.artist.Artist;
+import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.ArtistSampleRepository;
 import com.collab.project.service.ArtistSampleService;
 import com.collab.project.util.FileUtils;
@@ -17,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +33,8 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
     @Autowired
     ArtistSampleRepository artistSampleRepository;
 
+    @Autowired
+    ArtistRepository artistRepository;
 
     @Async
     @Override
@@ -120,7 +125,11 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
     }
 
     @Override
-    public List<ArtSample> getAllArtSamples(String artistId) {
-        return artistSampleRepository.findByArtistId(artistId);
+    public List<ArtSample> getAllArtSamples(String slug) {
+        List<Artist> artist = artistRepository.findBySlug(slug);
+        if (artist.size() > 0) {
+            return artistSampleRepository.findByArtistId(artist.get(0).getArtistId());
+        }
+        return new ArrayList<>();
     }
 }

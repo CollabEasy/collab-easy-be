@@ -11,5 +11,5 @@ public interface ArtistSampleService {
 
     void uploadFile(String artistId, String caption, String fileType, MultipartFile fileToUpload) throws IOException, NoSuchAlgorithmException;
 
-    List<ArtSample> getAllArtSamples(String artistId);
+    List<ArtSample> getAllArtSamples(String slug);
 }
