@@ -9,7 +9,7 @@ import org.hibernate.annotations.TypeDef;
 import java.sql.Date;
 
 @Data
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+//@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class ArtistInput {
     String idToken;
