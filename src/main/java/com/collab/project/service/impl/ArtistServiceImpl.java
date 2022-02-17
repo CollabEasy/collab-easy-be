@@ -83,6 +83,12 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Boolean updateArtist(ArtistInput inp) {
         Artist artist = artistRepository.findByArtistId(AuthUtils.getArtistId());
+        if (Objects.nonNull(inp.getFirstName()) && inp.getFirstName().length() > 0) {
+            artist.setFirstName(inp.getFirstName());
+        }
+        if (Objects.nonNull(inp.getLastName()) && inp.getLastName().length() > 0) {
+            artist.setFirstName(inp.getLastName());
+        }
         if (Objects.nonNull(inp.getPhoneNumber()) && inp.getPhoneNumber() > 0) {
             artist.setPhoneNumber(inp.getPhoneNumber());
         }
