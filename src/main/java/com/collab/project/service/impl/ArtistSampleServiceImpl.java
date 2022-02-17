@@ -71,9 +71,9 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                 artSample.getFileType(),
                 artSample.getOriginalUrl(),
                 artSample.getThumbnailUrl(),
-                artSample.getCreatedAt(),
+                artSample.getCreatedAt()
         );
-        return;artInfo;
+        return artInfo;
     }
 
     private ArtSample uploadImage(String artistId, String caption, MultipartFile fileToUpload, String fileExtension) throws NoSuchAlgorithmException, IOException {
