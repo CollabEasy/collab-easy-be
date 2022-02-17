@@ -1,6 +1,7 @@
 package com.collab.project.model.response;
 
 
+import com.collab.project.model.art.ArtInfo;
 import com.collab.project.model.artist.ArtSample;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,19 +34,4 @@ public class ArtistSampleResponse implements Serializable {
             );
         }
     }
-}
-
-@Getter
-@AllArgsConstructor
-class ArtInfo {
-
-    String caption;
-
-    String fileType;
-
-    String originalUrl;
-
-    String thumbnailUrl;
-
-    Timestamp createdAt;
 }

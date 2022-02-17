@@ -1,6 +1,7 @@
 package com.collab.project.service.impl;
 
 import com.collab.project.helpers.Constants;
+import com.collab.project.model.art.ArtInfo;
 import com.collab.project.model.artist.ArtSample;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.repositories.ArtistRepository;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -122,6 +124,29 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                 thumbnailURL, caption, Constants.VIDEO,
                 new Timestamp(System.currentTimeMillis()));
         artistSampleRepository.save(artSample);
+    }
+
+    private String getFilePath(String url) {
+        String[] originalFileUrlSplit = url.split("/");
+        originalFileUrlSplit = Arrays.copyOfRange(originalFileUrlSplit, 3, originalFileUrlSplit.length);
+        return String.join("/", originalFileUrlSplit);
+    }
+
+    @Override
+    public void deleteArtSample(String artistId, ArtInfo artInfo) {
+        List<ArtSample> artSamples = artistSampleRepository.findByArtistId(artistId);
+        for (ArtSample sample : artSamples) {
+            if (sample.getOriginalUrl().equals(artInfo.getOriginalUrl())) {
+                artistSampleRepository.delete(sample);
+                break;
+            }
+        }
+
+        String originalFilePath = getFilePath(artInfo.getOriginalUrl());
+        String thumbnailFilePath = getFilePath(artInfo.getThumbnailUrl());
+
+        s3Utils.removeFileFromS3Bucket(bucketName, originalFilePath);
+        s3Utils.removeFileFromS3Bucket(bucketName, thumbnailFilePath);
     }
 
     @Override

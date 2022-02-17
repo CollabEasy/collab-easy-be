@@ -1,5 +1,6 @@
 package com.collab.project.controller;
 
+import com.collab.project.model.art.ArtInfo;
 import com.collab.project.model.artist.ArtSample;
 import com.collab.project.model.response.ArtistSampleResponse;
 import com.collab.project.model.response.SuccessResponse;
@@ -34,5 +35,13 @@ public class ArtistSampleController {
         List<ArtSample> samples = artistSampleService.getAllArtSamples(slug);
         ArtistSampleResponse response = new ArtistSampleResponse(AuthUtils.getArtistId(), samples);
         return new ResponseEntity<>(new SuccessResponse(response), HttpStatus.OK);
+    }
+
+    @PostMapping
+    @RequestMapping(value = "/sample/delete", method = RequestMethod.POST)
+    public ResponseEntity<SuccessResponse> getArtistSamples(@RequestBody ArtInfo artInfo) {
+        String artistId = AuthUtils.getArtistId();
+        artistSampleService.deleteArtSample(artistId, artInfo);
+        return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
     }
 }

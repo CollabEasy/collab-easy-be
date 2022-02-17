@@ -21,7 +21,7 @@ public class AwsS3Config {
         final BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(System.getenv("ACCESS_KEY"),
                                                                                 System.getenv("SECRET_KEY"));
         // Get AmazonS3 client and return the s3Client object.
-        System.out.println(System.getenv("ACCESS_KEY") + System.getenv("SECRET_KEY"));
+
         return AmazonS3ClientBuilder
                 .standard()
                 .withRegion(Regions.fromName(region))
