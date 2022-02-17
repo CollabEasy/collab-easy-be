@@ -87,7 +87,7 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setFirstName(inp.getFirstName());
         }
         if (Objects.nonNull(inp.getLastName()) && inp.getLastName().length() > 0) {
-            artist.setFirstName(inp.getLastName());
+            artist.setLastName(inp.getLastName());
         }
         if (Objects.nonNull(inp.getPhoneNumber()) && inp.getPhoneNumber() > 0) {
             artist.setPhoneNumber(inp.getPhoneNumber());
