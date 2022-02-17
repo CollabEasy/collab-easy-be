@@ -26,8 +26,8 @@ public class ArtistSampleController {
 
     @RequestMapping(value = "/sample/upload", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<SuccessResponse> uploadArtSample(@RequestPart MultipartFile filename, @RequestPart String filetype, @RequestPart String caption) throws IOException, NoSuchAlgorithmException {
-        artistSampleService.uploadFile(AuthUtils.getArtistId(), caption, filetype, filename);
-        return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
+        ArtInfo artInfo = artistSampleService.uploadFile(AuthUtils.getArtistId(), caption, filetype, filename);
+        return new ResponseEntity<>(new SuccessResponse(artInfo), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{slug}/sample/list", method = RequestMethod.GET)

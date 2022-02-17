@@ -40,33 +40,43 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
 
     @Async
     @Override
-    public void uploadFile(String artistId, String caption, String fileType, MultipartFile fileToUpload) throws IOException, NoSuchAlgorithmException {
+    public ArtInfo uploadFile(String artistId, String caption, String fileType, MultipartFile fileToUpload) throws IOException, NoSuchAlgorithmException {
+        ArtSample artSample = null;
         String fileExtension = FilenameUtils.getExtension(fileToUpload.getOriginalFilename());
         switch (fileType) {
             case Constants.AUDIO:
                 if (!Constants.ALLOWED_AUDIO_FORMAT.contains(fileExtension)) {
                     throw new IllegalStateException("Invalid file extension");
                 }
-                uploadAudio(artistId, caption, fileToUpload, fileExtension);
+                artSample = uploadAudio(artistId, caption, fileToUpload, fileExtension);
                 break;
             case Constants.VIDEO:
                 if (!Constants.ALLOWED_VIDEO_FORMAT.contains(fileExtension)) {
                     throw new IllegalStateException("Invalid file extension");
                 }
-                uploadVideo(artistId, caption, fileToUpload, fileExtension);
+                artSample = uploadVideo(artistId, caption, fileToUpload, fileExtension);
                 break;
             case Constants.IMAGE:
                 if (!Constants.ALLOWED_IMAGE_FORMAT.contains(fileExtension)) {
                     throw new IllegalStateException("Invalid file extension");
                 }
-                uploadImage(artistId, caption, fileToUpload, fileExtension);
+                artSample = uploadImage(artistId, caption, fileToUpload, fileExtension);
                 break;
             default:
                 throw new IllegalStateException("Invalid file type for upload");
         }
+
+        ArtInfo artInfo = new ArtInfo(
+                artSample.getCaption(),
+                artSample.getFileType(),
+                artSample.getOriginalUrl(),
+                artSample.getThumbnailUrl(),
+                artSample.getCreatedAt(),
+        );
+        return;artInfo;
     }
 
-    private void uploadImage(String artistId, String caption, MultipartFile fileToUpload, String fileExtension) throws NoSuchAlgorithmException, IOException {
+    private ArtSample uploadImage(String artistId, String caption, MultipartFile fileToUpload, String fileExtension) throws NoSuchAlgorithmException, IOException {
         // Creating original file
         String fileName = Utils.getSHA256(artistId).substring(0, 15) + "_" + System.currentTimeMillis();
         File file = FileUtils.convertMultiPartFileToFile(fileToUpload, fileName + "." + fileExtension);
@@ -86,9 +96,10 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                 thumbnailURL, caption, Constants.IMAGE,
                 new Timestamp(System.currentTimeMillis()));
         artistSampleRepository.save(artSample);
+        return artSample;
     }
 
-    private void uploadAudio(String artistId, String caption, MultipartFile fileToUpload, String fileExtension) throws NoSuchAlgorithmException, IOException {
+    private ArtSample uploadAudio(String artistId, String caption, MultipartFile fileToUpload, String fileExtension) throws NoSuchAlgorithmException, IOException {
         String fileName = Utils.getSHA256(artistId).substring(0, 15) + "_" + System.currentTimeMillis();
         File file = FileUtils.convertMultiPartFileToFile(fileToUpload, fileName + "." + fileExtension);
 
@@ -101,9 +112,10 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                 fileURL, caption, Constants.AUDIO,
                 new Timestamp(System.currentTimeMillis()));
         artistSampleRepository.save(artSample);
+        return artSample;
     }
 
-    private void uploadVideo(String artistId, String caption, MultipartFile fileToUpload, String fileExtension) throws NoSuchAlgorithmException, IOException {
+    private ArtSample uploadVideo(String artistId, String caption, MultipartFile fileToUpload, String fileExtension) throws NoSuchAlgorithmException, IOException {
         String fileName = Utils.getSHA256(artistId).substring(0, 15) + "_" + System.currentTimeMillis();
         File file = FileUtils.convertMultiPartFileToFile(fileToUpload, fileName + "." + fileExtension);
         File thumbFile = new File(fileName + ".png");
@@ -124,6 +136,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                 thumbnailURL, caption, Constants.VIDEO,
                 new Timestamp(System.currentTimeMillis()));
         artistSampleRepository.save(artSample);
+        return artSample;
     }
 
     private String getFilePath(String url) {

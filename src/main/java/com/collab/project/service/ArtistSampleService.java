@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ArtistSampleService {
 
-    void uploadFile(String artistId, String caption, String fileType, MultipartFile fileToUpload) throws IOException, NoSuchAlgorithmException;
+    ArtInfo uploadFile(String artistId, String caption, String fileType, MultipartFile fileToUpload) throws IOException, NoSuchAlgorithmException;
 
     void deleteArtSample(String artistId, ArtInfo artInfo);
 
