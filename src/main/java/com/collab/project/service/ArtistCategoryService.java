@@ -1,5 +1,6 @@
 package com.collab.project.service;
 
+import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistCategory;
 
 import com.collab.project.model.inputs.ArtistCategoryInput;
@@ -12,4 +13,6 @@ public interface ArtistCategoryService {
     public List<String> getArtistCategories(String artistId);
 
     public List<String> getDefaultCategories();
+
+    public List<Artist> getArtistsByCategory(Long categoryID);
 }

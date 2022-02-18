@@ -1,5 +1,6 @@
 package com.collab.project.controller;
 
+import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistCategory;
 import com.collab.project.model.inputs.ArtistCategoryInput;
 import com.collab.project.model.response.SuccessResponse;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 @CrossOrigin
 @RestController
-// TODO : Fetch artist ID from JWT token instead of path variable.
 @RequestMapping(value = "/api/v1/artist")
 public class ArtistCategoryController {
 
@@ -43,4 +43,10 @@ public class ArtistCategoryController {
         return new ResponseEntity<>(new SuccessResponse(arts), HttpStatus.OK);
     }
 
+    @GetMapping
+    @RequestMapping(value = "/category/{categoryId}/artists", method = RequestMethod.GET)
+    public ResponseEntity<SuccessResponse> getArtistsByCategory(@PathVariable Long categoryId) {
+        List<Artist> artists = artistCategoryService.getArtistsByCategory(categoryId);
+        return new ResponseEntity<>(new SuccessResponse(artists), HttpStatus.OK);
+    }
 }

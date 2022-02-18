@@ -71,4 +71,14 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
         for (ArtCategory category : categories) artNames.add(category.getArtName());
         return artNames;
     }
+
+    @Override
+    public List<Artist> getArtistsByCategory(Long categoryID) {
+        List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtId(categoryID);
+        List<Artist> artists = new ArrayList<Artist>();
+        for (ArtistCategory artistCategory : artistCategories) {
+            artists.add(artistRepository.findByArtistId(artistCategory.getArtistId()));
+        }
+        return artists;
+    }
 }
