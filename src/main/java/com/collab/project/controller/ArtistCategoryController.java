@@ -2,6 +2,7 @@ package com.collab.project.controller;
 
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistCategory;
+import com.collab.project.model.artist.SearchedArtistOutput;
 import com.collab.project.model.inputs.ArtistCategoryInput;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.ArtistCategoryService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 @CrossOrigin
@@ -47,6 +49,10 @@ public class ArtistCategoryController {
     @RequestMapping(value = "/category/{categoryId}/artists", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getArtistsByCategory(@PathVariable Long categoryId) {
         List<Artist> artists = artistCategoryService.getArtistsByCategory(categoryId);
-        return new ResponseEntity<>(new SuccessResponse(artists), HttpStatus.OK);
+        List<SearchedArtistOutput> output = new ArrayList<>();
+        for (Artist artist : artists) {
+            output.add(new SearchedArtistOutput(artist));
+        }
+        return new ResponseEntity<>(new SuccessResponse(output), HttpStatus.OK);
     }
 }

@@ -77,7 +77,8 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
         List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtId(categoryID);
         List<Artist> artists = new ArrayList<Artist>();
         for (ArtistCategory artistCategory : artistCategories) {
-            artists.add(artistRepository.findByArtistId(artistCategory.getArtistId()));
+            Artist artist = artistRepository.findByArtistId(artistCategory.getArtistId());
+            if (artist != null) artists.add(artist);
         }
         return artists;
     }

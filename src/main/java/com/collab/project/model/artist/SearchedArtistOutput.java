@@ -1,6 +1,8 @@
 package com.collab.project.model.artist;
 
 import com.collab.project.security.Role;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class SearchedArtistOutput implements Serializable {
 
