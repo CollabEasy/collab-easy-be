@@ -1,6 +1,5 @@
 package com.collab.project.service.impl;
 
-import com.collab.project.exception.RecordNotFoundException;
 import com.collab.project.model.art.ArtCategory;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistCategory;
@@ -13,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.collab.project.helpers.Constants.FALLBACK_ID;
 
@@ -37,7 +34,22 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
     @Override
     public List<ArtistCategory> addCategory(String artistId, ArtistCategoryInput artistCategoryInput) {
         List<ArtistCategory> savedResults = new ArrayList<>();
-        for (String artName : artistCategoryInput.getArtNames()) {
+        List<ArtistCategory> existingArts = artistCategoryRepository.findByArtistId(artistId);
+        Set<String> toAdd = new HashSet<String>(artistCategoryInput.getArtNames());
+
+        for (ArtistCategory artistCategory : existingArts) {
+            Optional<ArtCategory> artCategory = artCategoryRepository.findById(artistCategory.getId());
+            if (artCategory.isPresent()) {
+                ArtCategory category = artCategory.get();
+                if (!toAdd.contains(category.getArtName())) {
+                    artistCategoryRepository.delete(artistCategory);
+                } else {
+                    toAdd.remove(category.getArtName());
+                }
+            }
+        }
+
+        for (String artName : toAdd) {
             ArtCategory artCategory = artCategoryRepository.findByArtName(artName);
             if (artCategory == null) {
                 continue;
