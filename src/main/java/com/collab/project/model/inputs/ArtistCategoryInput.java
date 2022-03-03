@@ -7,5 +7,5 @@ import lombok.Data;
 public class ArtistCategoryInput {
     List<String> artNames;
 
-    boolean initial;
+    public boolean initial;
 }

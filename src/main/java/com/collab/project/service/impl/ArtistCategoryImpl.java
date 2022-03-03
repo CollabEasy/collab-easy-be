@@ -57,7 +57,7 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
             ArtistCategory category = new ArtistCategory(FALLBACK_ID, artistId, artCategory.getId());
             savedResults.add(artistCategoryRepository.save(category));
         }
-        if (artistCategoryInput.getInitial()) {
+        if (artistCategoryInput.isInitial()) {
             Artist artist = artistRepository.findByArtistId(artistId);
             artist.setNewUser(false);
             artistRepository.save(artist);
