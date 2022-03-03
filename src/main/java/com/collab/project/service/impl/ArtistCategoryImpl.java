@@ -38,7 +38,7 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
         Set<String> toAdd = new HashSet<String>(artistCategoryInput.getArtNames());
 
         for (ArtistCategory artistCategory : existingArts) {
-            Optional<ArtCategory> artCategory = artCategoryRepository.findById(artistCategory.getId());
+            Optional<ArtCategory> artCategory = artCategoryRepository.findById(artistCategory.getArtId());
             if (artCategory.isPresent()) {
                 ArtCategory category = artCategory.get();
                 if (!toAdd.contains(category.getArtName())) {
