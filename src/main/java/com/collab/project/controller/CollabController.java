@@ -36,16 +36,22 @@ public class CollabController {
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/request/update")
+    public ResponseEntity<SuccessResponse> updateRequest(@RequestBody @Validated CollabRequest collabRequestInput) {
+        CollabRequest collabRequest = collabService.updateRequest(AuthUtils.getArtistId(), collabRequestInput);
+        return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
+    }
+
     @PostMapping(value = "/reject/requestId/{requestId}")
     public ResponseEntity<SuccessResponse> rejectRequest(
-            @PathVariable("requestId") @Positive(message = "rejectRequestId should be greater than 0") long rejectRequestId) {
+            @PathVariable("requestId") @Positive(message = "rejectRequestId should be greater than 0") String rejectRequestId) {
         CollabRequest collabRequest = collabService.rejectRequest(AuthUtils.getArtistId(), rejectRequestId);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
     @PostMapping(value = "/accept/requestId/{requestId}")
     public ResponseEntity<SuccessResponse> acceptRequest(@PathVariable("requestId") @Positive(message = "rejectRequestId should be greater than 0")
-                                                                     long acceptRequestId) {
+                                                                     String acceptRequestId) {
         CollabRequest collabRequest = collabService.acceptRequest(AuthUtils.getArtistId(), acceptRequestId);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }

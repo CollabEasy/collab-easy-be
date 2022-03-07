@@ -24,6 +24,8 @@ import java.sql.Timestamp;
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class SearchedArtistOutput implements Serializable {
 
+    private String userId;
+
     private String slug;
 
     private String firstName;
@@ -39,6 +41,7 @@ public class SearchedArtistOutput implements Serializable {
     private String gender;
 
     public SearchedArtistOutput(Artist artist) {
+        this.userId = artist.getArtistId();
         this.slug = artist.getSlug();
         this.firstName = artist.getFirstName();
         this.lastName = artist.getLastName();
