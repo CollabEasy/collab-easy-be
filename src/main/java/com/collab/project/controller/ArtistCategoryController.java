@@ -7,7 +7,6 @@ import com.collab.project.model.inputs.ArtistCategoryInput;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.ArtistCategoryService;
 import com.collab.project.util.AuthUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/v1/artist")
@@ -48,7 +47,17 @@ public class ArtistCategoryController {
     @GetMapping
     @RequestMapping(value = "/category/{categoryId}/artists", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getArtistsByCategory(@PathVariable Long categoryId) {
-        List<Artist> artists = artistCategoryService.getArtistsByCategory(categoryId);
+        List<Artist> artists = artistCategoryService.getArtistsByCategoryId(categoryId);
+        List<SearchedArtistOutput> output = new ArrayList<>();
+        for (Artist artist : artists) {
+            output.add(new SearchedArtistOutput(artist));
+        }
+        return new ResponseEntity<>(new SuccessResponse(output), HttpStatus.OK);
+    }
+    @GetMapping
+    @RequestMapping(value = "/category/{categorySlug}/artists", method = RequestMethod.GET)
+    public ResponseEntity<SuccessResponse> getArtistsByCategory(@PathVariable String categoryName) {
+        List<Artist> artists = artistCategoryService.getArtistsByCategoryName(categoryName);
         List<SearchedArtistOutput> output = new ArrayList<>();
         for (Artist artist : artists) {
             output.add(new SearchedArtistOutput(artist));

@@ -85,8 +85,19 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
     }
 
     @Override
-    public List<Artist> getArtistsByCategory(Long categoryID) {
+    public List<Artist> getArtistsByCategoryId(Long categoryID) {
         List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtId(categoryID);
+        List<Artist> artists = new ArrayList<Artist>();
+        for (ArtistCategory artistCategory : artistCategories) {
+            Artist artist = artistRepository.findByArtistId(artistCategory.getArtistId());
+            if (artist != null) artists.add(artist);
+        }
+        return artists;
+    }
+
+    @Override
+    public List<Artist> getArtistsByCategoryName(String categoryName) {
+        List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtName(categoryName);
         List<Artist> artists = new ArrayList<Artist>();
         for (ArtistCategory artistCategory : artistCategories) {
             Artist artist = artistRepository.findByArtistId(artistCategory.getArtistId());
