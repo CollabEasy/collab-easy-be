@@ -16,5 +16,5 @@ public interface ArtistCategoryService {
 
     public List<Artist> getArtistsByCategoryId(Long categoryID);
 
-    public List<Artist> getArtistsByCategoryName(String categoryName);
+    public List<Artist> getArtistsByCategorySlug(String categorySlug);
 }

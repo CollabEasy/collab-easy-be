@@ -12,5 +12,5 @@ public interface ArtistCategoryRepository extends JpaRepository<ArtistCategory, 
 
     public List<ArtistCategory> findByArtId(Long artId);
 
-    public List<ArtistCategory> findByArtName(String artName);
+    public List<ArtistCategory> findByArtSlug(String artslug);
 }
