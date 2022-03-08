@@ -46,7 +46,7 @@ public class ArtistCategoryController {
 
     @GetMapping
     @RequestMapping(value = "/category/{categoryId}/artists", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getArtistsByCategory(@PathVariable Long categoryId) {
+    public ResponseEntity<SuccessResponse> getArtistsByCategoryId(@PathVariable Long categoryId) {
         List<Artist> artists = artistCategoryService.getArtistsByCategoryId(categoryId);
         List<SearchedArtistOutput> output = new ArrayList<>();
         for (Artist artist : artists) {
@@ -56,7 +56,7 @@ public class ArtistCategoryController {
     }
     @GetMapping
     @RequestMapping(value = "/category/{categorySlug}/artists", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getArtistsByCategory(@PathVariable String categorySlug) {
+    public ResponseEntity<SuccessResponse> getArtistsByCategorySlug(@PathVariable String categorySlug) {
         List<Artist> artists = artistCategoryService.getArtistsByCategorySlug(categorySlug);
         List<SearchedArtistOutput> output = new ArrayList<>();
         for (Artist artist : artists) {
