@@ -3,6 +3,8 @@ package com.collab.project.service.impl;
 import com.collab.project.exception.CollabRequestException;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.collab.CollabRequest;
+import com.collab.project.model.collab.CollabRequestOutput;
+import com.collab.project.model.collab.CollabRequestsStatus;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
@@ -18,10 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CollabServiceImpl implements CollabService {
@@ -58,6 +57,8 @@ public class CollabServiceImpl implements CollabService {
                 .collabDate(Timestamp.valueOf(collabRequestInput.getCollabDate()))
                 .status(Enums.CollabStatus.PENDING.toString())
                 .requestData(collabRequestInput.getRequestData())
+                .createdAt(Timestamp.from(Instant.now()))
+                .updatedAt(Timestamp.from(Instant.now()))
                 .build();
         saveCollabRequest = collabRequestRepository.save(saveCollabRequest);
         // TODO : Uncomment this when notification service will be added
@@ -77,6 +78,7 @@ public class CollabServiceImpl implements CollabService {
     public CollabRequest updateRequest(String artistId, CollabRequest collabRequestInput) {
         Optional<CollabRequest> collabRequest = collabRequestRepository.findById(collabRequestInput.getId());
         if (collabRequest.isPresent()) {
+            collabRequestInput.setUpdatedAt(Timestamp.from(Instant.now()));
             collabRequestRepository.save(collabRequestInput);
         }
         return collabRequestInput;
@@ -131,27 +133,53 @@ public class CollabServiceImpl implements CollabService {
         }
     }
 
+    private CollabRequestOutput createOutput(List<CollabRequest> requests, String artistId) {
+        CollabRequestOutput collabRequestOutput = new CollabRequestOutput();
+        collabRequestOutput.setSent(new CollabRequestsStatus());
+        collabRequestOutput.setReceived(new CollabRequestsStatus());
+        for (CollabRequest request : requests) {
+            CollabRequestsStatus collabRequestsStatus = null;
+            if (request.getSenderId().equals(artistId)) {
+                collabRequestsStatus = collabRequestOutput.getSent();
+            } else {
+                collabRequestsStatus = collabRequestOutput.getReceived();
+            }
+
+            if (request.getStatus().equalsIgnoreCase(Enums.CollabStatus.ACTIVE.toString())) {
+                collabRequestsStatus.getActive().add(request);
+            } else if (request.getStatus().equalsIgnoreCase(Enums.CollabStatus.PENDING.toString())) {
+                collabRequestsStatus.getPending().add(request);
+            } else if (request.getStatus().equalsIgnoreCase(Enums.CollabStatus.REJECTED.toString())) {
+                collabRequestsStatus.getRejected().add(request);
+            } else if (request.getStatus().equalsIgnoreCase(Enums.CollabStatus.COMPLETED.toString())) {
+                collabRequestsStatus.getCompleted().add(request);
+            }
+        }
+        return collabRequestOutput;
+    }
+
     @Override
-    public List<CollabRequest> collabRequestsSearch(String artistId, CollabRequestSearch collabRequestSearch) {
+    public CollabRequestOutput collabRequestsSearch(String artistId, CollabRequestSearch collabRequestSearch) {
         SpecificationBuilder<CollabRequest> builder =
                 new SpecificationBuilder();
         if (collabRequestSearch.getCollabRequestId() != null) {
-            builder.with("id", ":", new Long(collabRequestSearch.getCollabRequestId()));
+            Optional<CollabRequest> request = collabRequestRepository.findById(collabRequestSearch.getCollabRequestId());
+            if (request.isPresent()) {
+                CollabRequest collabRequest = request.get();
+                if (collabRequest.getSenderId().equals(artistId) || collabRequest.getReceiverId().equals(artistId)) {
+                    List<CollabRequest> result = new ArrayList<>();
+                    result.add(collabRequest);
+                    return createOutput(result, artistId);
+                }
+            }
         }
 
-        //get all collab request by sender id and authorizing it with the current user.
-        if(!Strings.isNullOrEmpty(collabRequestSearch.getSenderId())  &&
-                   collabRequestSearch.getSenderId().equalsIgnoreCase(artistId)) {
-            builder.with("senderId", ":", collabRequestSearch.getSenderId());
-        }
 
-        //get all collab request by receiver id and authorizing it with the current user.
-        if(!Strings.isNullOrEmpty(collabRequestSearch.getReceiverId()) &&
-                   collabRequestSearch.getReceiverId().equalsIgnoreCase(artistId)) {
-            builder.with("receiverId", ":", collabRequestSearch.getReceiverId());
+        builder.with("senderId", ":", artistId);
+        if (collabRequestSearch.getOtherUserId() != null) {
+            builder.with("receiverId", ":", collabRequestSearch.getOtherUserId());
         }
-
-        if(!Strings.isNullOrEmpty(collabRequestSearch.getStatus())) {
+        if (!Strings.isNullOrEmpty(collabRequestSearch.getStatus())) {
             builder.with("status", ":", collabRequestSearch.getStatus());
         }
 
@@ -159,11 +187,31 @@ public class CollabServiceImpl implements CollabService {
         List<CollabRequest> collabRequests = collabRequestRepository.findAll(specification);
         for (CollabRequest request : collabRequests) {
             if (request.getCollabDate().before(Timestamp.from(Instant.now())) &&
-                !request.getStatus().equalsIgnoreCase(String.valueOf(Enums.CollabStatus.COMPLETED))) {
+                    !request.getStatus().equalsIgnoreCase(String.valueOf(Enums.CollabStatus.COMPLETED))) {
                 request.setStatus(String.valueOf(Enums.CollabStatus.COMPLETED));
+                collabRequestRepository.save(request);
             }
         }
-        return collabRequests;
+
+        builder = new SpecificationBuilder();
+        builder.with("receiverId", ":", artistId);
+        if (collabRequestSearch.getOtherUserId() != null) {
+            builder.with("senderId", ":", collabRequestSearch.getOtherUserId());
+        }
+        if (!Strings.isNullOrEmpty(collabRequestSearch.getStatus())) {
+            builder.with("status", ":", collabRequestSearch.getStatus());
+        }
+
+        specification = builder.build();
+        collabRequests.addAll(collabRequestRepository.findAll(specification));
+        for (CollabRequest request : collabRequests) {
+            if (request.getCollabDate().before(Timestamp.from(Instant.now())) &&
+                    !request.getStatus().equalsIgnoreCase(String.valueOf(Enums.CollabStatus.COMPLETED))) {
+                request.setStatus(String.valueOf(Enums.CollabStatus.COMPLETED));
+                collabRequestRepository.save(request);
+            }
+        }
+        return createOutput(collabRequests, artistId);
     }
 
 

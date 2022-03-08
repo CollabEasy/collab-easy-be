@@ -45,10 +45,10 @@ public class CollabRequest {
     private String status;
 
     @Column(name = "created_At")
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
     @Column(name = "updated_At")
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
 
 
     @Slf4j

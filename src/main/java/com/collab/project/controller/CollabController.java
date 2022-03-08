@@ -1,6 +1,7 @@
 package com.collab.project.controller;
 
 import com.collab.project.model.collab.CollabRequest;
+import com.collab.project.model.collab.CollabRequestOutput;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
 import com.collab.project.model.response.SuccessResponse;
@@ -58,8 +59,8 @@ public class CollabController {
 
     @PostMapping(value = "/search")
     public ResponseEntity<SuccessResponse> collabRequestsSearch(@RequestBody @Validated CollabRequestSearch collabRequestSearch) {
-       List<CollabRequest> collabRequest = collabService.collabRequestsSearch(AuthUtils.getArtistId(), collabRequestSearch);
-       return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
+       CollabRequestOutput collabRequestOutput = collabService.collabRequestsSearch(AuthUtils.getArtistId(), collabRequestSearch);
+       return new ResponseEntity<>(new SuccessResponse(collabRequestOutput), HttpStatus.OK);
     }
 
 

@@ -2,6 +2,7 @@ package com.collab.project.service;
 
 
 import com.collab.project.model.collab.CollabRequest;
+import com.collab.project.model.collab.CollabRequestOutput;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
 
@@ -17,6 +18,6 @@ public interface CollabService {
 
     public CollabRequest acceptRequest(String artistId, String acceptRequestId);
 
-    public List<CollabRequest> collabRequestsSearch(String artistId, CollabRequestSearch collabRequestSearch);
+    public CollabRequestOutput collabRequestsSearch(String artistId, CollabRequestSearch collabRequestSearch);
 
 }
