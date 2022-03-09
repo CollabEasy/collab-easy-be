@@ -11,5 +11,6 @@ public class Enums {
         REJECTED,
         ACTIVE,
         COMPLETED,
+        EXPIRED,
     }
 }

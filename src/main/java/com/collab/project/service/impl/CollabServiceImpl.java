@@ -187,13 +187,7 @@ public class CollabServiceImpl implements CollabService {
 
         Specification<CollabRequest> specification = builder.build();
         List<CollabRequest> collabRequests = collabRequestRepository.findAll(specification);
-        for (CollabRequest request : collabRequests) {
-            if (request.getCollabDate().before(Timestamp.from(Instant.now())) &&
-                    !request.getStatus().equalsIgnoreCase(String.valueOf(Enums.CollabStatus.COMPLETED))) {
-                request.setStatus(String.valueOf(Enums.CollabStatus.COMPLETED));
-                collabRequestRepository.save(request);
-            }
-        }
+        updateCollabRequestStatus(collabRequests);
 
         builder = new SpecificationBuilder();
         builder.with("receiverId", ":", artistId);
@@ -203,17 +197,26 @@ public class CollabServiceImpl implements CollabService {
         if (!Strings.isNullOrEmpty(collabRequestSearch.getStatus())) {
             builder.with("status", ":", collabRequestSearch.getStatus());
         }
-
+        updateCollabRequestStatus(collabRequests);
         specification = builder.build();
         collabRequests.addAll(collabRequestRepository.findAll(specification));
+
+        return createOutput(collabRequests, artistId);
+    }
+
+    private void updateCollabRequestStatus(List<CollabRequest> collabRequests) {
         for (CollabRequest request : collabRequests) {
             if (request.getCollabDate().before(Timestamp.from(Instant.now())) &&
-                    !request.getStatus().equalsIgnoreCase(String.valueOf(Enums.CollabStatus.COMPLETED))) {
-                request.setStatus(String.valueOf(Enums.CollabStatus.COMPLETED));
+                    !request.getStatus().equalsIgnoreCase(String.valueOf(Enums.CollabStatus.COMPLETED)) &&
+                            !request.getStatus().equalsIgnoreCase(String.valueOf(Enums.CollabStatus.EXPIRED))) {
+                if (request.getStatus().equalsIgnoreCase(Enums.CollabStatus.ACTIVE.toString())) {
+                    request.setStatus(String.valueOf(Enums.CollabStatus.COMPLETED));
+                } else {
+                    request.setStatus(String.valueOf(Enums.CollabStatus.EXPIRED));
+                }
                 collabRequestRepository.save(request);
             }
         }
-        return createOutput(collabRequests, artistId);
     }
 
 
