@@ -134,6 +134,7 @@ public class CollabServiceImpl implements CollabService {
     }
 
     private CollabRequestOutput createOutput(List<CollabRequest> requests, String artistId) {
+        requests.sort((o1, o2) -> o2.getUpdatedAt().compareTo(o1.getUpdatedAt()));
         CollabRequestOutput collabRequestOutput = new CollabRequestOutput();
         collabRequestOutput.setSent(new CollabRequestsStatus());
         collabRequestOutput.setReceived(new CollabRequestsStatus());
@@ -145,6 +146,7 @@ public class CollabServiceImpl implements CollabService {
                 collabRequestsStatus = collabRequestOutput.getReceived();
             }
 
+            collabRequestsStatus.getAll().add(request);
             if (request.getStatus().equalsIgnoreCase(Enums.CollabStatus.ACTIVE.toString())) {
                 collabRequestsStatus.getActive().add(request);
             } else if (request.getStatus().equalsIgnoreCase(Enums.CollabStatus.PENDING.toString())) {

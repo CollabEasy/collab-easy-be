@@ -16,6 +16,8 @@ import java.util.List;
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class CollabRequestsStatus {
 
+    List<CollabRequest> all;
+
     List<CollabRequest> active;
 
     List<CollabRequest> pending;
@@ -25,6 +27,7 @@ public class CollabRequestsStatus {
     List<CollabRequest> completed;
 
     public CollabRequestsStatus() {
+        this.all = new ArrayList<>();
         this.active = new ArrayList<>();
         this.pending = new ArrayList<>();
         this.rejected = new ArrayList<>();
