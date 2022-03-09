@@ -1,5 +1,6 @@
 package com.collab.project.service.impl;
 
+import com.amazonaws.services.mq.model.UnauthorizedException;
 import com.collab.project.exception.CollabRequestException;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.collab.CollabRequest;
@@ -85,13 +86,26 @@ public class CollabServiceImpl implements CollabService {
     }
 
     @Override
+    public void cancelRequest(String artistId, String requestId) {
+        Optional<CollabRequest> collabRequest = collabRequestRepository.findById(requestId);
+        if (collabRequest.isPresent()) {
+            CollabRequest request = collabRequest.get();
+            if (request.getSenderId().equalsIgnoreCase(artistId)) {
+                collabRequestRepository.delete(collabRequest.get());
+            } else {
+                throw new UnauthorizedException("You are not authorized to perform this action.");
+            }
+        }
+    }
+
+    @Override
     public CollabRequest rejectRequest(String artistId, String rejectRequestId) {
         Optional<CollabRequest> collabRejectedByReceiver = collabRequestRepository.findById(rejectRequestId);
         if(collabRejectedByReceiver.isPresent()) {
             CollabRequest collabRequest = collabRejectedByReceiver.get();
             if( collabRequest.getReceiverId().equals(artistId) && collabRequest.getStatus().equals(Enums.CollabStatus.PENDING.toString())) {
-                collabRequest.setStatus(String.valueOf(Enums.CollabStatus.REJECTED));
-                collabRequestRepository.save(collabRequest);
+                collabRequest.setStatus(Enums.CollabStatus.REJECTED.toString());
+                collabRequest = collabRequestRepository.save(collabRequest);
                 return collabRequest;
             } else {
                 if(!collabRequest.getReceiverId().equals(artistId)) {
@@ -113,11 +127,8 @@ public class CollabServiceImpl implements CollabService {
         if(collabAcceptedByReceiver.isPresent()) {
             CollabRequest collabRequest = collabAcceptedByReceiver.get();
             if( collabRequest.getReceiverId().equals(artistId) && collabRequest.getStatus().equals(Enums.CollabStatus.PENDING.toString())) {
-                CollabRequest rejectCollabRequest = collabRequest.toBuilder()
-                                                            .senderId(collabRequest.getSenderId()).receiverId(artistId)
-                                                            .status(Enums.CollabStatus.ACTIVE.toString())
-                                                            .build();
-                collabRequest = collabRequestRepository.save(rejectCollabRequest);
+                collabRequest.setStatus(Enums.CollabStatus.ACTIVE.toString());
+                collabRequest = collabRequestRepository.save(collabRequest);
                 return collabRequest;
             } else {
                 if(!collabRequest.getReceiverId().equals(artistId)) {

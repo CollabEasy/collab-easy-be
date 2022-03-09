@@ -18,6 +18,8 @@ public interface CollabService {
 
     public CollabRequest acceptRequest(String artistId, String acceptRequestId);
 
+    public void cancelRequest(String artistId, String requestId);
+
     public CollabRequestOutput collabRequestsSearch(String artistId, CollabRequestSearch collabRequestSearch);
 
 }
