@@ -4,6 +4,5 @@ import lombok.Data;
 
 @Data
 public class ArtistScratchpadInput {
-    private final String artistId;
     private final String content;
 }
