@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "scratchpads")
+@Table(name = "artist_scratchpads")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,7 +25,7 @@ public class Scratchpad implements Serializable {
     @Id
     private String id;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = false, unique = true)
     private String artistId;
 
     private String content;
@@ -35,9 +35,6 @@ public class Scratchpad implements Serializable {
 
     @Column(name="updated_at", updatable = false, insertable = false, nullable = false)
     private Timestamp updatedAt;
-
-    @Column(name="deleted_at", updatable = false, insertable = false, nullable = false)
-    private Timestamp deletedAt;
 
     public Scratchpad(String artistId, String content) {
         this.artistId = artistId;

@@ -27,7 +27,7 @@ public class ArtistScratchpadController {
     private ArtistScratchpadService artistScratchpadService;
 
     @PostMapping
-    @RequestMapping(value = "/arts", method = RequestMethod.POST)
+    @RequestMapping(value = "/scratchpad", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> AddArtistScratchpad(@RequestBody ArtistScratchpadInput artistScratchpadInput) {
         Scratchpad scratchpad = artistScratchpadService.addScratchpad(AuthUtils.getArtistId(), artistScratchpadInput);
         return new ResponseEntity<>(new SuccessResponse(scratchpad), HttpStatus.OK);
