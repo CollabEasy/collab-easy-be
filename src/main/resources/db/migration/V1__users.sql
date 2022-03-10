@@ -109,3 +109,15 @@ CREATE TABLE IF NOT EXISTS `notifications` (
  );
 
 
+CREATE TABLE IF NOT EXISTS `artist_scratchpads` (
+    id int AUTO_INCREMENT,
+    artist_id varchar(50),
+    content varchar(1024),
+    created_at timestamp,
+    updated_at timestamp,
+    deleted_at timestamp,
+    key(id),
+    primary key(artist_id),
+    foreign key(artist_id) references artists(artist_id)
+ );
+
