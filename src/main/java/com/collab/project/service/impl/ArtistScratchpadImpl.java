@@ -40,6 +40,10 @@ public class ArtistScratchpadImpl implements ArtistScratchpadService {
     @Override
     public Scratchpad getScratchpadByArtistId(String artistId) {
         Scratchpad scratchpad = artistScratchpadRepository.findByArtistId(artistId);
+        if (scratchpad == null) {
+            scratchpad = new Scratchpad(FALLBACK_ID, AuthUtils.getArtistId(), "");
+            artistScratchpadRepository.save(scratchpad);
+        }
         return scratchpad;
     }
 }
