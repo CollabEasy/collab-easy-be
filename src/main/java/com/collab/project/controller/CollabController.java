@@ -43,19 +43,19 @@ public class CollabController {
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/request/cancel/{requestId}")
+    @PostMapping(value = "/cancel/request/{requestId}")
     public ResponseEntity<SuccessResponse> cancelRequest(@PathVariable String requestId) {
         collabService.cancelRequest(AuthUtils.getArtistId(), requestId);
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/reject/requestId/{requestId}")
+    @PostMapping(value = "/reject/request/{requestId}")
     public ResponseEntity<SuccessResponse> rejectRequest(@PathVariable("requestId") String rejectRequestId) {
         CollabRequest collabRequest = collabService.rejectRequest(AuthUtils.getArtistId(), rejectRequestId);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/accept/requestId/{requestId}")
+    @PostMapping(value = "/accept/request/{requestId}")
     public ResponseEntity<SuccessResponse> acceptRequest(@PathVariable("requestId") String acceptRequestId) {
         CollabRequest collabRequest = collabService.acceptRequest(AuthUtils.getArtistId(), acceptRequestId);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);

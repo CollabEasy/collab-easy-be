@@ -3,6 +3,7 @@ package com.collab.project.service.impl;
 import com.amazonaws.services.mq.model.UnauthorizedException;
 import com.collab.project.exception.CollabRequestException;
 import com.collab.project.helpers.Constants;
+import com.collab.project.model.artist.Artist;
 import com.collab.project.model.collab.CollabRequest;
 import com.collab.project.model.collab.CollabRequestOutput;
 import com.collab.project.model.collab.CollabRequestsStatus;
@@ -10,6 +11,7 @@ import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
 import com.collab.project.model.notification.Notification;
+import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.CollabRequestRepository;
 import com.collab.project.search.SpecificationBuilder;
 import com.collab.project.service.CollabService;
@@ -27,6 +29,9 @@ import java.util.*;
 public class CollabServiceImpl implements CollabService {
 
     @Autowired
+    private ArtistRepository artistRepository;
+
+    @Autowired
     private CollabRequestRepository collabRequestRepository;
 
     @Autowired
@@ -36,7 +41,7 @@ public class CollabServiceImpl implements CollabService {
     public CollabRequest sendRequest(String artistId, CollabRequestInput collabRequestInput) {
         // Add validation on receiver id and handle idempotency on requestId
         // If there is any active collab request present, there should not be a new request.
-        List<String> status =  Arrays.asList( Enums.CollabStatus.PENDING.toString(),
+        List<String> status =  Arrays.asList(Enums.CollabStatus.PENDING.toString(),
                 Enums.CollabStatus.ACTIVE.toString(), Enums.CollabStatus.REJECTED.toString());
 
         List<CollabRequest> collabRequestBySender = collabRequestRepository.findBySenderIdAndReceiverIdAndStatus(
@@ -52,6 +57,10 @@ public class CollabServiceImpl implements CollabService {
         if(!collabRequestBySender.isEmpty() || !collabRequestByReceiver.isEmpty()) {
             throw new CollabRequestException("Collab Request already exists");
         }
+
+        Artist senderArtist = artistRepository.findByArtistId(artistId);
+        Artist receiverArtist = artistRepository.findByArtistId(collabRequestInput.getReceiverId());
+
         CollabRequest saveCollabRequest = CollabRequest.builder()
                 .id(UUID.randomUUID().toString())
                 .senderId(artistId).receiverId(collabRequestInput.getReceiverId())
@@ -60,6 +69,12 @@ public class CollabServiceImpl implements CollabService {
                 .requestData(collabRequestInput.getRequestData())
                 .createdAt(Timestamp.from(Instant.now()))
                 .updatedAt(Timestamp.from(Instant.now()))
+                .senderName(senderArtist.getFirstName())
+                .receiverName(receiverArtist.getFirstName())
+                .senderSlug(senderArtist.getSlug())
+                .receiverSlug(receiverArtist.getSlug())
+                .senderProfilePicUrl(senderArtist.getProfilePicUrl())
+                .receiverProfilePicUrl(receiverArtist.getProfilePicUrl())
                 .build();
         saveCollabRequest = collabRequestRepository.save(saveCollabRequest);
         // TODO : Uncomment this when notification service will be added
