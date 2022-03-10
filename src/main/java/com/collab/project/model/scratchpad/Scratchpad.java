@@ -6,10 +6,8 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
 import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -23,7 +21,11 @@ import java.sql.Timestamp;
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Scratchpad implements Serializable {
     @Id
-    private String id;
+    @Basic(optional = false)
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String artistId;
@@ -36,7 +38,8 @@ public class Scratchpad implements Serializable {
     @Column(name="updated_at", updatable = false, insertable = false, nullable = false)
     private Timestamp updatedAt;
 
-    public Scratchpad(String artistId, String content) {
+    public Scratchpad(Long id, String artistId, String content) {
+        this.id = id;
         this.artistId = artistId;
         this.content = content;
     }

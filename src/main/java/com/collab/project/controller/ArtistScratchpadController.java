@@ -28,15 +28,15 @@ public class ArtistScratchpadController {
 
     @PostMapping
     @RequestMapping(value = "/scratchpad", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> AddArtistScratchpad(@RequestBody ArtistScratchpadInput artistScratchpadInput) {
-        Scratchpad scratchpad = artistScratchpadService.addScratchpad(AuthUtils.getArtistId(), artistScratchpadInput);
+    public ResponseEntity<SuccessResponse> AddArtistScratchpad(@RequestBody String content) {
+        Scratchpad scratchpad = artistScratchpadService.addScratchpad(AuthUtils.getArtistId(), content);
         return new ResponseEntity<>(new SuccessResponse(scratchpad), HttpStatus.OK);
     }
 
     @GetMapping
     @RequestMapping(value = "/scratchpad", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getArtistScratchpad() {
-        Scratchpad scratchpad = artistScratchpadService.getScratchpadByArtist(AuthUtils.getArtistId());
+        Scratchpad scratchpad = artistScratchpadService.getScratchpadByArtistId(AuthUtils.getArtistId());
         return new ResponseEntity<>(new SuccessResponse(scratchpad), HttpStatus.OK);
     }
 }
