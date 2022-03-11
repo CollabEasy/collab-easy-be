@@ -12,7 +12,7 @@ public class AuthUtils {
             .getPrincipal())).getId();
     }
 
-    public UserDetailsImpl getUser() {
+    public static UserDetailsImpl getUser() {
         return (UserDetailsImpl) (SecurityContextHolder.getContext().getAuthentication()
             .getPrincipal());
     }

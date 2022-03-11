@@ -2,12 +2,14 @@ package com.collab.project.filter;
 
 
 import java.io.IOException;
+import javax.naming.AuthenticationException;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.collab.project.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,6 +67,7 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
             response.setContentType("application/json");
             JSONObject error = new JSONObject();
             error.put("error", "Authentication Failure");
+            response.setStatus(HttpStatus.SC_UNAUTHORIZED);
             response.getOutputStream().write(error.toString().getBytes());
         } catch (IOException e) {
             log.error("Exception while response writing", e);

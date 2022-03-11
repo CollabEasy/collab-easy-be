@@ -10,8 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CollabRequestRepository extends PagingAndSortingRepository<CollabRequest, Long>, JpaSpecificationExecutor<CollabRequest> {
-  
+public interface CollabRequestRepository extends PagingAndSortingRepository<CollabRequest, String>, JpaSpecificationExecutor<CollabRequest> {
+
+  public List<CollabRequest> findBySenderIdAndReceiverIdAndStatus(String senderId, String receiverId, String status);
   public List<CollabRequest> findBySenderIdAndReceiverIdAndStatusIn(String senderId, String receiverId, List<String> status);
 
 

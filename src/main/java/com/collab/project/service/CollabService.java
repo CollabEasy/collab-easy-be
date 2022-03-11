@@ -2,6 +2,7 @@ package com.collab.project.service;
 
 
 import com.collab.project.model.collab.CollabRequest;
+import com.collab.project.model.collab.CollabRequestOutput;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
 
@@ -11,10 +12,14 @@ public interface CollabService {
 
     public CollabRequest sendRequest(String artistId, CollabRequestInput collabRequestInput);
 
-    public CollabRequest rejectRequest(String artistId, long rejectRequestId);
+    public CollabRequest updateRequest(String artistId, CollabRequest collabRequestInput);
 
-    public CollabRequest acceptRequest(String artistId, long acceptRequestId);
+    public CollabRequest rejectRequest(String artistId, String rejectRequestId);
 
-    public List<CollabRequest> collabRequestsSearch(String artistId, CollabRequestSearch collabRequestSearch);
+    public CollabRequest acceptRequest(String artistId, String acceptRequestId);
+
+    public void cancelRequest(String artistId, String requestId);
+
+    public CollabRequestOutput collabRequestsSearch(String artistId, CollabRequestSearch collabRequestSearch);
 
 }

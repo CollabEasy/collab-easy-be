@@ -10,11 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CollabRequestSearch {
     @JsonProperty("collabRequestId")
-    private Long collabRequestId;
+    private String collabRequestId;
     @JsonProperty("status")
     private String status;
-    @JsonProperty("senderId")
-    private String senderId;
-    @JsonProperty("receiverId")
-    private String receiverId;
+    @JsonProperty("otherUserId")
+    private String otherUserId;
 }

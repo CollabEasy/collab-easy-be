@@ -26,10 +26,7 @@ import java.time.LocalDateTime;
 public class CollabRequest {
 
     @Id
-    @Basic(optional = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    private String id;
 
     @NonNull
     @Column(name = "sender_id", nullable = false, unique = true)
@@ -37,6 +34,24 @@ public class CollabRequest {
     @NonNull
     @Column(name = "receiver_id", nullable = false, unique = true)
     private String receiverId;
+
+    @Column(name = "sender_name", nullable = false)
+    private String senderName;
+
+    @Column(name = "receiver_name", nullable = false)
+    private String receiverName;
+
+    @Column(name = "sender_slug", nullable = false)
+    private String senderSlug;
+
+    @Column(name = "receiver_slug", nullable = false)
+    private String receiverSlug;
+
+    @Column(name = "sender_profile_pic_url", nullable = false)
+    private String senderProfilePicUrl;
+
+    @Column(name = "receiver_profile_pic_url", nullable = false)
+    private String receiverProfilePicUrl;
 
     @Column(name = "scheduled_at")
     private Timestamp collabDate;
@@ -48,10 +63,10 @@ public class CollabRequest {
     private String status;
 
     @Column(name = "created_At")
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
     @Column(name = "updated_At")
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
 
 
     @Slf4j

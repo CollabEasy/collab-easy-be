@@ -38,7 +38,6 @@ public class ArtistPreferencesImpl implements ArtistPreferencesService {
             ArtistPreference preference = new ArtistPreference(artistId, prefName, prefValue);
             preference.setId(FALLBACK_ID);
             artistPreferenceList.add(preference);
-            System.out.println(preference);
         }
         artistPreferenceRepository.saveAll(artistPreferenceList);
         log.info("Artist preference update for aId {}", artistId);
@@ -46,7 +45,6 @@ public class ArtistPreferencesImpl implements ArtistPreferencesService {
 
     @Override
     public void updateArtistPreferences(ArtistPreference artistPreference) {
-        System.out.println(artistPreference.toString());
         artistPreference.setId(FALLBACK_ID);
         artistPreferenceRepository.save(artistPreference);
     }

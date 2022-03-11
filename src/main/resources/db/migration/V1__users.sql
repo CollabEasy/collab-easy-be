@@ -108,14 +108,26 @@ CREATE TABLE IF NOT EXISTS `notifications` (
     foreign key(artist_id) references artists(artist_id)
  );
 
+CREATE TABLE IF NOT EXISTS `artist_scratchpads` (
+    id int AUTO_INCREMENT,
+    artist_id varchar(50),
+    content varchar(1024),
+    created_at timestamp,
+    updated_at timestamp,
+    deleted_at timestamp,
+    key(id),
+    primary key(artist_id),
+    foreign key(artist_id) references artists(artist_id)
+ );
+
 CREATE TABLE IF NOT EXISTS `social_platforms` (
     id int AUTO_INCREMENT,
     name varchar(50),
+    base_url varchar(100),
     description varchar(50),
     approved bool,
     created_at timestamp,
     updated_at timestamp,
-    deleted_at timestamp,
     key(id),
     primary key(platform_id),
  );
@@ -127,10 +139,8 @@ CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
     handle varchar(50),
     description varchar(50),
     created_at timestamp,
-    updated_at timestamp,
-    deleted_at timestamp,
+    updated_at timestamp,a
     key(id),
-    primary key(prospectus_entry_id),
     foreign key(artist_id) references artists(artist_id)
     foreign key(social_platform_id) references social_platforms(id)
  );

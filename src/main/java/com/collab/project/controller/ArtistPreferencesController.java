@@ -50,7 +50,6 @@ public class ArtistPreferencesController {
         ArtistPreference artistPreference = artistPreferencesService
             .getArtistPreferences(AuthUtils.getArtistId(), settingName);
         ArtistPrefResponse artistPrefResponse = new ArtistPrefResponse(artistPreference);
-        System.out.println(artistPrefResponse.toString());
         return new ResponseEntity<>(new SuccessResponse(artistPrefResponse), HttpStatus.OK);
     }
 

@@ -9,6 +9,8 @@ public class Enums {
     public enum CollabStatus {
         PENDING,
         REJECTED,
-        ACTIVE
+        ACTIVE,
+        COMPLETED,
+        EXPIRED,
     }
 }
