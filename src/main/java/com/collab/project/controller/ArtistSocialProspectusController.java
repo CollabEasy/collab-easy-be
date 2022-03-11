@@ -19,14 +19,14 @@ import static com.collab.project.helpers.Constants.FALLBACK_ID;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/api/v1/artist/")
+@RequestMapping(value = "/api/v1/artist/social-prospectus/")
 public class ArtistSocialProspectusController {
 
     @Autowired
     private ArtistSocialProspectusService artistSocialProspectusService;
 
     @PostMapping
-    @RequestMapping(value = "/social-prospectus", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> UpdateArtistSocialProspectus(@RequestBody List<ArtistSocialProspectusInput> updates) {
         System.out.println("Rabbal is here trying to post");
 //        List<ArtistSocialProspectus> all_enteries = artistSocialProspectusService.getSocialProspectByArtistId(AuthUtils.getArtistId());
@@ -41,7 +41,7 @@ public class ArtistSocialProspectusController {
     }
 
     @GetMapping
-    @RequestMapping(value = "/scratchpad-prospectus", method = RequestMethod.GET)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getArtistSocialProspectus() {
         List<ArtistSocialProspectus> prospectus = artistSocialProspectusService.getSocialProspectByArtistId(AuthUtils.getArtistId());
         return new ResponseEntity<>(new SuccessResponse(prospectus), HttpStatus.OK);
