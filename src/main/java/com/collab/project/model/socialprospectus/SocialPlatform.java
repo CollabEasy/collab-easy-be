@@ -1,7 +1,8 @@
 package com.collab.project.model.socialprospectus;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import lombok.*;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,10 @@ import java.sql.Timestamp;
 @Table(name = "social_platforms")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class SocialPlatform {
     @Id
     @Basic(optional = false)

@@ -1,16 +1,21 @@
 package com.collab.project.model.socialprospectus;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.TypeDef;
 
 @Entity
 @Table(name = "artist_social_prospectus")
 @Getter
 @Setter
+@NoArgsConstructor
+@Builder
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class ArtistSocialProspectus {
     @Id
     @Basic(optional = false)

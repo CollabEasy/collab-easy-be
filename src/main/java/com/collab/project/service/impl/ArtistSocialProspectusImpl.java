@@ -16,36 +16,32 @@ import java.util.Optional;
 import static com.collab.project.helpers.Constants.FALLBACK_ID;
 
 @Service
-public class ArtistSocialProspectusServiceImpl implements ArtistSocialProspectusService {
+public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService {
     @Autowired
     private ArtistSocialProspectusRepository artistSocialProspectusRepository;
 
     @Autowired
     private ArtistRepository artistRepository;
 
-    public ArtistSocialProspectus createSocialPlatform(ArtistSocialProspectusInput artistSocialProspectusInput) {
+    @Override
+    public ArtistSocialProspectus createArtistSocialProspectus(ArtistSocialProspectus artistSocialProspectus) {
         ArtistSocialProspectus prospectus = new ArtistSocialProspectus(FALLBACK_ID, AuthUtils.getArtistId(),
-                artistSocialProspectusInput.getSocialPlatformId(), artistSocialProspectusInput.getHandle(),
-                artistSocialProspectusInput.getDescription());
+                artistSocialProspectus.getSocialPlatformId(), artistSocialProspectus.getHandle(),
+                artistSocialProspectus.getDescription());
 
+        System.out.println("Rabbal is saving in DB");
         return artistSocialProspectusRepository.save(prospectus);
     }
 
-    public Boolean updateSocialPlatform(ArtistSocialProspectusInput artistSocialProspectusInput) {
-        return true;
-    }
 
+    @Override
     public void delete(ArtistSocialProspectusInput artistSocialProspectusInput) {
 
     }
 
+    @Override
     public List<ArtistSocialProspectus> getSocialProspectByArtistId(String artistId) {
         List<ArtistSocialProspectus> prospectus = artistSocialProspectusRepository.findByArtistId(artistId);
         return prospectus;
-    }
-
-    public Optional<ArtistSocialProspectus> getSocialProspectusById(Long id) {
-        Optional<ArtistSocialProspectus> lola =  artistSocialProspectusRepository.findById(id);
-        return lola;
     }
 }

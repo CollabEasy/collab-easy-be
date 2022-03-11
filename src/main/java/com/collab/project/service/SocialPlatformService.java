@@ -7,14 +7,11 @@ import java.util.List;
 
 public interface SocialPlatformService {
 
-
     public SocialPlatform addSocialPlatform(SocialPlatformInput socialPlatformInput);
 
     public SocialPlatform updateSocialPlatform(SocialPlatform socialPlatform);
 
     public void delete(String name);
-
-    public SocialPlatform getSocialPlatformById(Long socialPlatformId);
 
     public SocialPlatform getSocialPlatformByName(String name);
 
