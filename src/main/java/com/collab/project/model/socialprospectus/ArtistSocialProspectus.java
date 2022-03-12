@@ -38,7 +38,7 @@ public class ArtistSocialProspectus {
     @Column(name = "description")
     private String description;
 
-    public ArtistSocialProspectus(Long id, String artistId, Long socialPlatformId, String handle, String description) {
+    public ArtistSocialProspectus(Long id, @org.jetbrains.annotations.NotNull String artistId, @org.jetbrains.annotations.NotNull Long socialPlatformId, String handle, String description) {
         this.id = id;
         this.artistId = artistId;
         this.socialPlatformId = socialPlatformId;

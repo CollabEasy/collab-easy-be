@@ -24,19 +24,17 @@ public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService
     private ArtistRepository artistRepository;
 
     @Override
-    public ArtistSocialProspectus createArtistSocialProspectus(ArtistSocialProspectus artistSocialProspectus) {
-        ArtistSocialProspectus prospectus = new ArtistSocialProspectus(FALLBACK_ID, AuthUtils.getArtistId(),
-                artistSocialProspectus.getSocialPlatformId(), artistSocialProspectus.getHandle(),
-                artistSocialProspectus.getDescription());
-
-        System.out.println("Rabbal is saving in DB");
+    public ArtistSocialProspectus addArtistSocialProspectus(ArtistSocialProspectusInput artistSocialProspectusInput) {
+        ArtistSocialProspectus prospectus = artistSocialProspectusRepository.findByArtistAndPlatformId(AuthUtils.getArtistId(), artistSocialProspectusInput.getSocialPlatformId());
+        if (prospectus == null) {
+            prospectus = new ArtistSocialProspectus(FALLBACK_ID, AuthUtils.getArtistId(),
+                    artistSocialProspectusInput.getSocialPlatformId(), artistSocialProspectusInput.getHandle(),
+                    artistSocialProspectusInput.getDescription());
+        } else {
+            prospectus.setDescription(artistSocialProspectusInput.getDescription());
+            prospectus.setHandle(artistSocialProspectusInput.getHandle());
+        }
         return artistSocialProspectusRepository.save(prospectus);
-    }
-
-
-    @Override
-    public void delete(ArtistSocialProspectusInput artistSocialProspectusInput) {
-
     }
 
     @Override

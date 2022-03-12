@@ -1,12 +1,8 @@
 package com.collab.project.controller;
 
-import com.collab.project.model.art.ArtInfo;
 import com.collab.project.model.inputs.ArtistSocialProspectusInput;
 import com.collab.project.model.response.SuccessResponse;
-import com.collab.project.model.scratchpad.Scratchpad;
 import com.collab.project.model.socialprospectus.ArtistSocialProspectus;
-import com.collab.project.repositories.ArtistSocialProspectusRepository;
-import com.collab.project.service.ArtistScratchpadService;
 import com.collab.project.service.ArtistSocialProspectusService;
 import com.collab.project.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +23,10 @@ public class ArtistSocialProspectusController {
     private ArtistSocialProspectusService artistSocialProspectusService;
 
     @PostMapping
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> UpdateArtistSocialProspectus(@RequestBody List<ArtistSocialProspectusInput> updates) {
-        System.out.println("Rabbal is here trying to post");
-//        List<ArtistSocialProspectus> all_enteries = artistSocialProspectusService.getSocialProspectByArtistId(AuthUtils.getArtistId());
-
-        // more logic yet it be done here. This is basic and blindly saving data in backend.
-        for (ArtistSocialProspectusInput update : updates) {
-            ArtistSocialProspectus entry = new ArtistSocialProspectus(FALLBACK_ID, AuthUtils.getArtistId(),
-                    update.getSocialPlatformId(), update.getHandle(), update.getDescription());
-            artistSocialProspectusService.createArtistSocialProspectus(entry);
-        }
-        return new ResponseEntity<>(new SuccessResponse(updates), HttpStatus.OK);
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity<SuccessResponse> UpdateArtistSocialProspectus(@RequestBody ArtistSocialProspectusInput artistSocialProspectusInput) {
+        ArtistSocialProspectus prospectus = artistSocialProspectusService.addArtistSocialProspectus(artistSocialProspectusInput);
+        return new ResponseEntity<>(new SuccessResponse(prospectus), HttpStatus.OK);
     }
 
     @GetMapping
