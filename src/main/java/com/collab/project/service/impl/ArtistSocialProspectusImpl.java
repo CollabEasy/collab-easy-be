@@ -44,4 +44,13 @@ public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService
         List<ArtistSocialProspectus> prospectus = artistSocialProspectusRepository.findByArtistId(artistId);
         return prospectus;
     }
+
+    @Override
+    public  boolean deleteSocialProspectus(String artistId, Long platformId) {
+        ArtistSocialProspectus prospectus = artistSocialProspectusRepository.findByArtistAndPlatformId(artistId, platformId);
+        if (prospectus != null) {
+            artistSocialProspectusRepository.delete(prospectus);
+        }
+        return true;
+    }
 }

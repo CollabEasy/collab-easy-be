@@ -1,5 +1,6 @@
 package com.collab.project.controller;
 
+import com.collab.project.model.art.ArtInfo;
 import com.collab.project.model.inputs.ArtistSocialProspectusInput;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.model.scratchpad.Scratchpad;
@@ -45,5 +46,13 @@ public class ArtistSocialProspectusController {
     public ResponseEntity<SuccessResponse> getArtistSocialProspectus() {
         List<ArtistSocialProspectus> prospectus = artistSocialProspectusService.getSocialProspectByArtistId(AuthUtils.getArtistId());
         return new ResponseEntity<>(new SuccessResponse(prospectus), HttpStatus.OK);
+    }
+
+    @PostMapping
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public ResponseEntity<SuccessResponse> deleteArtistSocialProspectus(@RequestBody Long platformId) {
+        String artistId = AuthUtils.getArtistId();
+        artistSocialProspectusService.deleteSocialProspectus(artistId, platformId);
+        return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
     }
 }

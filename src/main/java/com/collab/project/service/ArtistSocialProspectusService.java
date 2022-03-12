@@ -10,6 +10,6 @@ public interface ArtistSocialProspectusService {
 
     public ArtistSocialProspectus createArtistSocialProspectus(ArtistSocialProspectus artistSocialProspectus);
     public void delete(ArtistSocialProspectusInput artistSocialProspectusInput);
-
     public List<ArtistSocialProspectus> getSocialProspectByArtistId(String artistId);
+    public boolean deleteSocialProspectus(String artistId, Long platformId);
 }
