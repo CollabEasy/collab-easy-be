@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -32,8 +33,9 @@ public class ArtistCategoryController {
 
     @GetMapping
     @RequestMapping(value = "/arts", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getArtistCategories() {
-        List<String> arts = artistCategoryService.getArtistCategories(AuthUtils.getArtistId());
+    public ResponseEntity<SuccessResponse> getArtistCategories(@RequestParam(required = false) String handle) {
+        List<String> arts = artistCategoryService.getArtistCategories(
+                handle != null ? handle : AuthUtils.getArtistId());
         return new ResponseEntity<>(new SuccessResponse(arts), HttpStatus.OK);
     }
 
