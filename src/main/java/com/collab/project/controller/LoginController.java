@@ -12,6 +12,8 @@ import com.collab.project.util.GoogleUtils;
 import com.collab.project.util.JwtUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -68,7 +70,7 @@ public class LoginController {
         if (handle == null || handle.equals("")) {
             hashMap = mapper.convertValue(artist, Map.class);
         } else {
-            SearchedArtistOutput output = new SearchedArtistOutput(artist);
+            SearchedArtistOutput output = new SearchedArtistOutput(artist, Collections.emptyList(), "");
             hashMap = mapper.convertValue(output, Map.class);
         }
         return new ResponseEntity<>(new SuccessResponse(hashMap), HttpStatus.OK);
