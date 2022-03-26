@@ -6,6 +6,7 @@ import com.collab.project.model.artist.SearchedArtistOutput;
 import com.collab.project.model.inputs.ArtistCategoryInput;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.ArtistCategoryService;
+import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class ArtistCategoryController {
     @Autowired
     private ArtistCategoryService artistCategoryService;
 
+    @Autowired
+    ArtistService artistService;
+
     @PostMapping
     @RequestMapping(value = "/arts", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> addArtistCategory(@RequestBody ArtistCategoryInput artistCategoryInput) {
@@ -32,8 +36,13 @@ public class ArtistCategoryController {
 
     @GetMapping
     @RequestMapping(value = "/arts", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getArtistCategories() {
-        List<String> arts = artistCategoryService.getArtistCategories(AuthUtils.getArtistId());
+    public ResponseEntity<SuccessResponse> getArtistCategories(@RequestParam(required = false) String handle) {
+        Artist artist = null;
+        if (handle != null) {
+            artist = artistService.getArtistBySlug(handle);
+        }
+        List<String> arts = artistCategoryService.getArtistCategories(
+                artist != null ? artist.getArtistId() : AuthUtils.getArtistId());
         return new ResponseEntity<>(new SuccessResponse(arts), HttpStatus.OK);
     }
 
