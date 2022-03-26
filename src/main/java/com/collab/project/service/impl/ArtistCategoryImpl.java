@@ -3,11 +3,14 @@ package com.collab.project.service.impl;
 import com.collab.project.model.art.ArtCategory;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistCategory;
+import com.collab.project.model.artist.ArtistPreference;
 import com.collab.project.model.inputs.ArtistCategoryInput;
 import com.collab.project.repositories.ArtCategoryRepository;
 import com.collab.project.repositories.ArtistCategoryRepository;
+import com.collab.project.repositories.ArtistPreferenceRepository;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistCategoryService;
+import com.collab.project.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,9 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
 
     @Autowired
     private ArtistRepository artistRepository;
+
+    @Autowired
+    ArtistPreferenceRepository artistPreferenceRepository;
 
     @Value("${basic.art.categories:DANCING,PAINTING,CRAFT,MUSIC,VIDEO EDITING}")
     private List<String> BASIC_ART_CATEGORIES;
@@ -106,7 +112,20 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
             List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtId(artCategory.get(0).getId());
             for (ArtistCategory artistCategory : artistCategories) {
                 Artist artist = artistRepository.findByArtistId(artistCategory.getArtistId());
-                if (artist != null) artists.add(artist);
+                if (artist != null) {
+
+                    // Things I want to add - artist preference and artists catgeories
+                    List<ArtistPreference> preferences = artistPreferenceRepository
+                            .findByArtistPreferenceId_ArtistId(artist.getArtistId());
+                    List<String> categories = getArtistCategories(artist.getArtistId());
+
+                    //System.out.println("My preferences are " + preferences);
+                    //System.out.println("My categories are " + categories);
+
+
+
+                    artists.add(artist);
+                }
             }
         }
         return artists;
