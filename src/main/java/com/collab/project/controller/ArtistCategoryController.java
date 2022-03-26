@@ -2,6 +2,7 @@ package com.collab.project.controller;
 
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistCategory;
+import com.collab.project.model.artist.ArtistPreference;
 import com.collab.project.model.artist.SearchedArtistOutput;
 import com.collab.project.model.inputs.ArtistCategoryInput;
 import com.collab.project.model.response.SuccessResponse;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,18 +62,15 @@ public class ArtistCategoryController {
         List<Artist> artists = artistCategoryService.getArtistsByCategoryId(categoryId);
         List<SearchedArtistOutput> output = new ArrayList<>();
         for (Artist artist : artists) {
-            output.add(new SearchedArtistOutput(artist));
+            output.add(new SearchedArtistOutput(artist, Collections.emptyList(), ""));
         }
         return new ResponseEntity<>(new SuccessResponse(output), HttpStatus.OK);
     }
+
     @GetMapping
     @RequestMapping(value = "/category/slug/{categorySlug}/artists", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getArtistsByCategorySlug(@PathVariable String categorySlug) {
-        List<Artist> artists = artistCategoryService.getArtistsByCategorySlug(categorySlug);
-        List<SearchedArtistOutput> output = new ArrayList<>();
-        for (Artist artist : artists) {
-            output.add(new SearchedArtistOutput(artist));
-        }
-        return new ResponseEntity<>(new SuccessResponse(output), HttpStatus.OK);
+        List<SearchedArtistOutput> artists = artistCategoryService.getArtistsByCategorySlug(categorySlug);
+        return new ResponseEntity<>(new SuccessResponse(artists), HttpStatus.OK);
     }
 }

@@ -1,9 +1,7 @@
 package com.collab.project.service.impl;
 
 import com.collab.project.model.art.ArtCategory;
-import com.collab.project.model.artist.Artist;
-import com.collab.project.model.artist.ArtistCategory;
-import com.collab.project.model.artist.ArtistPreference;
+import com.collab.project.model.artist.*;
 import com.collab.project.model.inputs.ArtistCategoryInput;
 import com.collab.project.repositories.ArtCategoryRepository;
 import com.collab.project.repositories.ArtistCategoryRepository;
@@ -102,9 +100,9 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
     }
 
     @Override
-    public List<Artist> getArtistsByCategorySlug(String categorySlug) {
+    public List<SearchedArtistOutput> getArtistsByCategorySlug(String categorySlug) {
 
-        List<Artist> artists = new ArrayList<Artist>();
+        List<SearchedArtistOutput> artists = new ArrayList<SearchedArtistOutput>();
         // Since category slug is unique, there should be only one category associated with the slug.
         List<ArtCategory> artCategory = artCategoryRepository.findBySlug(categorySlug);
         // Since there is one category associated with slug, we can safely fetch first element if it exists.
@@ -113,18 +111,12 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
             for (ArtistCategory artistCategory : artistCategories) {
                 Artist artist = artistRepository.findByArtistId(artistCategory.getArtistId());
                 if (artist != null) {
-
-                    // Things I want to add - artist preference and artists catgeories
-                    List<ArtistPreference> preferences = artistPreferenceRepository
-                            .findByArtistPreferenceId_ArtistId(artist.getArtistId());
+                    Optional<ArtistPreference> preference = artistPreferenceRepository
+                            .findById(new ArtistPreferenceId(artist.getArtistId(), "upForCollaboration"));
                     List<String> categories = getArtistCategories(artist.getArtistId());
-
-                    //System.out.println("My preferences are " + preferences);
-                    //System.out.println("My categories are " + categories);
-
-
-
-                    artists.add(artist);
+                    SearchedArtistOutput artistDetails = new SearchedArtistOutput(artist, categories,
+                            (preference.isPresent() ? preference.get().getSettingValues(): ""));
+                    artists.add(artistDetails);
                 }
             }
         }
