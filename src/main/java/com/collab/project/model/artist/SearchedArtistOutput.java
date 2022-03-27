@@ -37,11 +37,11 @@ public class SearchedArtistOutput implements Serializable {
 
     private String gender;
 
-    private List<String> categories;
+    private List<String> skills;
 
     private String upForCollab;
 
-    public SearchedArtistOutput(Artist artist, List<String> categories, String upForCollab) {
+    public SearchedArtistOutput(Artist artist, List<String> skills, String upForCollab) {
         this.artistId = artist.getArtistId();
         this.slug = artist.getSlug();
         this.firstName = artist.getFirstName();
@@ -50,7 +50,7 @@ public class SearchedArtistOutput implements Serializable {
         this.bio = artist.getBio();
         this.gender = artist.getGender();
         this.lastActive = artist.getLastActive();
-        this.categories = categories;
+        this.skills = skills;
         this.upForCollab = upForCollab;
     }
 }
