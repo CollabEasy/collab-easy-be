@@ -1,11 +1,15 @@
 package com.collab.project.controller;
 
 
+import com.collab.project.exception.RecordNotFoundException;
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.artist.ArtistPreference;
 import com.collab.project.model.artist.SearchedArtistOutput;
 import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.model.response.ErrorResponse;
 import com.collab.project.model.response.SuccessResponse;
+import com.collab.project.service.ArtistCategoryService;
+import com.collab.project.service.ArtistPreferencesService;
 import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 import com.collab.project.util.GoogleUtils;
@@ -13,10 +17,7 @@ import com.collab.project.util.JwtUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import io.jsonwebtoken.lang.Strings;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,12 @@ public class LoginController {
 
     @Autowired
     ArtistService artistService;
+
+    @Autowired
+    ArtistPreferencesService artistPreferencesService;
+
+    @Autowired
+    ArtistCategoryService artistCategoryService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -70,7 +77,15 @@ public class LoginController {
         if (handle == null || handle.equals("")) {
             hashMap = mapper.convertValue(artist, Map.class);
         } else {
-            SearchedArtistOutput output = new SearchedArtistOutput(artist, Collections.emptyList(), "");
+            String settingValue = "";
+            try {
+                ArtistPreference preference = artistPreferencesService.getArtistPreferences(artist.getArtistId(), "upForCollaboration");
+                settingValue = preference.getSettingValues();
+            } catch (RecordNotFoundException e) {
+                log.info("No artist preference found for artist ", artist.getArtistId());
+            }
+            List<String> categories = artistCategoryService.getArtistCategories(artist.getArtistId());
+            SearchedArtistOutput output = new SearchedArtistOutput(artist, categories, settingValue);
             hashMap = mapper.convertValue(output, Map.class);
         }
         return new ResponseEntity<>(new SuccessResponse(hashMap), HttpStatus.OK);
