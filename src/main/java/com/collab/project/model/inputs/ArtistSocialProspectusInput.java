@@ -16,4 +16,5 @@ public class ArtistSocialProspectusInput {
     String artistId;
     Long socialPlatformId;
     String description;
+    String upForCollab;
 }

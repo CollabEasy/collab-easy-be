@@ -29,7 +29,7 @@ public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService
         if (prospectus == null) {
             prospectus = new ArtistSocialProspectus(FALLBACK_ID, AuthUtils.getArtistId(),
                     artistSocialProspectusInput.getSocialPlatformId(), artistSocialProspectusInput.getHandle(),
-                    artistSocialProspectusInput.getDescription());
+                    artistSocialProspectusInput.getDescription(), artistSocialProspectusInput.getUpForCollab());
         } else {
             prospectus.setDescription(artistSocialProspectusInput.getDescription());
             prospectus.setHandle(artistSocialProspectusInput.getHandle());

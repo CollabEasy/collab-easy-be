@@ -38,11 +38,15 @@ public class ArtistSocialProspectus {
     @Column(name = "description")
     private String description;
 
-    public ArtistSocialProspectus(Long id, @org.jetbrains.annotations.NotNull String artistId, @org.jetbrains.annotations.NotNull Long socialPlatformId, String handle, String description) {
+    @Column(name = "up_for_collab")
+    private String upForCollab;
+
+    public ArtistSocialProspectus(Long id, @org.jetbrains.annotations.NotNull String artistId, @org.jetbrains.annotations.NotNull Long socialPlatformId, String handle, String description, String upForCollab) {
         this.id = id;
         this.artistId = artistId;
         this.socialPlatformId = socialPlatformId;
         this.handle = handle;
         this.description = description;
+        this.upForCollab = upForCollab;
     }
 }
