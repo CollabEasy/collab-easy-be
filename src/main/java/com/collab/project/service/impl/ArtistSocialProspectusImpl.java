@@ -25,6 +25,7 @@ public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService
 
     @Override
     public ArtistSocialProspectus addArtistSocialProspectus(ArtistSocialProspectusInput artistSocialProspectusInput) {
+        System.out.println("Rabbal"+ artistSocialProspectusInput);
         ArtistSocialProspectus prospectus = artistSocialProspectusRepository.findByArtistAndPlatformId(AuthUtils.getArtistId(), artistSocialProspectusInput.getSocialPlatformId());
         if (prospectus == null) {
             prospectus = new ArtistSocialProspectus(FALLBACK_ID, AuthUtils.getArtistId(),
@@ -33,6 +34,7 @@ public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService
         } else {
             prospectus.setDescription(artistSocialProspectusInput.getDescription());
             prospectus.setHandle(artistSocialProspectusInput.getHandle());
+            prospectus.setUpForCollab(artistSocialProspectusInput.getUpForCollab());
         }
         return artistSocialProspectusRepository.save(prospectus);
     }
