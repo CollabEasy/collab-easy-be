@@ -5,10 +5,6 @@ import com.collab.project.security.Role;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 
 import java.sql.Date;
-import java.time.Instant;
-import java.util.Objects;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Transient;
 import lombok.*;
 import org.hibernate.annotations.TypeDef;
@@ -94,13 +90,5 @@ public class Artist implements Serializable {
     public void setNewUser(Boolean newUser) {
         this.newUser = newUser;
     }
-
-
-
-
-
-
-
-
 
 }

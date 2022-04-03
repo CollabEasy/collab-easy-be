@@ -1,25 +1,23 @@
-package com.collab.project.model.scratchpad;
-
+package com.collab.project.model.socialprospectus;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-
 import lombok.*;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.sql.Timestamp;
 
+
 @Entity
-@Table(name = "artist_scratchpads")
+@Table(name = "social_platforms")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-public class Scratchpad implements Serializable {
+public class SocialPlatform {
     @Id
     @Basic(optional = false)
     @NotNull
@@ -27,10 +25,19 @@ public class Scratchpad implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String artistId;
+    @NotNull
+    @Column(name = "name")
+    private String name;
 
-    private String content;
+    @NotNull
+    @Column(name = "base_url")
+    private String base_url;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "approved")
+    private Boolean approved;
 
     @Column(name="created_at", updatable = false, insertable = false, nullable = false)
     private Timestamp createdAt;
@@ -38,9 +45,11 @@ public class Scratchpad implements Serializable {
     @Column(name="updated_at", updatable = false, insertable = false, nullable = false)
     private Timestamp updatedAt;
 
-    public Scratchpad(Long id, String artistId, String content) {
+    public SocialPlatform(Long id, String name, String base_url, String description, Boolean approved) {
         this.id = id;
-        this.artistId = artistId;
-        this.content = content;
+        this.name = name;
+        this.base_url = base_url;
+        this.description = description;
+        this.approved = approved;
     }
 }

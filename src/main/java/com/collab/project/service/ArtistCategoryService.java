@@ -3,6 +3,7 @@ package com.collab.project.service;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistCategory;
 
+import com.collab.project.model.artist.SearchedArtistOutput;
 import com.collab.project.model.inputs.ArtistCategoryInput;
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface ArtistCategoryService {
 
     public List<Artist> getArtistsByCategoryId(Long categoryID);
 
-    public List<Artist> getArtistsByCategorySlug(String categorySlug);
+    public List<SearchedArtistOutput> getArtistsByCategorySlug(String categorySlug);
 }

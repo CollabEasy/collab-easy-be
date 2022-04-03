@@ -1,13 +1,14 @@
 package com.collab.project.service.impl;
 
 import com.collab.project.model.art.ArtCategory;
-import com.collab.project.model.artist.Artist;
-import com.collab.project.model.artist.ArtistCategory;
+import com.collab.project.model.artist.*;
 import com.collab.project.model.inputs.ArtistCategoryInput;
 import com.collab.project.repositories.ArtCategoryRepository;
 import com.collab.project.repositories.ArtistCategoryRepository;
+import com.collab.project.repositories.ArtistPreferenceRepository;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistCategoryService;
+import com.collab.project.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
 
     @Autowired
     private ArtistRepository artistRepository;
+
+    @Autowired
+    ArtistPreferenceRepository artistPreferenceRepository;
 
     @Value("${basic.art.categories:DANCING,PAINTING,CRAFT,MUSIC,VIDEO EDITING}")
     private List<String> BASIC_ART_CATEGORIES;
@@ -96,9 +100,9 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
     }
 
     @Override
-    public List<Artist> getArtistsByCategorySlug(String categorySlug) {
+    public List<SearchedArtistOutput> getArtistsByCategorySlug(String categorySlug) {
 
-        List<Artist> artists = new ArrayList<Artist>();
+        List<SearchedArtistOutput> artists = new ArrayList<SearchedArtistOutput>();
         // Since category slug is unique, there should be only one category associated with the slug.
         List<ArtCategory> artCategory = artCategoryRepository.findBySlug(categorySlug);
         // Since there is one category associated with slug, we can safely fetch first element if it exists.
@@ -106,7 +110,14 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
             List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtId(artCategory.get(0).getId());
             for (ArtistCategory artistCategory : artistCategories) {
                 Artist artist = artistRepository.findByArtistId(artistCategory.getArtistId());
-                if (artist != null) artists.add(artist);
+                if (artist != null) {
+                    Optional<ArtistPreference> preference = artistPreferenceRepository
+                            .findById(new ArtistPreferenceId(artist.getArtistId(), "upForCollaboration"));
+                    List<String> categories = getArtistCategories(artist.getArtistId());
+                    SearchedArtistOutput artistDetails = new SearchedArtistOutput(artist, categories,
+                            (preference.isPresent() ? preference.get().getSettingValues(): ""));
+                    artists.add(artistDetails);
+                }
             }
         }
         return artists;

@@ -1,21 +1,18 @@
 package com.collab.project.model.artist;
 
-import com.collab.project.security.Role;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.annotations.TypeDef;
-import org.springframework.util.StringUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Transient;
+import java.awt.*;
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -40,7 +37,11 @@ public class SearchedArtistOutput implements Serializable {
 
     private String gender;
 
-    public SearchedArtistOutput(Artist artist) {
+    private List<String> skills;
+
+    private String upForCollab;
+
+    public SearchedArtistOutput(Artist artist, List<String> skills, String upForCollab) {
         this.artistId = artist.getArtistId();
         this.slug = artist.getSlug();
         this.firstName = artist.getFirstName();
@@ -49,5 +50,7 @@ public class SearchedArtistOutput implements Serializable {
         this.bio = artist.getBio();
         this.gender = artist.getGender();
         this.lastActive = artist.getLastActive();
+        this.skills = skills;
+        this.upForCollab = upForCollab;
     }
 }
