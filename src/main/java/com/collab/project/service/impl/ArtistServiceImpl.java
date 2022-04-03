@@ -68,6 +68,8 @@ public class ArtistServiceImpl implements ArtistService {
                     .firstName(inp.getFirstName())
                     .lastName(inp.getLastName())
                     .country(inp.getCountry())
+                    .countryDial(inp.getCountryDial())
+                    .countryIso(inp.getCountryIso())
                     .bio(inp.getBio())
                     .profilePicUrl(inp.getProfilePicUrl())
                     .timezone(inp.getTimezone())
@@ -97,6 +99,12 @@ public class ArtistServiceImpl implements ArtistService {
         }
         if (!StringUtils.isEmpty(inp.getCountry())) {
             artist.setCountry(inp.getCountry());
+        }
+        if (!StringUtils.isEmpty(inp.getCountryDial())) {
+            artist.setCountry(inp.getCountryDial());
+        }
+        if (!StringUtils.isEmpty(inp.getCountryIso())) {
+            artist.setCountry(inp.getCountryIso());
         }
         if (!StringUtils.isEmpty(inp.getTimezone())) {
             artist.setTimezone(inp.getTimezone());
