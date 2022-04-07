@@ -13,7 +13,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/api/v1/collab/conversation/")
+@RequestMapping(value = "/api/v1/collab/conversation")
 public class CollabConversationController {
     @Autowired
     private CollabConversationService collabConversationService;
