@@ -4,6 +4,7 @@ import com.collab.project.model.collab.CollabConversation;
 import com.collab.project.model.inputs.CollabCommentInput;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.CollabConversationService;
+import com.collab.project.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +22,14 @@ public class CollabConversationController {
     @PostMapping
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> addComment(@RequestBody CollabCommentInput collabCommentInput) {
-        System.out.println("Rabbal is here " + collabCommentInput);
         CollabConversation comment = collabConversationService.addComment(
-                collabCommentInput.getCollabId(), collabCommentInput.getArtistId(), collabCommentInput.getContent());
+                AuthUtils.getArtistId(), collabCommentInput.getCollabId(), collabCommentInput.getContent());
         return new ResponseEntity<>(new SuccessResponse(comment), HttpStatus.OK);
     }
 
     @GetMapping
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getAllComments(@RequestBody String collabId) {
+    @RequestMapping(value = "/{collabId}", method = RequestMethod.GET)
+    public ResponseEntity<SuccessResponse> getAllComments(@PathVariable String collabId) {
         List<CollabConversation> comments = collabConversationService.getCommentsByCollabId(collabId);
         return new ResponseEntity<>(new SuccessResponse(comments), HttpStatus.OK);
     }

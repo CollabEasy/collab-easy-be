@@ -5,6 +5,6 @@ import com.collab.project.model.scratchpad.Scratchpad;
 import java.util.List;
 
 public interface CollabConversationService {
-    public CollabConversation addComment(String collabId, String artistId, String content);
+    public CollabConversation addComment(String artistId, String collabId, String content);
     public List<CollabConversation> getCommentsByCollabId(String collabId);
 }
