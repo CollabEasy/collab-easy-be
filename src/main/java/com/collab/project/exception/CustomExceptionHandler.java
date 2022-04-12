@@ -1,5 +1,6 @@
 package com.collab.project.exception;
 
+import com.amazonaws.services.mq.model.UnauthorizedException;
 import com.collab.project.model.response.ErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
@@ -37,5 +38,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<Object> handleIOException(IOException e, WebRequest request) {
         ErrorResponse error = new ErrorResponse("IO Exception while processing.", e.getLocalizedMessage());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public final ResponseEntity<Object> handleUnAuthException(UnauthorizedException e, WebRequest request) {
+        ErrorResponse error = new ErrorResponse("IO Exception while processing.", e.getLocalizedMessage());
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 }
