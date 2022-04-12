@@ -27,6 +27,13 @@ public class CollabConversationController {
         return new ResponseEntity<>(new SuccessResponse(comment), HttpStatus.OK);
     }
 
+    @PostMapping
+    @RequestMapping(value = "/read/{collabId}", method = RequestMethod.POST)
+    public ResponseEntity<SuccessResponse> addComment(@PathVariable String collabId) {
+        collabConversationService.markCommentRead(AuthUtils.getArtistId(), collabId);
+        return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
+    }
+
     @GetMapping
     @RequestMapping(value = "/{collabId}", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getAllComments(@PathVariable String collabId) {

@@ -68,6 +68,8 @@ public class CollabRequest {
     @Column(name = "updated_At")
     private Timestamp updatedAt;
 
+    @Transient
+    private boolean newComment;
 
     @Slf4j
     static

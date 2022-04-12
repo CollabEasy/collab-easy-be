@@ -4,6 +4,7 @@ import com.amazonaws.services.mq.model.UnauthorizedException;
 import com.collab.project.exception.CollabRequestException;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.collab.CollabConversationReadStatus;
 import com.collab.project.model.collab.CollabRequest;
 import com.collab.project.model.collab.CollabRequestOutput;
 import com.collab.project.model.collab.CollabRequestsStatus;
@@ -12,6 +13,7 @@ import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
 import com.collab.project.model.notification.Notification;
 import com.collab.project.repositories.ArtistRepository;
+import com.collab.project.repositories.CollabConversationReadStatusRepository;
 import com.collab.project.repositories.CollabRequestRepository;
 import com.collab.project.search.SpecificationBuilder;
 import com.collab.project.service.CollabService;
@@ -36,6 +38,9 @@ public class CollabServiceImpl implements CollabService {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private CollabConversationReadStatusRepository collabConversationReadStatusRepository;
 
     @Override
     public CollabRequest sendRequest(String artistId, CollabRequestInput collabRequestInput) {
@@ -165,6 +170,12 @@ public class CollabServiceImpl implements CollabService {
         collabRequestOutput.setSent(new CollabRequestsStatus());
         collabRequestOutput.setReceived(new CollabRequestsStatus());
         for (CollabRequest request : requests) {
+            List<CollabConversationReadStatus> readStatusList =
+                    collabConversationReadStatusRepository.findByCollabId(request.getId());
+            boolean isNewComment = !readStatusList.isEmpty()
+                    && (readStatusList.get(0).getArtistId().equals(artistId)
+                    || (readStatusList.size() > 1 && readStatusList.get(1).getArtistId().equals(artistId)));
+            request.setNewComment(isNewComment);
             CollabRequestsStatus collabRequestsStatus = null;
             if (request.getSenderId().equals(artistId)) {
                 collabRequestsStatus = collabRequestOutput.getSent();

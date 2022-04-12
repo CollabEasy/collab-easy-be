@@ -4,8 +4,10 @@ import com.amazonaws.services.mq.model.BadRequestException;
 import com.amazonaws.services.mq.model.UnauthorizedException;
 import com.collab.project.exception.RecordNotFoundException;
 import com.collab.project.model.collab.CollabConversation;
+import com.collab.project.model.collab.CollabConversationReadStatus;
 import com.collab.project.model.collab.CollabRequest;
 import com.collab.project.model.enums.Enums;
+import com.collab.project.repositories.CollabConversationReadStatusRepository;
 import com.collab.project.repositories.CollabConversationRepository;
 import com.collab.project.repositories.CollabRequestRepository;
 import com.collab.project.service.CollabConversationService;
@@ -26,6 +28,20 @@ public class CollabConversationServiceImpl implements CollabConversationService 
     @Autowired
     private CollabRequestRepository collabRequestRepository;
 
+    @Autowired
+    private CollabConversationReadStatusRepository collabConversationReadStatusRepository;
+
+    @Override
+    public void markCommentRead(String artistId, String collabId) {
+        List<CollabConversationReadStatus> statuses = collabConversationReadStatusRepository.findByCollabId(collabId);
+        for (CollabConversationReadStatus status : statuses) {
+            if (status.getArtistId().equals(artistId)) {
+                collabConversationReadStatusRepository.delete(status);
+                break;
+            }
+        }
+    }
+
     @Override
     public CollabConversation addComment(String artistId, String collabId, String content) {
         Optional<CollabRequest> collabRequestOptional = collabRequestRepository.findById(collabId);
@@ -43,8 +59,23 @@ public class CollabConversationServiceImpl implements CollabConversationService 
             throw new UnauthorizedException("You are not authorized to access this.");
         }
 
+        String otherUserId = artistId.equals(collabRequest.getReceiverId()) ?
+                collabRequest.getSenderId() : collabRequest.getReceiverId();
+
         CollabConversation comment = new CollabConversation(FALLBACK_ID, collabId, artistId, content);
         collabConversationRepository.save(comment);
+        List<CollabConversationReadStatus> statuses = collabConversationReadStatusRepository.findByCollabId(collabId);
+        boolean exists = false;
+        for (CollabConversationReadStatus status : statuses) {
+            if (status.getArtistId().equals(otherUserId)) {
+                exists = true;
+                break;
+            }
+        }
+
+        if (!exists) {
+            collabConversationReadStatusRepository.save(new CollabConversationReadStatus(FALLBACK_ID, collabId, otherUserId));
+        }
         return comment;
     }
 
