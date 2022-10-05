@@ -27,8 +27,7 @@ CREATE TABLE IF NOT EXISTS `artist_preferences` (
   setting_name varchar(20),
   setting_values blob,
   key(id),
-  unique key(artist_id, setting_name),
-  foreign key(artist_id) references artists(artist_id)
+  unique key(artist_id, setting_name)
 );
 
 CREATE TABLE IF NOT EXISTS `artist_samples` (
@@ -37,8 +36,7 @@ CREATE TABLE IF NOT EXISTS `artist_samples` (
   original_url varchar(50) unique,
   thumbnail_url varchar(50) unique,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  key(id),
-  foreign key(artist_id) references artists(artist_id)
+  key(id)
 );
 
 CREATE INDEX `artist_index` ON `artist_samples` (artist_id);
@@ -48,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `art_categories` (
   art_name varchar(50),
   description varchar(255),
   approved boolean,
-  slug varchar(70);
+  slug varchar(70),
   key(id),
   primary key(art_name)
 );
@@ -59,9 +57,7 @@ CREATE TABLE IF NOT EXISTS `artist_categories` (
   id int AUTO_INCREMENT,
   artist_id varchar(50),
   art_id int,
-  key(id),
-  foreign key(artist_id) references artists(artist_id),
-  foreign key(art_id) references art_categories(id)
+  key(id)
 );
 
 --add indexing on sender_id and receiver_id
@@ -75,10 +71,8 @@ CREATE TABLE IF NOT EXISTS `collab_requests` (
   created_at timestamp,
   updated_at timestamp,
   key(id),
-  primary key(request_id),
   key(sender_id),
-  key(receiver_id),
-  foreign key(sender_id) references artists(artist_id)
+  key(receiver_id)
 );
 
 CREATE TABLE IF NOT EXISTS `collab_reviews` (
@@ -88,8 +82,7 @@ CREATE TABLE IF NOT EXISTS `collab_reviews` (
     rating int,
     review varchar(512),
     key(id),
-    primary key(request_id),
-    foreign key(artist_id) references artists(artist_id)
+    primary key(request_id)
 );
 
 CREATE TABLE IF NOT EXISTS `notifications` (
@@ -103,9 +96,7 @@ CREATE TABLE IF NOT EXISTS `notifications` (
     created_at timestamp,
     updated_at timestamp,
     key(id),
-    primary key(notif_id),
-    key(artist_id),
-    foreign key(artist_id) references artists(artist_id)
+    key(artist_id)
  );
 
 CREATE TABLE IF NOT EXISTS `artist_scratchpads` (
@@ -116,8 +107,7 @@ CREATE TABLE IF NOT EXISTS `artist_scratchpads` (
     updated_at timestamp,
     deleted_at timestamp,
     key(id),
-    primary key(artist_id),
-    foreign key(artist_id) references artists(artist_id)
+    primary key(artist_id)
  );
 
 CREATE TABLE IF NOT EXISTS `social_platforms` (
@@ -128,8 +118,7 @@ CREATE TABLE IF NOT EXISTS `social_platforms` (
     approved bool,
     created_at timestamp,
     updated_at timestamp,
-    key(id),
-    primary key(platform_id),
+    key(id)
  );
 
 CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
@@ -139,8 +128,6 @@ CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
     handle varchar(50),
     description varchar(50),
     created_at timestamp,
-    updated_at timestamp,a
-    key(id),
-    foreign key(artist_id) references artists(artist_id)
-    foreign key(social_platform_id) references social_platforms(id)
+    updated_at timestamp,
+    key(id)
  );
