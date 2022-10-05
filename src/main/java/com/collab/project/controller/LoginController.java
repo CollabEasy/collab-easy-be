@@ -93,8 +93,10 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> validate(@RequestBody ArtistInput input) {
+        System.out.println("Rabbal " + input);
         Boolean isValid = googleUtils.isValid(input);
         if (isValid) {
+            System.out.println("Rabbal is valid ");
             Artist artist = artistService.createArtist(input);
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(artist.getArtistId(), ""));
@@ -107,6 +109,7 @@ public class LoginController {
 
             return new ResponseEntity<>(new SuccessResponse(hashMap, "SUCCESS"), HttpStatus.OK);
         }
+        System.out.println("Rabbal is not valid ");
         return new ResponseEntity<>(new SuccessResponse("Invalid Login", "FAILURE"),
             HttpStatus.BAD_REQUEST);
     }
