@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Component
 public class S3Utils {
 
-    @Autowired
+//     @Autowired
     // private AmazonS3 amazonS3;
 
 //     public String uploadFileToS3Bucket(final String bucketName, final File file, String path, String fileName) {
