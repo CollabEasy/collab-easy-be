@@ -27,7 +27,7 @@ public class S3Utils {
         amazonS3.putObject(putObjectRequest);
         return ((AmazonS3Client)amazonS3).getResourceUrl("wondor-samples", uniqueFileName);
         */
-        return null;
+        return "";
     }
 
     public void removeFileFromS3Bucket(final String bucketName, String filePath) {
