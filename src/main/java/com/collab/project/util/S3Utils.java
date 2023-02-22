@@ -16,19 +16,25 @@ import java.time.LocalDateTime;
 public class S3Utils {
 
     @Autowired
-    private AmazonS3 amazonS3;
+    // private AmazonS3 amazonS3;
 
     public String uploadFileToS3Bucket(final String bucketName, final File file, String path, String fileName) {
+        /*
         final String uniqueFileName = path + "/" + fileName;
 
         final PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, uniqueFileName, file).
                 withCannedAcl(CannedAccessControlList.PublicRead);
         amazonS3.putObject(putObjectRequest);
         return ((AmazonS3Client)amazonS3).getResourceUrl("wondor-samples", uniqueFileName);
+        */
+        return null;
     }
 
     public void removeFileFromS3Bucket(final String bucketName, String filePath) {
+        /*
         final DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, filePath);
         amazonS3.deleteObject(deleteObjectRequest);
+        */
+        return;
     }
 }
