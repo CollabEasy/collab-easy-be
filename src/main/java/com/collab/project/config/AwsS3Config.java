@@ -16,7 +16,7 @@ public class AwsS3Config {
     // @Value("${aws.s3.region}")
     private String region = "us-east-1";
 
-    @Bean
+//     @Bean
     public AmazonS3 getAmazonS3Cient() {
         final BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(System.getenv("ACCESS_KEY"),
                                                                                 System.getenv("SECRET_KEY"));
