@@ -3,7 +3,7 @@ package com.collab.project;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import java.util.Arrays;
 
-import com.collab.project.config.S3ConfigProps;
+// import com.collab.project.config.S3ConfigProps;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableWebSecurity
-@EnableConfigurationProperties(S3ConfigProps.class)
+// @EnableConfigurationProperties(S3ConfigProps.class)
 @EnableJpaRepositories(basePackages = {"com.collab.project.repositories"})
 @EntityScan(basePackages = {"com.collab.project.model"})
 @ComponentScan(basePackages = {"com.collab"})
