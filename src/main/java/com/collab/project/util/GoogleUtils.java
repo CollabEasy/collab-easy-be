@@ -18,7 +18,7 @@ public class GoogleUtils {
     @Autowired
     RequestInstanceImpl requestInstance;
 
-    @Value("${google.client.id:265324139647-lv38dkdpnqq06e66mkt9a6ab6i4r1cik.apps.googleusercontent.com}")
+    @Value("${google.client.id:896694875793-05dp2a045lu38ki42dbb1t010rmr5hr9.apps.googleusercontent.com}")
     private String clientId;
 
 
