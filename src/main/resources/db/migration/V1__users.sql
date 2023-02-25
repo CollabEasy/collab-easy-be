@@ -13,6 +13,10 @@ CREATE TABLE IF NOT EXISTS artists (
   timezone varchar(5),
   bio varchar(512),
   age integer,
+  date_of_birth timestamp,
+  country_iso varchar(20),
+  country_dial varchar(10),
+  new_user boolean,
   last_active timestamp default current_timestamp,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP ,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -35,6 +39,8 @@ CREATE TABLE IF NOT EXISTS `artist_samples` (
   artist_id varchar(50),
   original_url varchar(50) unique,
   thumbnail_url varchar(50) unique,
+  caption varchar(1000),
+  file_type varchar(10),
   created_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   key(id)
 );
@@ -60,7 +66,6 @@ CREATE TABLE IF NOT EXISTS `artist_categories` (
   key(id)
 );
 
---add indexing on sender_id and receiver_id
 CREATE TABLE IF NOT EXISTS `collab_requests` (
   id int AUTO_INCREMENT,
   sender_id varchar(50),
