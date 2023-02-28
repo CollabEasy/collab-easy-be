@@ -136,3 +136,26 @@ CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
     updated_at timestamp,
     key(id)
  );
+ 
+ insert into art_categories values(1, "Dancer", "All Dancers", 1, "dancer");
+ insert into art_categories values(2, "Choreographer", "All Choreographer", 1, "choreographer");
+ insert into art_categories values(3, "Writer", "All Writer", 1, "writer");
+ insert into art_categories values(4, "Creative Writer", "All creative writer", 1, "creative-writer");
+ insert into art_categories values(5, "Poet", "All poets", 1, "poet");
+ insert into art_categories values(6, "Spoken Words", "All spoken words", 1, "spoken-words");
+ insert into art_categories values(7, "Song Writer", "All song writer", 1, "song-writer");
+ insert into art_categories values(8, "Lyricist", "All lyricist", 1, "lyricist");
+ insert into art_categories values(9, "Singer", "All Singer", 1, "singer"); 
+ insert into art_categories values(10, "Vocalist", "All Vocalist", 1, "vocalist"); 
+ insert into art_categories values(11, "Photographer", "All Photographer", 1, "photographer"); 
+ insert into art_categories values(12, "Illustrator", "All Illustrators", 1, "illustrator"); 
+ insert into art_categories values(13, "Graphic Designer", "All Graphic Designers", 1, "graphic-designer");
+ insert into art_categories values(14, "Video Editor", "All Video Editors", 1, "video-editor");
+ insert into art_categories values(15, "Film Maker", "All Film Makers", 1, "film-maker");
+ insert into art_categories values(16, "Musician", "All Musicians", 1, "musician");
+ insert into art_categories values(17, "Sound Engineer", "All Sound Engineers", 1, "sound-engineer");
+ insert into art_categories values(18, "Music Director", "All Music Directors", 1, "music-director");
+ insert into art_categories values(19, "Painter", "All Painters", 1, "painter");
+ insert into art_categories values(20, "Caricaturist", "All Caricaturists", 1, "caricaturist");
+ 
+ 
