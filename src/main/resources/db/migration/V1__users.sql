@@ -162,3 +162,4 @@ CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
 insert into social_platforms values(1, "Facebook", "https://facebook.com", "Facebook social platform", 1, now(), now());
 insert into social_platforms values(2, "Instagram", "https://instagram.com", "Instagram social platform", 1, now(), now());
 insert into social_platforms values(3, "Youtube", "https://youtube.com", "Youtube social platform", 1, now(), now());
+insert into social_platforms values(4, "Tik Tok", "https://tiktok.com", "Tik Tok social platform", 1, now(), now());
