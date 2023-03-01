@@ -132,6 +132,7 @@ CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
     artist_id varchar(50),
     handle varchar(50),
     description varchar(50),
+    up_for_collab varchar(50),
     created_at timestamp,
     updated_at timestamp,
     key(id)
