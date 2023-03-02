@@ -66,19 +66,24 @@ CREATE TABLE IF NOT EXISTS `artist_categories` (
   key(id)
 );
 
-CREATE TABLE IF NOT EXISTS `collab_requests` (
-  id int AUTO_INCREMENT,
-  sender_id varchar(50),
-  receiver_id varchar(50),
-  request_data JSON,
-  scheduled_at timestamp,
-  status varchar(20),
-  created_at timestamp,
-  updated_at timestamp,
-  key(id),
-  key(sender_id),
-  key(receiver_id)
-);
+
+CREATE TABLE IF NOT EXISTS `collab_requests` (   
+	`sender_id` varchar(50) DEFAULT NULL,   
+	`receiver_id` varchar(50) DEFAULT NULL,   
+	`request_data` json DEFAULT NULL,   
+	`scheduled_at` timestamp NULL DEFAULT NULL,   `
+	status` varchar(20) DEFAULT NULL,   
+	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,   
+	`updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   
+	`id` varchar(50) NOT NULL,   
+	`artist_profile_pic` varchar(255) DEFAULT NULL,   
+	`sender_name` varchar(255) DEFAULT NULL,   
+	`receiver_name` varchar(255) DEFAULT NULL,   
+	`sender_slug` varchar(150) DEFAULT NULL,   
+	`receiver_slug` varchar(150) DEFAULT NULL,   
+	`sender_profile_pic_url` varchar(255) DEFAULT NULL,   
+	`receiver_profile_pic_url` varchar(255) DEFAULT NULL,   
+	 PRIMARY KEY (`id`),   KEY `sender_id` (`sender_id`),   KEY `receiver_id` (`receiver_id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `collab_reviews` (
     id int AUTO_INCREMENT,
