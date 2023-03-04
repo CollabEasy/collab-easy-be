@@ -68,22 +68,32 @@ CREATE TABLE IF NOT EXISTS `artist_categories` (
 
 
 CREATE TABLE IF NOT EXISTS `collab_requests` (   
-	`sender_id` varchar(50) DEFAULT NULL,   
-	`receiver_id` varchar(50) DEFAULT NULL,   
-	`request_data` json DEFAULT NULL,   
-	`scheduled_at` timestamp NULL DEFAULT NULL,   `
-	status` varchar(20) DEFAULT NULL,   
-	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,   
-	`updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   
-	`id` varchar(50) NOT NULL,   
-	`artist_profile_pic` varchar(255) DEFAULT NULL,   
-	`sender_name` varchar(255) DEFAULT NULL,   
-	`receiver_name` varchar(255) DEFAULT NULL,   
-	`sender_slug` varchar(150) DEFAULT NULL,   
-	`receiver_slug` varchar(150) DEFAULT NULL,   
-	`sender_profile_pic_url` varchar(255) DEFAULT NULL,   
-	`receiver_profile_pic_url` varchar(255) DEFAULT NULL,   
-	 PRIMARY KEY (`id`),   KEY `sender_id` (`sender_id`),   KEY `receiver_id` (`receiver_id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `sender_id` varchar(50) DEFAULT NULL,   
+  `receiver_id` varchar(50) DEFAULT NULL,   
+  `request_data` json DEFAULT NULL,   
+  `scheduled_at` timestamp NULL DEFAULT NULL,   
+  `status` varchar(20) DEFAULT NULL,   
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,   
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   
+  `id` varchar(50) NOT NULL,   
+  `artist_profile_pic` varchar(255) DEFAULT NULL,   
+  `sender_name` varchar(255) DEFAULT NULL,   
+  `receiver_name` varchar(255) DEFAULT NULL,   
+  `sender_slug` varchar(150) DEFAULT NULL,   
+  `receiver_slug` varchar(150) DEFAULT NULL,   
+  `sender_profile_pic_url` varchar(255) DEFAULT NULL,   
+  `receiver_profile_pic_url` varchar(255) DEFAULT NULL,   
+   PRIMARY KEY (`id`),   KEY `sender_id` (`sender_id`),   KEY `receiver_id` (`receiver_id`) 
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `collab_conversation_read_status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `collab_id` varchar(50) DEFAULT NULL,
+  `artist_id` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `collab_artist` (`collab_id`,`artist_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
 
 CREATE TABLE IF NOT EXISTS `collab_reviews` (
     id int AUTO_INCREMENT,
