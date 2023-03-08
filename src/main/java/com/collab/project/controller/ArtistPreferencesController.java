@@ -1,7 +1,10 @@
 package com.collab.project.controller;
 
 import com.collab.project.model.artist.ArtistPreference;
+import com.collab.project.model.inputs.ArtistSocialProspectusInput;
 import com.collab.project.model.response.ArtistPrefResponse;
+import com.collab.project.service.ArtistSocialProspectusService;
+import com.collab.project.model.socialprospectus.ArtistSocialProspectus;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.ArtistPreferencesService;
 import com.collab.project.util.AuthUtils;
@@ -21,6 +24,9 @@ public class ArtistPreferencesController {
     @Autowired
     ArtistPreferencesService artistPreferencesService;
 
+    @Autowired
+    ArtistSocialProspectusService artistSocialProspectusService;
+
     @PostMapping
     @RequestMapping(value = "/preferences", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> updateArtistPreferences(
@@ -37,6 +43,21 @@ public class ArtistPreferencesController {
         @RequestBody String settingValue) {
         artistPreferencesService.updateArtistPreferences(
             new ArtistPreference(AuthUtils.getArtistId(), settingName, settingValue));
+
+        if (settingName.equals("upForCollaboration")) {
+            List<ArtistSocialProspectus> prospectuses = artistSocialProspectusService.getSocialProspectByArtistId(AuthUtils.getArtistId());
+            for (int i = 0; i < prospectuses.size(); i++) {
+                ArtistSocialProspectus prospectus = prospectuses.get(i);
+                ArtistSocialProspectusInput input = new ArtistSocialProspectusInput();
+                input.setArtistId(prospectus.getArtistId());
+                input.setSocialPlatformId(prospectus.getSocialPlatformId());
+                input.setDescription(prospectus.getDescription());
+                input.setUpForCollab(settingValue);
+                input.setHandle(prospectus.getHandle());
+                ArtistSocialProspectus updatedProspectus = artistSocialProspectusService.addArtistSocialProspectus(input);
+                System.out.println("Rabbal " + updatedProspectus.getUpForCollab());
+            }
+        }
         return new ResponseEntity<>(new SuccessResponse(
             new ArtistPreference(AuthUtils.getArtistId(), settingName, settingValue)),
             HttpStatus.OK);
