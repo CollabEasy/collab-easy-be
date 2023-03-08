@@ -153,6 +153,16 @@ CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
     key(id)
  );
  
+ CREATE TABLE `collab_conversations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `collab_id` varchar(50) NOT NULL,
+  `artist_id` varchar(50) NOT NULL,
+  `content` varchar(2000) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
  insert into art_categories values(1, "Dancer", "All Dancers", 1, "dancer");
  insert into art_categories values(2, "Choreographer", "All Choreographer", 1, "choreographer");
  insert into art_categories values(3, "Writer", "All Writer", 1, "writer");
