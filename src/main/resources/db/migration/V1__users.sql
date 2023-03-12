@@ -193,7 +193,8 @@ CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
  insert into art_categories values(27, "Collage Making", "All collage making", 1, "collage-making");
  
  insert into art_categories values(28, "Sketching", "All sketching", 1, "sketching");
- insert into art_categories values(29, "Sketching", "All sketching", 1, "sketching");
+ insert into art_categories values(29, "Journaling", "All journalers", 1, "journaling");
+ insert into art_categories values(30, "Hand Lettering", "All hand letterers", 1, "hand-lettering");
  
  
  
