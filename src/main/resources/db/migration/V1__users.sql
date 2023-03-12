@@ -184,6 +184,19 @@ CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
  insert into art_categories values(19, "Painter", "All Painters", 1, "painter");
  insert into art_categories values(20, "Caricaturist", "All Caricaturists", 1, "caricaturist");
  
+ insert into art_categories values(21, "Creative Journaling", "All creative journalers", 1, "creative-journaling");
+ insert into art_categories values(22, "Scrapbooking", "All scrapbooking", 1, "scrapbooking");
+ insert into art_categories values(23, "Bullet Journaling", "All bullet journaling", 1, "bullet-journaling");
+ insert into art_categories values(24, "Calligraphy", "All calligraphy", 1, "calligraphy");
+ insert into art_categories values(25, "Doodling", "All doodling", 1, "doodling");
+ insert into art_categories values(26, "Art Journaling", "All art journaling", 1, "art-journaling");
+ insert into art_categories values(27, "Collage Making", "All collage making", 1, "collage-making");
+ 
+ insert into art_categories values(28, "Sketching", "All sketching", 1, "sketching");
+ insert into art_categories values(29, "Sketching", "All sketching", 1, "sketching");
+ 
+ 
+ 
  
 insert into social_platforms values(1, "Facebook", "https://facebook.com", "Facebook social platform", 1, now(), now());
 insert into social_platforms values(2, "Instagram", "https://instagram.com", "Instagram social platform", 1, now(), now());
