@@ -82,7 +82,7 @@ public class CollabConversationServiceImpl implements CollabConversationService 
     @Override
     public List<CollabConversation> getCommentsByCollabId(String userId, String collabId) {
         Optional<CollabRequest> collab = collabRequestRepository.findById(collabId);
-        if (!collab.isPresent() || collab.get().getReceiverId() != userId && collab.get().getSenderId() != userId) {
+        if (!collab.isPresent() || (!collab.get().getReceiverId().equals(userId) && !collab.get().getSenderId().equals(userId))) {
             throw new RecordNotFoundException("No such collab session exists for you.");
         }
         return collabConversationRepository.findByCollabId(collabId);
