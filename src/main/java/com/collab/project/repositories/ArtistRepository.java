@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.Query;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -27,6 +28,8 @@ public interface ArtistRepository extends JpaRepository<Artist, String> {
 
     @Query(value = "SELECT * FROM artists WHERE created_at between ?1% and ?2%", nativeQuery = true)
     List<Artist> findByDateBetween(String startDate, String endDate);
+
+    List<Artist> findByCreatedAtBetween(Timestamp startDate, Timestamp endDate);
 
     Long deleteByArtistId(String artistId);
 }

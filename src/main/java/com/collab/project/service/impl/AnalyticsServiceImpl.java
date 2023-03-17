@@ -29,15 +29,16 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
         DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
-        Map<String, Integer> count = new HashMap();
+        Map<String, Integer> count = new HashMap<String, Integer>();
         while (!start.isAfter(end)) {
             count.put(start.format(customFormatter), 0);
             start = start.plusDays(1);
         }
+        end = end.plusDays(1);
 
-        startDate += " 00:00:00";
-        endDate += " 23:59:59";
-        List<Artist> artistList = artistRepository.findByDateBetween(startDate, endDate);
+        Timestamp startTs = Timestamp.valueOf(start.atStartOfDay());
+        Timestamp endTs = Timestamp.valueOf(end.atStartOfDay());
+        List<Artist> artistList = artistRepository.findByCreatedAtBetween(startTs, endTs);
 
         SimpleDateFormat sf = new SimpleDateFormat("MMM dd, yyyy");
         for (Artist artist : artistList) {
