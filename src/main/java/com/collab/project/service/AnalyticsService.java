@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface AnalyticsService {
-    public List<UserAnalytics> getUsersJoinedCount(long startTime, long endTime);
+    public List<UserAnalytics> getUsersJoinedCount(String startTime, String endTime);
 
-    public Map<String, Integer> getCollabsCreatedCount(long startTime, long endTime);
+    public Map<String, Integer> getCollabsCreatedCount(String startTime, String endTime);
 }

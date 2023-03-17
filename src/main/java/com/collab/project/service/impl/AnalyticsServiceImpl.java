@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -23,27 +25,38 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     CollabRequestRepository collabRequestRepository;
 
     @Override
-    public List<UserAnalytics> getUsersJoinedCount(long startTime, long endTime) {
-        List<Artist> artistList = artistRepository.findByDateBetween(startTime, endTime);
+    public List<UserAnalytics> getUsersJoinedCount(String startDate, String endDate) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
         Map<String, Integer> count = new HashMap();
-        String pattern = "dd/MM/yyyy";
-        DateFormat df = new SimpleDateFormat(pattern);
+        while (!start.isAfter(end)) {
+            count.put(start.format(customFormatter), 0);
+            start = start.plusDays(1);
+        }
+
+        startDate += " 00:00:00";
+        endDate += " 23:59:59";
+        List<Artist> artistList = artistRepository.findByDateBetween(startDate, endDate);
+
+        SimpleDateFormat sf = new SimpleDateFormat("MMM dd, yyyy");
         for (Artist artist : artistList) {
             Timestamp joinedOn = artist.getCreatedAt();
-            Date joinedDate = new Date(String.valueOf(joinedOn));
-            String joinedDateStr = df.format(joinedDate);
-            count.put(joinedDateStr, count.getOrDefault(joinedDate, 0) + 1);
+            Date date = new Date();
+            date.setTime(joinedOn.getTime());
+            String formattedDate = sf.format(date);
+            count.put(formattedDate, count.getOrDefault(formattedDate, 0) + 1);
         }
         List<UserAnalytics> analytics = new ArrayList<>();
-        for (Map.Entry entry : count.entrySet()) {
-            analytics.add(new UserAnalytics(String.valueOf(entry.getKey()), (Integer)entry.getValue()));
+        for (Map.Entry<String, Integer> entry : count.entrySet()) {
+            analytics.add(new UserAnalytics(entry.getKey(), entry.getValue()));
         }
-        Collections.sort(analytics, (a1, a2) -> a1.getDate().compareTo(a2.getDate()));
+        analytics.sort(Comparator.comparing(UserAnalytics::getDate));
         return analytics;
     }
 
     @Override
-    public Map<String, Integer> getCollabsCreatedCount(long startTime, long endTime) {
+    public Map<String, Integer> getCollabsCreatedCount(String startTime, String endTime) {
         return null;
     }
 }
