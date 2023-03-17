@@ -5,6 +5,7 @@ import com.collab.project.model.artist.Artist;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.CollabRequestRepository;
 import com.collab.project.service.AnalyticsService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     CollabRequestRepository collabRequestRepository;
 
     @Override
-    public List<UserAnalytics> getUsersJoinedCount(String startDate, String endDate) {
+    public UserAnalytics getUsersJoinedCount(String startDate, String endDate) {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
         DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
@@ -42,6 +43,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         Date endTs = Date.from(end.atStartOfDay().toInstant(ZoneOffset.UTC));
 //        List<Artist> artistList = artistRepository.findArtistBetweenDates(startTs, endTs);
         List<Artist> artistList = artistRepository.findArtistBetweenDatesString(startDate, endDate);
+        int total = artistRepository.getTotalArtists();
         System.out.println("Fetched artists : " + artistList.size());
 
         SimpleDateFormat sf = new SimpleDateFormat("MMM dd, yyyy");
@@ -52,11 +54,11 @@ public class AnalyticsServiceImpl implements AnalyticsService {
             String formattedDate = sf.format(date);
             count.put(formattedDate, count.getOrDefault(formattedDate, 0) + 1);
         }
-        List<UserAnalytics> analytics = new ArrayList<>();
+        UserAnalytics analytics = new UserAnalytics(total, new ArrayList<>());
         for (Map.Entry<String, Integer> entry : count.entrySet()) {
-            analytics.add(new UserAnalytics(entry.getKey(), entry.getValue()));
+            analytics.addNewDateUserDetail(entry.getKey(), entry.getValue());
         }
-        analytics.sort(Comparator.comparing(UserAnalytics::getDate));
+        analytics.sortOnDate();
         return analytics;
     }
 

@@ -22,7 +22,7 @@ public class AnalyticsController {
     @GetMapping
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getSearchResults(@RequestParam("start_date") String startDate, @RequestParam("end_date") String endDate) {
-        List<UserAnalytics> userAnalytics = analyticsService.getUsersJoinedCount(startDate, endDate);
+        UserAnalytics userAnalytics = analyticsService.getUsersJoinedCount(startDate, endDate);
         SuccessResponse successResponse = new SuccessResponse(userAnalytics);
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }

@@ -20,6 +20,9 @@ public interface ArtistRepository extends JpaRepository<Artist, String> {
     Artist findByArtistHandle(String artistHandle);
     Artist findByEmail(String email);
 
+    @Query(value = "SELECT count(*) FROM artists", nativeQuery = true)
+    Integer getTotalArtists();
+
     List<Artist> findBySlug(String queryStr);
 
     @Query(value = "SELECT slug FROM artists WHERE slug like ?1% order by created_at desc limit 1", nativeQuery = true)
