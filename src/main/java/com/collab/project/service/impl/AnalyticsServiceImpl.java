@@ -33,11 +33,10 @@ public class AnalyticsServiceImpl implements AnalyticsService {
             count.put(start.format(customFormatter), 0);
             start = start.plusDays(1);
         }
-        end = end.plusDays(1);
 
-        Timestamp startTs = Timestamp.valueOf(start.atStartOfDay());
-        Timestamp endTs = Timestamp.valueOf(end.atStartOfDay());
-        List<Artist> artistList = artistRepository.findByCreatedAtBetween(startTs, endTs);
+        startDate += " 00:00:00";
+        endDate += " 23:59:59";
+        List<Artist> artistList = artistRepository.findArtistBetweenStringDates(startDate, endDate);
         System.out.println("Fetched artists : " + artistList.size());
 
         SimpleDateFormat sf = new SimpleDateFormat("MMM dd, yyyy");
