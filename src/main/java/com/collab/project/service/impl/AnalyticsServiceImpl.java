@@ -37,7 +37,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
         Timestamp startTs = Timestamp.valueOf(start.atStartOfDay());
         Timestamp endTs = Timestamp.valueOf(end.atStartOfDay());
-        List<Artist> artistList = artistRepository.findByCreatedAtBetween(startTs, endTs);
+        List<Artist> artistList = artistRepository.findByDateBetween(startTs, endTs);
         System.out.println("Fetched artists : " + artistList.size());
 
         SimpleDateFormat sf = new SimpleDateFormat("MMM dd, yyyy");
