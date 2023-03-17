@@ -2,6 +2,7 @@ package com.collab.project.repositories;
 
 import com.collab.project.model.artist.Artist;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.Query;
@@ -26,8 +27,8 @@ public interface ArtistRepository extends JpaRepository<Artist, String> {
     @Query(value = "SELECT * FROM artists WHERE slug like ?1%", nativeQuery = true)
     List<Artist> findBySlugStartsWith(String queryStr);
 
-    @Query(value = "SELECT * FROM artists WHERE created_at between ?1% and ?2%", nativeQuery = true)
-    List<Artist> findArtistBetweenStringDates(String startDate, String endDate);
+    @Query(value = "SELECT * FROM artists WHERE created_at >= to_timestamp(:startdate, 'YYYY-MM-DD') and created_at <= to_timestamp(:enddate, 'YYYY-MM-DD')", nativeQuery = true)
+    List<Artist> findArtistBetweenStringDates(@Param("startdate") String startDate, @Param("enddate") String endDate);
 
     List<Artist> findByCreatedAtBetween(Timestamp startDate, Timestamp endDate);
 
