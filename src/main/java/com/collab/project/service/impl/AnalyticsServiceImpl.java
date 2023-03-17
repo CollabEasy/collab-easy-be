@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -39,6 +38,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         Timestamp startTs = Timestamp.valueOf(start.atStartOfDay());
         Timestamp endTs = Timestamp.valueOf(end.atStartOfDay());
         List<Artist> artistList = artistRepository.findByCreatedAtBetween(startTs, endTs);
+        System.out.println("Fetched artists : " + artistList.size());
 
         SimpleDateFormat sf = new SimpleDateFormat("MMM dd, yyyy");
         for (Artist artist : artistList) {
