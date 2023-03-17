@@ -37,7 +37,8 @@ public class CollabConversationController {
     @GetMapping
     @RequestMapping(value = "/{collabId}", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getAllComments(@PathVariable String collabId) {
-        List<CollabConversation> comments = collabConversationService.getCommentsByCollabId(collabId);
+        String user = AuthUtils.getArtistId();
+        List<CollabConversation> comments = collabConversationService.getCommentsByCollabId(user, collabId);
         return new ResponseEntity<>(new SuccessResponse(comments), HttpStatus.OK);
     }
 }
