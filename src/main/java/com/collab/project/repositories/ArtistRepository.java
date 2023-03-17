@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -27,8 +28,8 @@ public interface ArtistRepository extends JpaRepository<Artist, String> {
     @Query(value = "SELECT * FROM artists WHERE slug like ?1%", nativeQuery = true)
     List<Artist> findBySlugStartsWith(String queryStr);
 
-    @Query(value = "SELECT * FROM artists WHERE created_at >= to_timestamp(:startdate, 'YYYY-MM-DD') and created_at <= to_timestamp(:enddate, 'YYYY-MM-DD')", nativeQuery = true)
-    List<Artist> findArtistBetweenStringDates(@Param("startdate") String startDate, @Param("enddate") String endDate);
+    @Query(value = "SELECT * FROM artists WHERE created_at between :startTime AND :endTime", nativeQuery = true)
+    List<Artist> findArtistBetweenDates(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     List<Artist> findByCreatedAtBetween(Timestamp startDate, Timestamp endDate);
 

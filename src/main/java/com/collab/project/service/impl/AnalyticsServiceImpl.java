@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -33,10 +34,11 @@ public class AnalyticsServiceImpl implements AnalyticsService {
             count.put(start.format(customFormatter), 0);
             start = start.plusDays(1);
         }
+        end = end.plusDays(1);
 
-        startDate += " 00:00:00";
-        endDate += " 23:59:59";
-        List<Artist> artistList = artistRepository.findArtistBetweenStringDates(startDate, endDate);
+        Date startTs = Date.from(start.atStartOfDay().toInstant(ZoneOffset.UTC));
+        Date endTs = Date.from(end.atStartOfDay().toInstant(ZoneOffset.UTC));
+        List<Artist> artistList = artistRepository.findArtistBetweenDates(startTs, endTs);
         System.out.println("Fetched artists : " + artistList.size());
 
         SimpleDateFormat sf = new SimpleDateFormat("MMM dd, yyyy");
