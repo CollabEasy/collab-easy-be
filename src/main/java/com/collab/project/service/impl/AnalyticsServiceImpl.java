@@ -36,9 +36,12 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         }
         end = end.plusDays(1);
 
+        startDate += " 00:00:00";
+        endDate += " 23:59:59";
         Date startTs = Date.from(start.atStartOfDay().toInstant(ZoneOffset.UTC));
         Date endTs = Date.from(end.atStartOfDay().toInstant(ZoneOffset.UTC));
         List<Artist> artistList = artistRepository.findArtistBetweenDates(startTs, endTs);
+//        List<Artist> artistList = artistRepository.findArtistBetweenDatesString(startDate, endDate);
         System.out.println("Fetched artists : " + artistList.size());
 
         SimpleDateFormat sf = new SimpleDateFormat("MMM dd, yyyy");

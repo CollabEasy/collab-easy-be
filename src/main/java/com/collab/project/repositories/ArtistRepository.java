@@ -29,7 +29,10 @@ public interface ArtistRepository extends JpaRepository<Artist, String> {
     List<Artist> findBySlugStartsWith(String queryStr);
 
     @Query(value = "SELECT * FROM artists WHERE created_at between ?1 AND ?2", nativeQuery = true)
-    List<Artist> findArtistBetweenDates(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+    List<Artist> findArtistBetweenDates(Date startTime, Date endTime);
+
+    @Query(value = "SELECT * FROM artists WHERE created_at between ?1 AND ?2", nativeQuery = true)
+    List<Artist> findArtistBetweenDatesString(Date startTime, Date endTime);
 
     List<Artist> findByCreatedAtBetween(Timestamp startDate, Timestamp endDate);
 
