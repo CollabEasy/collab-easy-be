@@ -76,6 +76,9 @@ public class Artist implements Serializable {
     @Column
     private Boolean newUser;
 
+    @Column
+    private Boolean testUser;
+
     @Transient
     public Role getRole() {
         return Role.DEFAULT;

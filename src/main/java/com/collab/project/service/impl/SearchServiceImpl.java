@@ -41,6 +41,9 @@ public class SearchServiceImpl implements SearchService {
                                              List<SearchResponse> searchResults,
                                              List<Artist> artists) {
         for (Artist artist : artists) {
+            if (artist.getTestUser().equals(true)) {
+                continue;
+            }
             SearchResponse response = new SearchResponse(Enums.EntityType.ARTIST.toString(),
                     artist.getFirstName() + " " + artist.getLastName(),
                     artist.getSlug(),
