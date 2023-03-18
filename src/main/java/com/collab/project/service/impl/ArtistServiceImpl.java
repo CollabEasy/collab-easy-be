@@ -77,6 +77,7 @@ public class ArtistServiceImpl implements ArtistService {
                     .slug(newSlug)
                 .build();
             artist.setNewUser(true);
+            artist.setTestUser(false);
             artist = artistRepository.save(artist);
         }
         return artist;

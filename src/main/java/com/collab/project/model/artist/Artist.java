@@ -94,4 +94,8 @@ public class Artist implements Serializable {
         this.newUser = newUser;
     }
 
+    public void setTestUser(Boolean testUser) {
+        this.testUser = testUser;
+    }
+
 }
