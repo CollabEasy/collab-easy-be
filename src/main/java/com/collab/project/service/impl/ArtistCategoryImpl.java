@@ -110,6 +110,10 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
             List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtId(artCategory.get(0).getId());
             for (ArtistCategory artistCategory : artistCategories) {
                 Artist artist = artistRepository.findByArtistId(artistCategory.getArtistId());
+                if (artist.getTestUser().equals(true)) {
+                    // Do not show test users in listing.
+                    continue;
+                }
                 if (artist != null) {
                     Optional<ArtistPreference> preference = artistPreferenceRepository
                             .findById(new ArtistPreferenceId(artist.getArtistId(), "upForCollaboration"));
