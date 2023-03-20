@@ -7,6 +7,7 @@ import com.collab.project.model.inputs.CollabRequestSearch;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.CollabService;
 import com.collab.project.util.AuthUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,9 @@ public class CollabController {
     private CollabService collabService;
 
     @PostMapping(value = "/request")
-    public ResponseEntity<SuccessResponse> sendRequest(@RequestBody @Validated CollabRequestInput collabRequestInput) {
+    public ResponseEntity<SuccessResponse> sendRequest(
+            @RequestBody @Validated CollabRequestInput collabRequestInput
+    ) throws JsonProcessingException {
         CollabRequest collabRequest = collabService.sendRequest(AuthUtils.getArtistId(), collabRequestInput);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
