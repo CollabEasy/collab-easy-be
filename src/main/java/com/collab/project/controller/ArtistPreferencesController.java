@@ -24,9 +24,6 @@ public class ArtistPreferencesController {
     @Autowired
     ArtistPreferencesService artistPreferencesService;
 
-    @Autowired
-    ArtistSocialProspectusService artistSocialProspectusService;
-
     @PostMapping
     @RequestMapping(value = "/preferences", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> updateArtistPreferences(
@@ -44,20 +41,6 @@ public class ArtistPreferencesController {
         artistPreferencesService.updateArtistPreferences(
             new ArtistPreference(AuthUtils.getArtistId(), settingName, settingValue));
 
-        if (settingName.equals("upForCollaboration")) {
-            List<ArtistSocialProspectus> prospectuses = artistSocialProspectusService.getSocialProspectByArtistId(AuthUtils.getArtistId());
-            for (int i = 0; i < prospectuses.size(); i++) {
-                ArtistSocialProspectus prospectus = prospectuses.get(i);
-                ArtistSocialProspectusInput input = new ArtistSocialProspectusInput();
-                input.setArtistId(prospectus.getArtistId());
-                input.setSocialPlatformId(prospectus.getSocialPlatformId());
-                input.setDescription(prospectus.getDescription());
-                input.setUpForCollab(settingValue);
-                input.setHandle(prospectus.getHandle());
-                ArtistSocialProspectus updatedProspectus = artistSocialProspectusService.addArtistSocialProspectus(input);
-                System.out.println("Rabbal " + updatedProspectus.getUpForCollab());
-            }
-        }
         return new ResponseEntity<>(new SuccessResponse(
             new ArtistPreference(AuthUtils.getArtistId(), settingName, settingValue)),
             HttpStatus.OK);

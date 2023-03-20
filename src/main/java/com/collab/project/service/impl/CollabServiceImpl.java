@@ -16,8 +16,10 @@ import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.CollabConversationReadStatusRepository;
 import com.collab.project.repositories.CollabRequestRepository;
 import com.collab.project.search.SpecificationBuilder;
+import com.collab.project.service.ArtistPreferencesService;
 import com.collab.project.service.CollabService;
 import com.collab.project.service.NotificationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,6 +33,9 @@ import java.util.*;
 public class CollabServiceImpl implements CollabService {
 
     @Autowired
+    private ArtistPreferencesService artistPreferencesService;
+    
+    @Autowired
     private ArtistRepository artistRepository;
 
     @Autowired
@@ -43,7 +48,7 @@ public class CollabServiceImpl implements CollabService {
     private CollabConversationReadStatusRepository collabConversationReadStatusRepository;
 
     @Override
-    public CollabRequest sendRequest(String artistId, CollabRequestInput collabRequestInput) {
+    public CollabRequest sendRequest(String artistId, CollabRequestInput collabRequestInput) throws JsonProcessingException {
         // Add validation on receiver id and handle idempotency on requestId
         // If there is any active collab request present, there should not be a new request.
         List<String> status =  Arrays.asList(Enums.CollabStatus.PENDING.toString(),
@@ -81,7 +86,11 @@ public class CollabServiceImpl implements CollabService {
                 .senderProfilePicUrl(senderArtist.getProfilePicUrl())
                 .receiverProfilePicUrl(receiverArtist.getProfilePicUrl())
                 .build();
+
         saveCollabRequest = collabRequestRepository.save(saveCollabRequest);
+        artistPreferencesService.updateArtistPreferences(artistId, new HashMap<String, Object>() {{
+            put("upForCollaboration", true);
+        }});
         // TODO : Uncomment this when notification service will be added
 //        notificationService.addNotification(Notification.builder()
 //                                                    .artistId(artistId)
