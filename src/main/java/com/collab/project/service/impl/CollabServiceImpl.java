@@ -128,6 +128,28 @@ public class CollabServiceImpl implements CollabService {
     }
 
     @Override
+    public CollabRequest completeRequest(String artistId, String completeRequestId) {
+        Optional<CollabRequest> collabCompletedByReceiver = collabRequestRepository.findById(completeRequestId);
+        if(collabCompletedByReceiver.isPresent()) {
+            CollabRequest collabRequest = collabCompletedByReceiver.get();
+            if((collabRequest.getReceiverId().equals(artistId) || collabRequest.getSenderId().equals(artistId)) && collabRequest.getStatus().equals(Enums.CollabStatus.ACTIVE.toString())) {
+                collabRequest.setStatus(Enums.CollabStatus.COMPLETED.toString());
+                collabRequest = collabRequestRepository.save(collabRequest);
+                return collabRequest;
+            } else {
+                if(!collabRequest.getReceiverId().equals(artistId) && !collabRequest.getSenderId().equals(artistId)) {
+                    throw new CollabRequestException(String.format("user not authorized to complete request"));
+                }
+                else if(!collabRequest.getStatus().equals(Enums.CollabStatus.ACTIVE.toString())) {
+                    throw new CollabRequestException(String.format("collab request status is not in active state"));
+                }
+                throw new CollabRequestException(String.format("error while completing request"));
+            }
+        } else {
+            throw new CollabRequestException(String.format("collab request id is not present"));
+        }
+    }
+    @Override
     public CollabRequest rejectRequest(String artistId, String rejectRequestId) {
         Optional<CollabRequest> collabRejectedByReceiver = collabRequestRepository.findById(rejectRequestId);
         if(collabRejectedByReceiver.isPresent()) {
