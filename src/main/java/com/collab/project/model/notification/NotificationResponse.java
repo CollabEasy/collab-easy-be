@@ -49,7 +49,7 @@ public class NotificationResponse {
         this.redirectId = notification.getRedirectId();
         Gson gson = new Gson();
         Map<String, Object> map = new HashMap<String,Object>();
-        map = (Map<String,Object>) gson.fromJson(notification.getNotificationData(), map.getClass());
+        this.notificationData = (Map<String,Object>) gson.fromJson(notification.getNotificationData(), map.getClass());
         this.notifRead = notification.getNotifRead();
         this.createdAt = notification.getCreatedAt();
     }
