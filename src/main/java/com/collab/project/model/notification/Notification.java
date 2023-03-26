@@ -47,12 +47,15 @@ public class Notification {
     @Column(name = "notif_read")
     private Boolean notifRead;
 
-    @Column(name = "notif_view_type")
-    private String notifViewType;
-
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    public Notification(String artistId, String notifType, String redirectId, String notificationData, Boolean notifRead, Timestamp createdAt) {
+        this.artistId = artistId;
+        this.notifType = notifType;
+        this.redirectId = redirectId;
+        this.notificationData = notificationData;
+        this.notifRead = notifRead;
+        this.createdAt = createdAt;
+    }
 }

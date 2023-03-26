@@ -3,6 +3,7 @@ package com.collab.project.service.impl;
 import com.amazonaws.services.mq.model.UnauthorizedException;
 import com.collab.project.exception.CollabRequestException;
 import com.collab.project.helpers.Constants;
+import com.collab.project.helpers.NotificationHelper;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.collab.CollabConversationReadStatus;
 import com.collab.project.model.collab.CollabRequest;
@@ -46,6 +47,9 @@ public class CollabServiceImpl implements CollabService {
 
     @Autowired
     private CollabConversationReadStatusRepository collabConversationReadStatusRepository;
+
+    @Autowired
+    private NotificationHelper notificationHelper;
 
     @Override
     public CollabRequest sendRequest(String artistId, CollabRequestInput collabRequestInput) throws JsonProcessingException {
@@ -91,16 +95,8 @@ public class CollabServiceImpl implements CollabService {
         artistPreferencesService.updateArtistPreferences(artistId, new HashMap<String, Object>() {{
             put("upForCollaboration", true);
         }});
-        // TODO : Uncomment this when notification service will be added
-//        notificationService.addNotification(Notification.builder()
-//                                                    .artistId(artistId)
-//                                                    .redirectId(collabRequestInput.getReceiverId())
-//                                                    .notifType("collabRequest")
-//                                                    .notifRead(false)
-//                                                    .notificationData(String.format("%s send you a collab request", artistId))
-//                                                    .build());
 
-
+        notificationHelper.createCollabRequestNotification(collabRequestInput.getReceiverId(), artistId, saveCollabRequest.getId());
         return saveCollabRequest;
     }
 
@@ -110,6 +106,11 @@ public class CollabServiceImpl implements CollabService {
         if (collabRequest.isPresent()) {
             collabRequestInput.setUpdatedAt(Timestamp.from(Instant.now()));
             collabRequestRepository.save(collabRequestInput);
+        }
+        if (collabRequestInput.getStatus().equals("REJECTED")) {
+            notificationHelper.createCollabRejectedNotification(collabRequestInput.getSenderId(), artistId, collabRequestInput.getId());
+        } else if (collabRequestInput.getStatus().equals("ACTIVE")) {
+            notificationHelper.createCollabAcceptedNotification(collabRequestInput.getSenderId(), artistId, collabRequestInput.getId());
         }
         return collabRequestInput;
     }

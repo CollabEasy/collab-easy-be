@@ -42,6 +42,8 @@ public class Constants {
     public static final String VIDEO = "video";
     public static final String IMAGE = "image";
 
-
-
+    public static final String NOTIFICATION_COLLAB_REQUEST_SENT = "NOTIFICATION_COLLAB_REQUEST_SENT";
+    public static final String NOTIFICATION_COLLAB_REQUEST_ACCEPTED = "NOTIFICATION_COLLAB_REQUEST_ACCEPTED";
+    public static final String NOTIFICATION_COLLAB_REQUEST_REJECTED = "NOTIFICATION_COLLAB_REQUEST_REJECTED";
+    public static final String NOTIFICATION_COLLAB_COMMENT_RECEIVED = "NOTIFICATION_COLLAB_COMMENT_RECEIVED";
 }

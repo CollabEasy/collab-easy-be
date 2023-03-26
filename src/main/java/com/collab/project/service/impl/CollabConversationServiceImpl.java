@@ -3,6 +3,7 @@ package com.collab.project.service.impl;
 import com.amazonaws.services.mq.model.BadRequestException;
 import com.amazonaws.services.mq.model.UnauthorizedException;
 import com.collab.project.exception.RecordNotFoundException;
+import com.collab.project.helpers.NotificationHelper;
 import com.collab.project.model.collab.CollabConversation;
 import com.collab.project.model.collab.CollabConversationReadStatus;
 import com.collab.project.model.collab.CollabRequest;
@@ -30,6 +31,9 @@ public class CollabConversationServiceImpl implements CollabConversationService 
 
     @Autowired
     private CollabConversationReadStatusRepository collabConversationReadStatusRepository;
+
+    @Autowired
+    private NotificationHelper notificationHelper;
 
     @Override
     public void markCommentRead(String artistId, String collabId) {
@@ -76,6 +80,8 @@ public class CollabConversationServiceImpl implements CollabConversationService 
         if (!exists) {
             collabConversationReadStatusRepository.save(new CollabConversationReadStatus(FALLBACK_ID, collabId, otherUserId));
         }
+
+        notificationHelper.createCollabCommentReceivedNotification(otherUserId, artistId, comment.getCollabId());
         return comment;
     }
 

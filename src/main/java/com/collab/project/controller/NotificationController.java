@@ -13,11 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -33,9 +29,21 @@ public class NotificationController {
 
     @PostMapping(value = "/search")
     public ResponseEntity<SuccessResponse> getNotifications(@RequestBody @Validated NotificationSearch notificationSearch) {
-        List<Notification> notifications = notificationService.getNotifications(AuthUtils.getArtistId(),notificationSearch);
+        List<Notification> notifications = notificationService.getNotifications(AuthUtils.getArtistId(), notificationSearch);
         return new ResponseEntity<>(new SuccessResponse(notifications), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/")
+    public ResponseEntity<SuccessResponse> getAllNotifications() {
+        String artistId = AuthUtils.getArtistId();
+        List<Notification> notifications = notificationService.getAllNotifications(artistId);
+        return new ResponseEntity<>(new SuccessResponse(notifications), HttpStatus.OK);
+    }
 
+    @PostMapping(value = "/read")
+    public ResponseEntity<SuccessResponse> readAllNotifications() {
+        String artistId = AuthUtils.getArtistId();
+        notificationService.readAllNotifications(artistId);
+        return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
+    }
 }

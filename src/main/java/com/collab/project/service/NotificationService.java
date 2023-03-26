@@ -15,4 +15,10 @@ public interface NotificationService {
 
     public void addNotification(Notification notification);
 
+    public List<Notification> getAllNotifications(String artistId);
+
+    public boolean hasUnreadCommentNotification(String fromId, String toId);
+
+    public void readAllNotifications(String artistId);
+
 }
