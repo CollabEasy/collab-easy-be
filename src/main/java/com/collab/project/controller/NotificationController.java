@@ -5,6 +5,7 @@ import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
 import com.collab.project.model.inputs.NotificationSearch;
 import com.collab.project.model.notification.Notification;
+import com.collab.project.model.notification.NotificationResponse;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.CollabService;
 import com.collab.project.service.NotificationService;
@@ -36,7 +37,7 @@ public class NotificationController {
     @GetMapping(value = "/")
     public ResponseEntity<SuccessResponse> getAllNotifications() {
         String artistId = AuthUtils.getArtistId();
-        List<Notification> notifications = notificationService.getAllNotifications(artistId);
+        List<NotificationResponse> notifications = notificationService.getAllNotifications(artistId);
         return new ResponseEntity<>(new SuccessResponse(notifications), HttpStatus.OK);
     }
 

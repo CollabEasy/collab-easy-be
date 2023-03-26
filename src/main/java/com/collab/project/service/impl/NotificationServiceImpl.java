@@ -2,6 +2,7 @@ package com.collab.project.service.impl;
 
 import com.collab.project.model.inputs.NotificationSearch;
 import com.collab.project.model.notification.Notification;
+import com.collab.project.model.notification.NotificationResponse;
 import com.collab.project.repositories.NotificationRepository;
 import com.collab.project.search.SpecificationBuilder;
 import com.collab.project.service.NotificationService;
@@ -38,9 +39,13 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> getAllNotifications(String artistId) {
+    public List<NotificationResponse> getAllNotifications(String artistId) {
         List<Notification> notifications = notificationRepository.findByArtistId(artistId);
-        return notifications;
+        List<NotificationResponse> response = new ArrayList<>();
+        for (Notification notification : notifications) {
+            response.add(new NotificationResponse(notification));
+        }
+        return response;
     }
 
     @Override

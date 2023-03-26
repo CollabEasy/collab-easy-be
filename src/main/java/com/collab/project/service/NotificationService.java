@@ -6,6 +6,7 @@ import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
 import com.collab.project.model.inputs.NotificationSearch;
 import com.collab.project.model.notification.Notification;
+import com.collab.project.model.notification.NotificationResponse;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface NotificationService {
 
     public void addNotification(Notification notification);
 
-    public List<Notification> getAllNotifications(String artistId);
+    public List<NotificationResponse> getAllNotifications(String artistId);
 
     public boolean hasUnreadCommentNotification(String fromId, String toId);
 

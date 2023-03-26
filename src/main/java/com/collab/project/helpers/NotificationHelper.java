@@ -1,6 +1,8 @@
 package com.collab.project.helpers;
 
+import com.collab.project.model.artist.Artist;
 import com.collab.project.model.notification.Notification;
+import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.NotificationRepository;
 import com.collab.project.service.NotificationService;
 import com.google.gson.Gson;
@@ -20,9 +22,16 @@ public class NotificationHelper {
     @Autowired
     NotificationService notificationService;
 
+    @Autowired
+    ArtistRepository artistRepository;
+
     public void createCollabRequestNotification(String toArtist, String fromArtist, String collabId) {
         Map<String, String> metadata = new HashMap();
+        Artist artist = artistRepository.findByArtistId(fromArtist);
+        if (artist == null) return;
         metadata.put("from_artist", fromArtist);
+        metadata.put("from_artist_name", artist.getFirstName() + " " + artist.getLastName());
+        metadata.put("from_artist_slug", artist.getSlug());
         Gson gson = new Gson();
         String jsonMetadata = gson.toJson(metadata);
 
@@ -40,7 +49,11 @@ public class NotificationHelper {
 
     public void createCollabAcceptedNotification(String toArtist, String fromArtist, String collabId) {
         Map<String, String> metadata = new HashMap();
+        Artist artist = artistRepository.findByArtistId(fromArtist);
+        if (artist == null) return;
         metadata.put("from_artist", fromArtist);
+        metadata.put("from_artist_name", artist.getFirstName() + " " + artist.getLastName());
+        metadata.put("from_artist_slug", artist.getSlug());
         Gson gson = new Gson();
         String jsonMetadata = gson.toJson(metadata);
 
@@ -58,7 +71,11 @@ public class NotificationHelper {
 
     public void createCollabRejectedNotification(String toArtist, String fromArtist, String collabId) {
         Map<String, String> metadata = new HashMap();
+        Artist artist = artistRepository.findByArtistId(fromArtist);
+        if (artist == null) return;
         metadata.put("from_artist", fromArtist);
+        metadata.put("from_artist_name", artist.getFirstName() + " " + artist.getLastName());
+        metadata.put("from_artist_slug", artist.getSlug());
         Gson gson = new Gson();
         String jsonMetadata = gson.toJson(metadata);
 
@@ -77,7 +94,11 @@ public class NotificationHelper {
     public void createCollabCommentReceivedNotification(String toArtist, String fromArtist, String collabId) {
         if (notificationService.hasUnreadCommentNotification(fromArtist, toArtist)) return;
         Map<String, String> metadata = new HashMap();
+        Artist artist = artistRepository.findByArtistId(fromArtist);
+        if (artist == null) return;
         metadata.put("from_artist", fromArtist);
+        metadata.put("from_artist_name", artist.getFirstName() + " " + artist.getLastName());
+        metadata.put("from_artist_slug", artist.getSlug());
         Gson gson = new Gson();
         String jsonMetadata = gson.toJson(metadata);
 
