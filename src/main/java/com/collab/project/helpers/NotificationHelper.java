@@ -29,6 +29,7 @@ public class NotificationHelper {
         Map<String, String> metadata = new HashMap();
         Artist artist = artistRepository.findByArtistId(fromArtist);
         if (artist == null) return;
+        System.out.println("adding from artist : " + artist.getFirstName());
         metadata.put("from_artist", fromArtist);
         metadata.put("from_artist_name", artist.getFirstName() + " " + artist.getLastName());
         metadata.put("from_artist_slug", artist.getSlug());
