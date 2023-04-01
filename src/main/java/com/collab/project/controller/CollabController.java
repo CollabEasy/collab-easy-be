@@ -64,6 +64,12 @@ public class CollabController {
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/complete/request/{requestId}")
+    public ResponseEntity<SuccessResponse> completeRequest(@PathVariable("requestId") String completeRequestId) {
+        CollabRequest collabRequest = collabService.completeRequest(AuthUtils.getArtistId(), completeRequestId);
+        return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
+    }
+
     @PostMapping(value = "/search")
     public ResponseEntity<SuccessResponse> collabRequestsSearch(@RequestBody @Validated CollabRequestSearch collabRequestSearch) {
        CollabRequestOutput collabRequestOutput = collabService.collabRequestsSearch(AuthUtils.getArtistId(), collabRequestSearch);
