@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS artists (
   country_iso varchar(20),
   country_dial varchar(10),
   new_user boolean,
+  test_user boolean,
   last_active timestamp default current_timestamp,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP ,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
