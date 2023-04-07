@@ -1,5 +1,6 @@
 package com.collab.project.controller;
 
+import com.collab.project.model.art.ArtInfo;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistCategory;
 import com.collab.project.model.artist.ArtistPreference;
@@ -11,9 +12,13 @@ import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
