@@ -24,7 +24,7 @@ public class S3Utils {
          final PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, uniqueFileName, file).
                  withCannedAcl(CannedAccessControlList.PublicRead);
          amazonS3.putObject(putObjectRequest);
-         return ((AmazonS3Client)amazonS3).getResourceUrl("artist-samples", uniqueFileName);
+         return ((AmazonS3Client)amazonS3).getResourceUrl(bucketName, uniqueFileName);
      }
 
      public void removeFileFromS3Bucket(final String bucketName, String filePath) {

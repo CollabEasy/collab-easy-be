@@ -155,7 +155,7 @@ public class ArtistServiceImpl implements ArtistService {
 
         File file = FileUtils.convertMultiPartFileToFile(filename, artistFileName + "." + fileExtension);
 
-        String picUrl = s3Utils.uploadFileToS3Bucket("wondor-profile-pictures", file, "/", (artistFileName + "." + fileExtension));
+        String picUrl = s3Utils.uploadFileToS3Bucket("wondor-profile-pictures", file, "", (artistFileName + "." + fileExtension));
 
         file.delete();
         Artist artist = artistRepository.findByArtistId(artistId);
