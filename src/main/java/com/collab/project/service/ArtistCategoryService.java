@@ -5,9 +5,6 @@ import com.collab.project.model.artist.ArtistCategory;
 
 import com.collab.project.model.artist.SearchedArtistOutput;
 import com.collab.project.model.inputs.ArtistCategoryInput;
-import com.collab.project.util.AuthUtils;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 public interface ArtistCategoryService {

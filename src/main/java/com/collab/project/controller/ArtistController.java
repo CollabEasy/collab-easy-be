@@ -133,6 +133,7 @@ public class ArtistController {
     @RequestMapping(value = "/avatar/update", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<SuccessResponse> uploadProfilePicture(@RequestPart MultipartFile filename) throws IOException, NoSuchAlgorithmException {
         Artist artist = artistService.updateProfilePicture(AuthUtils.getArtistId(), filename);
-        return new ResponseEntity<>(new SuccessResponse(artist), HttpStatus.OK);
+        Map<String, Object> hashMap = mapper.convertValue(artist, Map.class);
+        return new ResponseEntity<>(new SuccessResponse(hashMap), HttpStatus.OK);
     }
 }

@@ -146,6 +146,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Artist updateProfilePicture(String artistId, MultipartFile filename) throws NoSuchAlgorithmException, IOException {
+        String time = String.valueOf(System.currentTimeMillis());
         String artistFileName = Utils.getSHA256(artistId).substring(0, 15);
         String[] filenameSplit = Strings.split(filename.getOriginalFilename(), ".");
         String fileExtension = "jpeg";
@@ -154,12 +155,11 @@ public class ArtistServiceImpl implements ArtistService {
         }
 
         File file = FileUtils.convertMultiPartFileToFile(filename, artistFileName + "." + fileExtension);
-
         String picUrl = s3Utils.uploadFileToS3Bucket("wondor-profile-pictures", file, "", (artistFileName + "." + fileExtension));
 
         file.delete();
         Artist artist = artistRepository.findByArtistId(artistId);
-        artist.setProfilePicUrl(picUrl);
+        artist.setProfilePicUrl(picUrl + "?updatedAt=" + time);
         return artistRepository.save(artist);
     }
 }
