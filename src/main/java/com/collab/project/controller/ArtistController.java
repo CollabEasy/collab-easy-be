@@ -14,28 +14,29 @@ import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 import com.collab.project.util.GoogleUtils;
 import com.collab.project.util.JwtUtils;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-import io.jsonwebtoken.lang.Strings;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @CrossOrigin
 @RequestMapping(method = RequestMethod.POST, value = "/api/v1/artist")
 @RestController
-public class LoginController {
+public class ArtistController {
 
     @Autowired
     ArtistService artistService;
@@ -96,7 +97,6 @@ public class LoginController {
         System.out.println("Rabbal " + input);
         Boolean isValid = googleUtils.isValid(input);
         if (isValid) {
-            System.out.println("Rabbal is valid ");
             Artist artist = artistService.createArtist(input);
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(artist.getArtistId(), ""));
@@ -109,7 +109,6 @@ public class LoginController {
 
             return new ResponseEntity<>(new SuccessResponse(hashMap, "SUCCESS"), HttpStatus.OK);
         }
-        System.out.println("Rabbal is not valid ");
         return new ResponseEntity<>(new SuccessResponse("Invalid Login", "FAILURE"),
             HttpStatus.BAD_REQUEST);
     }
@@ -128,5 +127,13 @@ public class LoginController {
         artistService.delete(input);
         return new ResponseEntity<>(new SuccessResponse("Deleted", "SUCCESS"),
             HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/avatar/update", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<SuccessResponse> uploadProfilePicture(@RequestPart MultipartFile filename) throws IOException, NoSuchAlgorithmException {
+        Artist artist = artistService.updateProfilePicture(AuthUtils.getArtistId(), filename);
+        Map<String, Object> hashMap = mapper.convertValue(artist, Map.class);
+        return new ResponseEntity<>(new SuccessResponse(hashMap), HttpStatus.OK);
     }
 }

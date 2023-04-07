@@ -1,11 +1,16 @@
 package com.collab.project.service.impl;
 
+import com.collab.project.helpers.Constants;
+import com.collab.project.model.artist.ArtSample;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -14,12 +19,16 @@ import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Transient;
 
+import com.collab.project.util.FileUtils;
+import com.collab.project.util.S3Utils;
+import com.collab.project.util.Utils;
 import io.jsonwebtoken.lang.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -27,6 +36,9 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Autowired
     ArtistRepository artistRepository;
+
+    @Autowired
+    S3Utils s3Utils;
 
     private String getSlug(String firstName, String lastName) {
         String firstLastName = firstName.trim() + " " + lastName.trim();
@@ -130,5 +142,24 @@ public class ArtistServiceImpl implements ArtistService {
     @Transactional
     public void delete(ArtistInput artistInput) {
         artistRepository.deleteByArtistId(artistInput.getArtistId());
+    }
+
+    @Override
+    public Artist updateProfilePicture(String artistId, MultipartFile filename) throws NoSuchAlgorithmException, IOException {
+        String time = String.valueOf(System.currentTimeMillis());
+        String artistFileName = Utils.getSHA256(artistId).substring(0, 15);
+        String[] filenameSplit = Strings.split(filename.getOriginalFilename(), ".");
+        String fileExtension = "jpeg";
+        if (filenameSplit != null && filenameSplit.length != 0) {
+            fileExtension = filenameSplit[filenameSplit.length - 1];
+        }
+
+        File file = FileUtils.convertMultiPartFileToFile(filename, artistFileName + "." + fileExtension);
+        String picUrl = s3Utils.uploadFileToS3Bucket("wondor-profile-pictures", file, "", (artistFileName + "." + fileExtension));
+
+        file.delete();
+        Artist artist = artistRepository.findByArtistId(artistId);
+        artist.setProfilePicUrl(picUrl + "?updatedAt=" + time);
+        return artistRepository.save(artist);
     }
 }
