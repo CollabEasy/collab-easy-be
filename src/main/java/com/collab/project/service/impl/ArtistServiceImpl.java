@@ -154,10 +154,14 @@ public class ArtistServiceImpl implements ArtistService {
             fileExtension = filenameSplit[filenameSplit.length - 1];
         }
 
-        File file = FileUtils.convertMultiPartFileToFile(filename, artistFileName + "." + fileExtension);
-        String picUrl = s3Utils.uploadFileToS3Bucket("wondor-profile-pictures", file, "", (artistFileName + "." + fileExtension));
+        FileUtils.createThumbnail(filename, artistFileName + "_thumb." + fileExtension);
+        File thumbFile = new File(artistFileName + "_thumb." + fileExtension);
+
+        File file = FileUtils.convertMultiPartFileToFile(filename, artistFileName + "_thumb." + fileExtension);
+        String picUrl = s3Utils.uploadFileToS3Bucket("wondor-profile-pictures", file, "", (artistFileName + "_thumb." + fileExtension));
 
         file.delete();
+        thumbFile.delete();
         Artist artist = artistRepository.findByArtistId(artistId);
         artist.setProfilePicUrl(picUrl + "?updatedAt=" + time);
         return artistRepository.save(artist);

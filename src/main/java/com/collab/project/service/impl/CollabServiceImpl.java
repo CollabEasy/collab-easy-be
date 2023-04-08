@@ -192,14 +192,15 @@ public class CollabServiceImpl implements CollabService {
         collabRequestOutput.setSent(new CollabRequestsStatus());
         collabRequestOutput.setReceived(new CollabRequestsStatus());
         for (CollabRequest request : requests) {
-            String otherArtistId = request.getSenderId().equals(artistId) ? request.getReceiverId() : request.getSenderId();
+            boolean artistIsSender = request.getSenderId().equals(artistId);
+            String otherArtistId = artistIsSender ? request.getReceiverId() : request.getSenderId();
             Artist otherArtist = artistRepository.findByArtistId(otherArtistId);
             request.setSenderName(currentArtist.getFirstName());
             request.setReceiverName(otherArtist.getFirstName());
             request.setSenderSlug(currentArtist.getSlug());
             request.setReceiverSlug(otherArtist.getSlug());
-            request.setSenderProfilePicUrl(currentArtist.getProfilePicUrl());
-            request.setReceiverProfilePicUrl(otherArtist.getProfilePicUrl());
+            request.setSenderProfilePicUrl(artistIsSender ? currentArtist.getProfilePicUrl() : otherArtist.getProfilePicUrl());
+            request.setReceiverProfilePicUrl(artistIsSender ? otherArtist.getProfilePicUrl() : currentArtist.getProfilePicUrl());
                     List<CollabConversationReadStatus> readStatusList =
                     collabConversationReadStatusRepository.findByCollabId(request.getId());
             boolean isNewComment = !readStatusList.isEmpty()
