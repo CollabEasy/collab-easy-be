@@ -35,22 +35,22 @@ public class CollabRequest {
     @Column(name = "receiver_id", nullable = false, unique = true)
     private String receiverId;
 
-    @Column(name = "sender_name", nullable = false)
+    @Transient
     private String senderName;
 
-    @Column(name = "receiver_name", nullable = false)
+    @Transient
     private String receiverName;
 
-    @Column(name = "sender_slug", nullable = false)
+    @Transient
     private String senderSlug;
 
-    @Column(name = "receiver_slug", nullable = false)
+    @Transient
     private String receiverSlug;
 
-    @Column(name = "sender_profile_pic_url", nullable = false)
+    @Transient
     private String senderProfilePicUrl;
 
-    @Column(name = "receiver_profile_pic_url", nullable = false)
+    @Transient
     private String receiverProfilePicUrl;
 
     @Column(name = "scheduled_at")
