@@ -166,14 +166,14 @@ CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
 
 CREATE TABLE IF NOT EXISTS `contests` (
     id int AUTO_INCREMENT,
-    slug varchar(50),
+    contest_slug varchar(50),
     title varchar(200),
     description varchar(2000),
     start_date timestamp NULL DEFAULT NULL,
     end_date timestamp NULL DEFAULT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    primary key(id), KEY slug (`slug`)
+    primary key(id), KEY contest_slug (`contest_slug`)
  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
  insert into art_categories values(1, "Dancer", "All Dancers", 1, "dancer");
