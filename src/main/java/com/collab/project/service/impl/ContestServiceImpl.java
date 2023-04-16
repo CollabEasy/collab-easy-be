@@ -24,12 +24,10 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public Contest addContest(ContestInput contestInput) {
         Optional<Contest> contest = contestRepository.findByContestSlug(contestInput.getContestSlug());
-
         if(contest.isPresent()) {
             throw new ContestRequestException(
                     "Contest already exists with id: "+ contestInput.getContestSlug());
         }
-
         Contest new_contest = new Contest();
         new_contest.setId(FALLBACK_ID);
         new_contest.setContestSlug(contestInput.getContestSlug());
