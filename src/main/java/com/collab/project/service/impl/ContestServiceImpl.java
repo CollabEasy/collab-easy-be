@@ -29,7 +29,6 @@ public class ContestServiceImpl implements ContestService {
             throw new ContestRequestException(
                     "Contest already exists with id: "+ contestInput.getContestSlug());
         }
-
         Contest new_contest = new Contest();
         new_contest.setId(FALLBACK_ID);
         new_contest.setContestSlug(contestInput.getContestSlug());
