@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `contests` (
     end_date timestamp NULL DEFAULT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    primary key(id), KEY slug (`contest_slug`)
+    primary key(id), KEY contest_slug (`contest_slug`)
  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
  insert into art_categories values(1, "Dancer", "All Dancers", 1, "dancer");
