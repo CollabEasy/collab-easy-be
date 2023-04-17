@@ -176,6 +176,18 @@ CREATE TABLE IF NOT EXISTS `contests` (
     primary key(id), KEY contest_slug (`contest_slug`)
  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+CREATE TABLE IF NOT EXISTS `contest_submissions` (
+    id int AUTO_INCREMENT,
+    artist_id varchar(50),
+    contest_slug varchar(50),
+    artwork_url varchar(200),
+    description varchar(500),
+    created_at timestamp,
+    updated_at timestamp,
+    key(id),
+   unique key(artist_id, contest_slug)
+ ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+ 
  insert into art_categories values(1, "Dancer", "All Dancers", 1, "dancer");
  insert into art_categories values(2, "Choreographer", "All Choreographer", 1, "choreographer");
  insert into art_categories values(3, "Writer", "All Writer", 1, "writer");
