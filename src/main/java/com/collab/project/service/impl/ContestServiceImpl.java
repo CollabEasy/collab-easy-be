@@ -62,7 +62,7 @@ public class ContestServiceImpl implements ContestService {
             return contest.get();
         } else {
             throw new ContestRequestException(
-                    "Contest doesn't exists for id: " + contestSlug);
+                    "Contest doesn't exists for slug: " + contestSlug);
         }
     }
 }
