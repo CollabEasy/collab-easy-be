@@ -94,7 +94,6 @@ public class ArtistController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> validate(@RequestBody ArtistInput input) {
-        System.out.println("Rabbal " + input);
         Boolean isValid = googleUtils.isValid(input);
         if (isValid) {
             Artist artist = artistService.createArtist(input);
