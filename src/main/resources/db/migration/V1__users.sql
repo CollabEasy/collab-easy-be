@@ -188,6 +188,15 @@ CREATE TABLE IF NOT EXISTS `contest_submissions` (
    unique key(artist_id, contest_slug)
  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
  
+ CREATE TABLE IF NOT EXISTS `contest_submission_vote` (
+    id int AUTO_INCREMENT,
+    submission_id int,
+    artist_id int,
+    vote boolean,
+    key(id), 
+    unique key(submission_id, artist_id)
+)
+
  insert into art_categories values(1, "Dancer", "All Dancers", 1, "dancer");
  insert into art_categories values(2, "Choreographer", "All Choreographer", 1, "choreographer");
  insert into art_categories values(3, "Writer", "All Writer", 1, "writer");
