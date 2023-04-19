@@ -190,11 +190,12 @@ CREATE TABLE IF NOT EXISTS `contest_submissions` (
  
  CREATE TABLE IF NOT EXISTS `contest_submission_vote` (
     id int AUTO_INCREMENT,
+    contest_slug varchar(50),
     submission_id int,
     artist_id varchar(50),
     vote boolean,
     key(id), 
-    unique key(submission_id, artist_id)
+    unique key(contest_slug, submission_id, artist_id)
 )
 
  insert into art_categories values(1, "Dancer", "All Dancers", 1, "dancer");
