@@ -194,6 +194,8 @@ CREATE TABLE IF NOT EXISTS `contest_submissions` (
     submission_id int,
     artist_id varchar(50),
     vote boolean,
+    created_at timestamp,
+    updated_at timestamp,
     key(id), 
     unique key(contest_slug, submission_id, artist_id)
 )
