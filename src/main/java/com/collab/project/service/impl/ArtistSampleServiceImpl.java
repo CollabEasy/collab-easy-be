@@ -96,7 +96,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                  thumbnailURL, caption, Constants.IMAGE,
                  new Timestamp(System.currentTimeMillis()));
          artistSampleRepository.save(artSample);
-        return null;
+        return artSample;
     }
 
     private ArtSample uploadAudio(String artistId, String caption, MultipartFile fileToUpload, String fileExtension) throws NoSuchAlgorithmException, IOException {
@@ -112,7 +112,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                  fileURL, caption, Constants.AUDIO,
                  new Timestamp(System.currentTimeMillis()));
          artistSampleRepository.save(artSample);
-        return null;
+        return artSample;
     }
 
     private ArtSample uploadVideo(String artistId, String caption, MultipartFile fileToUpload, String fileExtension) throws NoSuchAlgorithmException, IOException {
@@ -136,7 +136,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                  thumbnailURL, caption, Constants.VIDEO,
                  new Timestamp(System.currentTimeMillis()));
          artistSampleRepository.save(artSample);
-        return null;
+        return artSample;
     }
 
     private String getFilePath(String url) {
