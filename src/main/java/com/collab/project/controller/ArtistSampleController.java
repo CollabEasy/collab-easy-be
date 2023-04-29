@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/artist")
@@ -25,8 +26,9 @@ public class ArtistSampleController {
     ArtistSampleService artistSampleService;
 
     @RequestMapping(value = "/sample/upload", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<SuccessResponse> uploadArtSample(@RequestPart MultipartFile filename, @RequestPart String filetype, @RequestPart String caption) throws IOException, NoSuchAlgorithmException {
-        ArtInfo artInfo = artistSampleService.uploadFile(AuthUtils.getArtistId(), caption, filetype, filename);
+    public ResponseEntity<SuccessResponse> uploadArtSample(@RequestPart MultipartFile filename, @RequestPart String filetype, @RequestPart Optional<String> caption) throws IOException, NoSuchAlgorithmException {
+        String captionString = caption.orElse("");
+        ArtInfo artInfo = artistSampleService.uploadFile(AuthUtils.getArtistId(), captionString, filetype, filename);
         return new ResponseEntity<>(new SuccessResponse(artInfo), HttpStatus.OK);
     }
 

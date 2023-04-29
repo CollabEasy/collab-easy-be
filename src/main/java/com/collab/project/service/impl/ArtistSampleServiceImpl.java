@@ -42,7 +42,6 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
     @Override
     public ArtInfo uploadFile(String artistId, String caption, String fileType, MultipartFile fileToUpload) throws IOException, NoSuchAlgorithmException {
          ArtSample artSample = null;
-         caption = caption == null ? "" : caption;
          String fileExtension = FilenameUtils.getExtension(fileToUpload.getOriginalFilename());
          switch (fileType) {
              case Constants.AUDIO:
