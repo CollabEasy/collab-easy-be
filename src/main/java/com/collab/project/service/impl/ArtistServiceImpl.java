@@ -134,7 +134,15 @@ public class ArtistServiceImpl implements ArtistService {
         String artistFileName = Utils.getSHA256(artistId).substring(0, 15);
 
         FileUpload fileUploadBuilder =
-                FileUpload.builder().fileToUpload(filename).fileName(artistFileName).artistId(artistId).s3BucketName(bucketName).s3Path("").fileType(Constants.IMAGE).onlyUploadThumbnail(true).build();
+                FileUpload.builder()
+                        .s3Utils(s3Utils)
+                        .fileToUpload(filename)
+                        .fileName(artistFileName)
+                        .artistId(artistId)
+                        .s3BucketName(bucketName)
+                        .s3Path("")
+                        .fileType(Constants.IMAGE)
+                        .onlyUploadThumbnail(true).build();
 
         UploadFile uploadedFile = fileUploadBuilder.checkFileTypeAndGetUploadURL();
 

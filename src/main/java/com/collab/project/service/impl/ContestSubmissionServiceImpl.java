@@ -93,6 +93,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                         .fileName(artistFileName)
                         .s3BucketName(bucketName)
                         .fileType(fileType)
+                        .s3Utils(s3Utils)
                         .s3Path(contestId).build();
 
         UploadFile uploadedFile = fileUploadBuilder.checkFileTypeAndGetUploadURL();

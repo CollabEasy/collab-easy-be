@@ -23,7 +23,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class FileUpload {
 
-    @Autowired
     S3Utils s3Utils;
 
     @NotNull
