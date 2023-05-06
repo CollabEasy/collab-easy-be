@@ -63,7 +63,8 @@ public class FileUpload {
             FileUtils.createThumbnail(fileToUpload, fileName + "_thumb." + fileExtension);
             thumbFile = new File(fileName + "_thumb." + fileExtension);
         }
-        String thumbnailURL = s3Utils.uploadFileToS3Bucket(s3BucketName, thumbFile, s3Path + "/thumbnails", fileName + ".png");
+        String path = s3Path.equals("") ? "thumbnails" : s3Path + "/thumbnails";
+        String thumbnailURL = s3Utils.uploadFileToS3Bucket(s3BucketName, thumbFile, path, fileName + ".png");
         thumbFile.delete();
         return thumbnailURL;
     }
@@ -82,7 +83,8 @@ public class FileUpload {
             }
         }
 
-        String originalURL = s3Utils.uploadFileToS3Bucket(s3BucketName, file, s3Path + "/originals", fileName + "." + fileExtension);
+        String path = s3Path.equals("") ? "originals" : s3Path + "/originals";
+        String originalURL = s3Utils.uploadFileToS3Bucket(s3BucketName, file, path, fileName + "." + fileExtension);
         file.delete();
 
         return new UploadFile(originalURL, thumbnailUrl);
