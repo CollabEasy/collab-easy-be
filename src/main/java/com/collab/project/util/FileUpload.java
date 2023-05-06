@@ -4,6 +4,7 @@ import com.collab.project.helpers.Constants;
 import com.collab.project.model.artwork.UploadFile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.util.Set;
 
 @Builder
 @Component
+@NoArgsConstructor
 @AllArgsConstructor
 public class FileUpload {
 
