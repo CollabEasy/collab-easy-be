@@ -71,7 +71,9 @@ public class FileUpload {
 
     private UploadFile uploadFile() throws NoSuchAlgorithmException, IOException {
         // Creating original file
-        fileName = Utils.getSHA256(artistId).substring(0, 15) + "_" + System.currentTimeMillis();
+        if (fileName == null) {
+            fileName = Utils.getSHA256(artistId).substring(0, 15) + "_" + System.currentTimeMillis();
+        }
         File file = FileUtils.convertMultiPartFileToFile(fileToUpload, fileName + "." + fileExtension);
 
         // Creating thumbnail file

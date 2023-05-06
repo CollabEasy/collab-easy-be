@@ -85,12 +85,10 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     @Override
     public ContestSubmission addArtwork(String artistId, MultipartFile fileToUpload, String fileType,
                               String description, String contestId) throws NoSuchAlgorithmException, IOException {
-        String artistFileName = Utils.getSHA256(artistId).substring(0, 15);
         FileUpload fileUploadBuilder =
                 FileUpload.builder()
                         .fileToUpload(fileToUpload)
                         .artistId(artistId)
-                        .fileName(artistFileName)
                         .s3BucketName(bucketName)
                         .fileType(fileType)
                         .s3Utils(s3Utils)
