@@ -61,6 +61,7 @@ public class FileUpload {
                 return null;
             }
         } else {
+            FileUtils.createThumbnail(fileToUpload, fileName + "_thumb." + fileExtension);
             thumbFile = new File(fileName + "_thumb." + fileExtension);
         }
         String thumbnailURL = s3Utils.uploadFileToS3Bucket(s3BucketName, thumbFile, s3Path + "/thumbnails", fileName + ".png");
