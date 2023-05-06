@@ -1,27 +1,11 @@
 package com.collab.project.service.impl;
 
-import com.collab.project.helpers.Constants;
-import com.collab.project.model.artist.ArtSample;
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.artwork.UploadFile;
 import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistService;
-import com.collab.project.util.AuthUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
-import javax.persistence.Transient;
-
-import com.collab.project.util.FileUtils;
-import com.collab.project.util.S3Utils;
-import com.collab.project.util.Utils;
+import com.collab.project.util.*;
 import io.jsonwebtoken.lang.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.UUID;
+
 @Service
 @Slf4j
 public class ArtistServiceImpl implements ArtistService {
+
+    String bucketName = "wondor-profile-pictures";
 
     @Autowired
     ArtistRepository artistRepository;
@@ -53,7 +47,8 @@ public class ArtistServiceImpl implements ArtistService {
 
     public String getNewSlug(String slug) {
         String lastSlug = artistRepository.findLastSlugStartsWith(slug);
-        if (lastSlug == null) return slug + "1";
+        if (lastSlug == null)
+            return slug + "1";
         lastSlug = lastSlug.replace(slug, "");
         Integer lastNum = (lastSlug.equals("") ? 0 : Integer.valueOf(lastSlug)) + 1;
         return slug + lastNum;
@@ -62,7 +57,8 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Artist getArtistBySlug(String slug) {
         List<Artist> artists = artistRepository.findBySlug(slug);
-        if (artists.size() > 0) return artists.get(0);
+        if (artists.size() > 0)
+            return artists.get(0);
         return null;
     }
 
@@ -72,22 +68,8 @@ public class ArtistServiceImpl implements ArtistService {
         if (Objects.isNull(artist)) {
             String slug = getSlug(inp.getFirstName(), inp.getLastName());
             String newSlug = getNewSlug(slug + "-");
-            artist = Artist.builder().
-                artistId(UUID.randomUUID().toString())
-                    .artistHandle(inp.getArtistHandle())
-                    .age(inp.getAge())
-                    .email(inp.getEmail())
-                    .firstName(inp.getFirstName())
-                    .lastName(inp.getLastName())
-                    .country(inp.getCountry())
-                    .countryDial(inp.getCountryDial())
-                    .countryIso(inp.getCountryIso())
-                    .bio(inp.getBio())
-                    .profilePicUrl(inp.getProfilePicUrl())
-                    .timezone(inp.getTimezone())
-                    .phoneNumber(inp.getPhoneNumber())
-                    .slug(newSlug)
-                .build();
+            artist =
+                    Artist.builder().artistId(UUID.randomUUID().toString()).artistHandle(inp.getArtistHandle()).age(inp.getAge()).email(inp.getEmail()).firstName(inp.getFirstName()).lastName(inp.getLastName()).country(inp.getCountry()).countryDial(inp.getCountryDial()).countryIso(inp.getCountryIso()).bio(inp.getBio()).profilePicUrl(inp.getProfilePicUrl()).timezone(inp.getTimezone()).phoneNumber(inp.getPhoneNumber()).slug(newSlug).build();
             artist.setNewUser(true);
             artist.setTestUser(false);
             artist = artistRepository.save(artist);
@@ -145,25 +127,18 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Artist updateProfilePicture(String artistId, MultipartFile filename) throws NoSuchAlgorithmException, IOException {
+    public Artist updateProfilePicture(String artistId, MultipartFile filename) throws NoSuchAlgorithmException,
+            IOException {
         String time = String.valueOf(System.currentTimeMillis());
         String artistFileName = Utils.getSHA256(artistId).substring(0, 15);
-        String[] filenameSplit = Strings.split(filename.getOriginalFilename(), ".");
-        String fileExtension = "jpeg";
-        if (filenameSplit != null && filenameSplit.length != 0) {
-            fileExtension = filenameSplit[filenameSplit.length - 1];
-        }
 
-        FileUtils.createThumbnail(filename, artistFileName + "_thumb." + fileExtension);
-        File thumbFile = new File(artistFileName + "_thumb." + fileExtension);
+        FileUpload fileUploadBuilder =
+                FileUpload.builder().fileToUpload(filename).fileName(artistFileName).artistId(artistId).s3BucketName(bucketName).s3Path("").onlyUploadThumbnail(true).build();
 
-        File file = FileUtils.convertMultiPartFileToFile(filename, artistFileName + "_thumb." + fileExtension);
-        String picUrl = s3Utils.uploadFileToS3Bucket("wondor-profile-pictures", file, "", (artistFileName + "_thumb." + fileExtension));
+        UploadFile uploadedFile = fileUploadBuilder.checkFileTypeAndGetUploadURL();
 
-        file.delete();
-        thumbFile.delete();
         Artist artist = artistRepository.findByArtistId(artistId);
-        artist.setProfilePicUrl(picUrl + "?updatedAt=" + time);
+        artist.setProfilePicUrl(uploadedFile.getThumbnailURL() + "?updatedAt=" + time);
         return artistRepository.save(artist);
     }
 }
