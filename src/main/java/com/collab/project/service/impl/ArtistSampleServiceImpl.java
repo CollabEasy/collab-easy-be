@@ -40,7 +40,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
     @Override
     public ArtInfo uploadFile(String artistId, String caption, String fileType, MultipartFile fileToUpload) throws IOException, NoSuchAlgorithmException {
         FileUpload fileUploadHelper =
-                FileUpload.builder().artistId(artistId).fileToUpload(fileToUpload).s3BucketName(bucketName).s3Path(artistId).build();
+                FileUpload.builder().artistId(artistId).fileToUpload(fileToUpload).s3BucketName(bucketName).fileType(fileType).s3Path(artistId).build();
 
         UploadFile uploadedFile = fileUploadHelper.checkFileTypeAndGetUploadURL();
 

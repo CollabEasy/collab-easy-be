@@ -1,5 +1,6 @@
 package com.collab.project.service.impl;
 
+import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artwork.UploadFile;
 import com.collab.project.model.inputs.ArtistInput;
@@ -133,7 +134,7 @@ public class ArtistServiceImpl implements ArtistService {
         String artistFileName = Utils.getSHA256(artistId).substring(0, 15);
 
         FileUpload fileUploadBuilder =
-                FileUpload.builder().fileToUpload(filename).fileName(artistFileName).artistId(artistId).s3BucketName(bucketName).s3Path("").onlyUploadThumbnail(true).build();
+                FileUpload.builder().fileToUpload(filename).fileName(artistFileName).artistId(artistId).s3BucketName(bucketName).s3Path("").fileType(Constants.IMAGE).onlyUploadThumbnail(true).build();
 
         UploadFile uploadedFile = fileUploadBuilder.checkFileTypeAndGetUploadURL();
 
