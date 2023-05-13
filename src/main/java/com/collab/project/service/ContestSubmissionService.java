@@ -21,5 +21,6 @@ public interface ContestSubmissionService {
 
     public  List<ContestSubmission> getContestSubmission(String contestSlug, String artistId);
 
-    public String addArtwork(String artistId, MultipartFile filename) throws NoSuchAlgorithmException, IOException;
+    public ContestSubmission addArtwork(String artistId, MultipartFile filename, String fileType,
+                             String description, String contestSlug) throws NoSuchAlgorithmException, IOException;
 }

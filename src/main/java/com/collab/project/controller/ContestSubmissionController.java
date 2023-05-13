@@ -7,17 +7,17 @@ import com.collab.project.model.inputs.ContestSubmissionVoteInput;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.impl.ContestSubmissionServiceImpl;
 import com.collab.project.service.impl.ContestSubmissionVoteServiceImpl;
+import com.collab.project.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import com.collab.project.util.AuthUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @RestController
@@ -40,7 +40,8 @@ public class ContestSubmissionController {
     @GetMapping
     @RequestMapping(value = "{contestSlug}/entry", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getContestSubmission(@PathVariable String contestSlug) {
-        List<ContestSubmission> contestSubmissions = contestSubmissionService.getContestSubmission(contestSlug, AuthUtils.getArtistId());
+        List<ContestSubmission> contestSubmissions = contestSubmissionService.getContestSubmission(contestSlug,
+                AuthUtils.getArtistId());
         return new ResponseEntity<>(new SuccessResponse(contestSubmissions), HttpStatus.OK);
     }
 
@@ -51,22 +52,32 @@ public class ContestSubmissionController {
         return new ResponseEntity<>(new SuccessResponse(contestSubmission), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "upload/artwork", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<SuccessResponse> AddContestArtWork(@RequestPart MultipartFile filename) throws IOException, NoSuchAlgorithmException {
-        String url = contestSubmissionService.addArtwork(AuthUtils.getArtistId(), filename);
-        return new ResponseEntity<>(new SuccessResponse(url), HttpStatus.OK);
+    @RequestMapping(value = "upload/{contestSlug}/artwork", method = RequestMethod.POST, consumes =
+            {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<SuccessResponse> AddContestArtWork(@RequestPart MultipartFile filename,
+                                                             @RequestPart String filetype,
+                                                             @RequestPart String description,
+                                                             @PathVariable String contestSlug) throws IOException,
+            NoSuchAlgorithmException {
+        ContestSubmission submission = contestSubmissionService.addArtwork(AuthUtils.getArtistId(), filename, filetype,
+                description,
+                contestSlug);
+        return new ResponseEntity<>(new SuccessResponse(submission), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/upvote", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> UpvoteSubmission(@RequestBody ContestSubmissionVoteInput upvoteSubmission)  {
-        ContestSubmissionVote vote = contestSubmissionVoteService.updateContestSubmissionVote(upvoteSubmission.getSubmissionId(), upvoteSubmission.getContestSlug());
+    public ResponseEntity<SuccessResponse> UpvoteSubmission(@RequestBody ContestSubmissionVoteInput upvoteSubmission) {
+        ContestSubmissionVote vote =
+                contestSubmissionVoteService.updateContestSubmissionVote(upvoteSubmission.getSubmissionId(),
+                        upvoteSubmission.getContestSlug());
         return new ResponseEntity<>(new SuccessResponse(vote), HttpStatus.OK);
     }
 
     @GetMapping
     @RequestMapping(value = "/artist/vote/{contestSlug}", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> GetSubmissionVoteByArtist(@PathVariable String contestSlug)  {
-        List<ContestSubmissionVote> votes = contestSubmissionVoteService.getContestSubmissionVoteByArtist(contestSlug, AuthUtils.getArtistId());
+    public ResponseEntity<SuccessResponse> GetSubmissionVoteByArtist(@PathVariable String contestSlug) {
+        List<ContestSubmissionVote> votes = contestSubmissionVoteService.getContestSubmissionVoteByArtist(contestSlug
+                , AuthUtils.getArtistId());
         return new ResponseEntity<>(new SuccessResponse(votes), HttpStatus.OK);
     }
 }

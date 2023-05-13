@@ -36,6 +36,11 @@ public class ContestSubmission {
     @NonNull
     @Column(name = "artwork_url", nullable = false)
     private String artworkUrl;
+
+    @NonNull
+    @Column(name = "artwork_thumb_url", nullable = false)
+    private String artworkThumbnailUrl;
+
     @Column(name = "description")
     private String description;
 
