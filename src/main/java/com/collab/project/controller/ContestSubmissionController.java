@@ -52,16 +52,16 @@ public class ContestSubmissionController {
         return new ResponseEntity<>(new SuccessResponse(contestSubmission), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "upload/artwork", method = RequestMethod.POST, consumes =
+    @RequestMapping(value = "upload/{contestSlug}/artwork", method = RequestMethod.POST, consumes =
             {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<SuccessResponse> AddContestArtWork(@RequestPart MultipartFile filename,
                                                              @RequestPart String filetype,
                                                              @RequestPart String description,
-                                                             @RequestPart String contest) throws IOException,
+                                                             @PathVariable String contestSlug) throws IOException,
             NoSuchAlgorithmException {
         ContestSubmission submission = contestSubmissionService.addArtwork(AuthUtils.getArtistId(), filename, filetype,
                 description,
-                contest);
+                contestSlug);
         return new ResponseEntity<>(new SuccessResponse(submission), HttpStatus.OK);
     }
 
