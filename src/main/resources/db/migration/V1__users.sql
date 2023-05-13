@@ -181,6 +181,7 @@ CREATE TABLE IF NOT EXISTS `contest_submissions` (
     artist_id varchar(50),
     contest_slug varchar(50),
     artwork_url varchar(200),
+    artwork_thumb_url varchar(200),
     description varchar(500),
     created_at timestamp,
     updated_at timestamp,
