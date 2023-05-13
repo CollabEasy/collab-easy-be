@@ -99,6 +99,10 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         ContestSubmission submission = new ContestSubmission(FALLBACK_ID, contestId, artistId,
                 uploadedFile.getOriginalURL(), uploadedFile.getThumbnailURL(), description,
                 Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+
+
+        contestSubmissionRepository.save(submission);
+
         return submission;
     }
 }
