@@ -74,6 +74,13 @@ public class ContestSubmissionController {
     }
 
     @GetMapping
+    @RequestMapping(value = "/votes/{contestSlug}", method = RequestMethod.GET)
+    public ResponseEntity<SuccessResponse> GetSubmissionVote(@PathVariable String contestSlug) {
+        List<ContestSubmissionVote> votes = contestSubmissionVoteService.getContestSubmissionVote(contestSlug);
+        return new ResponseEntity<>(new SuccessResponse(votes), HttpStatus.OK);
+    }
+
+    @GetMapping
     @RequestMapping(value = "/artist/vote/{contestSlug}", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> GetSubmissionVoteByArtist(@PathVariable String contestSlug) {
         List<ContestSubmissionVote> votes = contestSubmissionVoteService.getContestSubmissionVoteByArtist(contestSlug

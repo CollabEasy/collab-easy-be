@@ -43,6 +43,11 @@ public class ContestSubmissionVoteServiceImpl implements ContestSubmissionVoteSe
         return existingVote.get();
     }
 
+    public List<ContestSubmissionVote> getContestSubmissionVote(String contestSlug) {
+        List<ContestSubmissionVote> votes = contestSubmissionVoteRepository.findByContestSlug(contestSlug);
+        return votes;
+    }
+
     public List<ContestSubmissionVote> getContestSubmissionVoteByArtist(String contestSlug, String artistId) {
         List<ContestSubmissionVote> votes = contestSubmissionVoteRepository.findByArtistIdAndContestSlug(artistId, contestSlug);
         return votes;

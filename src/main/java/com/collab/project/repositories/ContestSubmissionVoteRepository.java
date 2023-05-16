@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface ContestSubmissionVoteRepository extends JpaRepository<ContestSubmissionVote, Long> {
     public Optional<ContestSubmissionVote> findById(Long id);
     public Optional<ContestSubmissionVote> findByArtistId(String artistId);
+    public List<ContestSubmissionVote> findByContestSlug(String contestSlug);
+
     @Query(value = "SELECT * FROM contest_submission_vote where id = (?1) AND contest_slug = (?2) ", nativeQuery = true)
     public Optional<ContestSubmissionVote> findByIdAndContestSlug(Long id, String contestSlug);
 
