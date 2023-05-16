@@ -22,8 +22,8 @@ public class ContestSubmissionVoteServiceImpl implements ContestSubmissionVoteSe
     private ContestSubmissionVoteRepository contestSubmissionVoteRepository;
 
     @Override
-    public ContestSubmissionVote updateContestSubmissionVote(Long submissionId, String contestSlug) {
-        Optional<ContestSubmissionVote> existingVote = contestSubmissionVoteRepository.findByIdAndContestSlug(submissionId, contestSlug);
+    public ContestSubmissionVote updateContestSubmissionVote(String artistId, Long submissionId, String contestSlug) {
+        Optional<ContestSubmissionVote> existingVote = contestSubmissionVoteRepository.findByArtistIdSubmissionIdContestSlug(artistId, submissionId, contestSlug);
         if (!existingVote.isPresent()) {
             ContestSubmissionVote newVote = new ContestSubmissionVote();
             newVote.setId(FALLBACK_ID);
@@ -36,7 +36,6 @@ public class ContestSubmissionVoteServiceImpl implements ContestSubmissionVoteSe
             contestSubmissionVoteRepository.save(newVote);
             return newVote;
         }
-
         existingVote.get().setVote(!existingVote.get().getVote());
         existingVote.get().setUpdatedAt(Timestamp.from(Instant.now()));
         contestSubmissionVoteRepository.save(existingVote.get());

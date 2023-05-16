@@ -68,7 +68,7 @@ public class ContestSubmissionController {
     @RequestMapping(value = "/upvote", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> UpvoteSubmission(@RequestBody ContestSubmissionVoteInput upvoteSubmission) {
         ContestSubmissionVote vote =
-                contestSubmissionVoteService.updateContestSubmissionVote(upvoteSubmission.getSubmissionId(),
+                contestSubmissionVoteService.updateContestSubmissionVote(AuthUtils.getArtistId(), upvoteSubmission.getSubmissionId(),
                         upvoteSubmission.getContestSlug());
         return new ResponseEntity<>(new SuccessResponse(vote), HttpStatus.OK);
     }
