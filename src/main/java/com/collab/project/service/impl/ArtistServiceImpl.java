@@ -10,6 +10,7 @@ import com.collab.project.service.ArtistService;
 import com.collab.project.util.*;
 import io.jsonwebtoken.lang.Strings;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
@@ -87,21 +89,25 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Async
     private void sendNewUserEmail(Artist artist) {
+        String email = artist.getEmail();
         try {
-            final URI uri = getClass().getResource("/new_user.html").toURI();
+            ClassLoader classLoader = getClass().getClassLoader();
+            InputStream stream = classLoader.getResourceAsStream("/new_user.html");
+
+            if (stream == null) return;
+
+            String file = IOUtils.toString(stream);
             new EmailService().sendEmail(
-                    artist.getEmail(),
                     "Welcome to Wondor",
-                    Paths.get(uri).toFile()
+                    email,
+                    Paths.get(file).toFile()
             );
-            System.out.println("Sending email to artist. " + artist.getEmail());
+//            System.out.println("Sending email to artist. " + artist.getEmail());
         } catch (IOException e) {
             System.out.println("Cant send email : " + e.getMessage());
         } catch (MessagingException e) {
             System.out.println("Cant send email : " + e.getMessage());
         } catch (GeneralSecurityException e) {
-            System.out.println("Cant send email : " + e.getMessage());
-        } catch (URISyntaxException e) {
             System.out.println("Cant send email : " + e.getMessage());
         }
     }
@@ -178,4 +184,9 @@ public class ArtistServiceImpl implements ArtistService {
         artist.setProfilePicUrl(uploadedFile.getThumbnailURL() + "?updatedAt=" + time);
         return artistRepository.save(artist);
     }
+
+//    public static void main(String[] args) {
+//        ArtistServiceImpl im = new ArtistServiceImpl();
+//        im.sendNewUserEmail("p.joshi2310@gmail.com");
+//    }
 }
