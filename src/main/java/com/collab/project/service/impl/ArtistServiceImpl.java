@@ -1,5 +1,6 @@
 package com.collab.project.service.impl;
 
+import com.collab.project.email.CreateEmail;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artwork.UploadFile;
@@ -10,13 +11,16 @@ import com.collab.project.util.*;
 import io.jsonwebtoken.lang.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Locale;
@@ -75,7 +79,21 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setTestUser(false);
             artist = artistRepository.save(artist);
         }
+        sendNewUserEmail(artist);
         return artist;
+    }
+
+    @Async
+    private void sendNewUserEmail(Artist artist) {
+        try {
+            CreateEmail.sendEmail(artist.getEmail(), "Welcome to Wondor", "../../templates/new_user.html");
+        } catch (IOException e) {
+            System.out.println("Cant send email : " + e.getMessage());
+        } catch (MessagingException e) {
+            System.out.println("Cant send email : " + e.getMessage());
+        } catch (GeneralSecurityException e) {
+            System.out.println("Cant send email : " + e.getMessage());
+        }
     }
 
     @Override
