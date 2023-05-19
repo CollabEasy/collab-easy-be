@@ -82,11 +82,11 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setNewUser(true);
             artist.setTestUser(false);
             artist = artistRepository.save(artist);
-        }
-        try {
-            sendNewUserEmail(artist);
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                sendNewUserEmail(artist);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return artist;
     }
