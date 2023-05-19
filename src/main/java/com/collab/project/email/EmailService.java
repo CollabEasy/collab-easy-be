@@ -86,7 +86,7 @@ public class EmailService {
         return credential;
     }
 
-    public MimeMessage createEmail(String toEmailAddress, String subject, File filename) throws MessagingException,
+    public MimeMessage createEmail(String toEmailAddress, String subject, String filename) throws MessagingException,
             IOException {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
@@ -95,7 +95,7 @@ public class EmailService {
         email.setFrom(new InternetAddress("noreply@wondor.art"));
         email.addRecipient(javax.mail.Message.RecipientType.TO,
                 new InternetAddress(toEmailAddress));
-        email.setSubject("Welcome to Wondor.");
+        email.setSubject(subject);
         email.setSender(new InternetAddress("noreply@wondor.art"));
         email.setContent(getHTMLContentFromFile(filename), "text/html; charset=utf-8");
         return email;
@@ -103,7 +103,7 @@ public class EmailService {
 
     public Message sendEmail(String subject,
                                     String toEmailAddress,
-                                    File filename) throws MessagingException, IOException, GeneralSecurityException {
+                                    String filename) throws MessagingException, IOException, GeneralSecurityException {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
         MimeMessage email = createEmail(toEmailAddress, subject, filename);
@@ -134,17 +134,19 @@ public class EmailService {
         return null;
     }
 
-    private String getHTMLContentFromFile(File filename) throws IOException {
+    private String getHTMLContentFromFile(String filename) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
+        try (InputStream in = getClass().getResourceAsStream(filename);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+            // Use resource
+            String str;
+            while ((str = reader.readLine()) != null) {
+                contentBuilder.append(str);
+            }
+            in.close();
 
-        BufferedReader in = new BufferedReader(new FileReader(filename));
-        String str;
-        while ((str = in.readLine()) != null) {
-            contentBuilder.append(str);
+            return contentBuilder.toString();
         }
-        in.close();
-
-        return contentBuilder.toString();
     }
 
 //    public static void main(String[] args) throws MessagingException, GeneralSecurityException, IOException, URISyntaxException {

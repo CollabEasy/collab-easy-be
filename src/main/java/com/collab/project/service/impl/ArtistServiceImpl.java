@@ -83,33 +83,21 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setTestUser(false);
             artist = artistRepository.save(artist);
         }
-        sendNewUserEmail(artist);
+        try {
+            sendNewUserEmail(artist);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return artist;
     }
 
     @Async
-    private void sendNewUserEmail(Artist artist) {
-        String email = artist.getEmail();
-        try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            InputStream stream = classLoader.getResourceAsStream("/new_user.html");
-
-            if (stream == null) return;
-
-            String file = IOUtils.toString(stream);
-            new EmailService().sendEmail(
-                    "Welcome to Wondor",
-                    email,
-                    Paths.get(file).toFile()
-            );
-//            System.out.println("Sending email to artist. " + artist.getEmail());
-        } catch (IOException e) {
-            System.out.println("Cant send email : " + e.getMessage());
-        } catch (MessagingException e) {
-            System.out.println("Cant send email : " + e.getMessage());
-        } catch (GeneralSecurityException e) {
-            System.out.println("Cant send email : " + e.getMessage());
-        }
+    private void sendNewUserEmail(Artist artist) throws GeneralSecurityException, IOException, MessagingException {
+        new EmailService().sendEmail(
+                "Welcome to Wondor",
+                artist.getEmail(),
+                "/new_user.html"
+        );
     }
 
     @Override
