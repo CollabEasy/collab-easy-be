@@ -90,7 +90,7 @@ public class ArtistServiceImpl implements ArtistService {
             new EmailService().sendEmail(
                     artist.getEmail(),
                     "Welcome to Wondor",
-                    Paths.get(EmailService.class.getResource("new_user.html").toURI()).toFile()
+                    Paths.get(EmailService.class.getResource("/new_user.html").toURI()).toFile()
             );
         } catch (IOException e) {
             System.out.println("Cant send email : " + e.getMessage());
