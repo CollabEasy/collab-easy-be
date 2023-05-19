@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
@@ -79,18 +80,19 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setNewUser(true);
             artist.setTestUser(false);
             artist = artistRepository.save(artist);
-            sendNewUserEmail(artist);
         }
+        sendNewUserEmail(artist);
         return artist;
     }
 
     @Async
     private void sendNewUserEmail(Artist artist) {
         try {
+            final URI uri = getClass().getResource("/new_user.html").toURI();
             new EmailService().sendEmail(
                     artist.getEmail(),
                     "Welcome to Wondor",
-                    Paths.get(EmailService.class.getResource("/new_user.html").toURI()).toFile()
+                    Paths.get(uri).toFile()
             );
             System.out.println("Sending email to artist. " + artist.getEmail());
         } catch (IOException e) {
