@@ -1,6 +1,6 @@
 package com.collab.project.service.impl;
 
-import com.collab.project.email.CreateEmail;
+import com.collab.project.email.EmailService;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artwork.UploadFile;
@@ -18,8 +18,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -78,20 +79,26 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setNewUser(true);
             artist.setTestUser(false);
             artist = artistRepository.save(artist);
+            sendNewUserEmail(artist);
         }
-        sendNewUserEmail(artist);
         return artist;
     }
 
     @Async
     private void sendNewUserEmail(Artist artist) {
         try {
-            CreateEmail.sendEmail(artist.getEmail(), "Welcome to Wondor", "../../templates/new_user.html");
+            new EmailService().sendEmail(
+                    artist.getEmail(),
+                    "Welcome to Wondor",
+                    Paths.get(EmailService.class.getResource("new_user.html").toURI()).toFile()
+            );
         } catch (IOException e) {
             System.out.println("Cant send email : " + e.getMessage());
         } catch (MessagingException e) {
             System.out.println("Cant send email : " + e.getMessage());
         } catch (GeneralSecurityException e) {
+            System.out.println("Cant send email : " + e.getMessage());
+        } catch (URISyntaxException e) {
             System.out.println("Cant send email : " + e.getMessage());
         }
     }
