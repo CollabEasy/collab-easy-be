@@ -22,7 +22,7 @@ public class CategoryController {
     @PostMapping
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> addCategory(@RequestBody CategoryInput categoryInput) {
-        ArtCategory category = categoryService.getCategoryBySlug(categoryInput.getSlug());
+        ArtCategory category = categoryService.addCategory(categoryInput);
         return new ResponseEntity<>(new SuccessResponse(category), HttpStatus.OK);
     }
 
@@ -31,13 +31,6 @@ public class CategoryController {
     public ResponseEntity<SuccessResponse> getAllCategories() {
         List<ArtCategory> arts = categoryService.getDefaultCategory();
         return new ResponseEntity<>(new SuccessResponse(arts), HttpStatus.OK);
-    }
-
-    @GetMapping
-    @RequestMapping(value = "/id/{categoryId}", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getCategoryById(@PathVariable Long categoryId) {
-        ArtCategory category = categoryService.getCategoryById(categoryId);
-        return new ResponseEntity<>(new SuccessResponse(category), HttpStatus.OK);
     }
 
     @GetMapping

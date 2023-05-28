@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
         ArtCategory category = artCategoryRepository.findByArtName(categoryInput.getArtName());
         if (category == null) {
             category = new ArtCategory(FALLBACK_ID,
-                    categoryInput.getArtName(), categoryInput.getDescription(), true);
+                    categoryInput.getArtName(), categoryInput.getDescription(), categoryInput.getApproved());
         } else {
             category.setDescription(categoryInput.getDescription());
             category.setApproved(!category.getApproved());
