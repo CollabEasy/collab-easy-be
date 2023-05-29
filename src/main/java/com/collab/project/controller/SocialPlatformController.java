@@ -21,7 +21,6 @@ public class SocialPlatformController {
     @GetMapping
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getAllSocialPlatforms() {
-        System.out.println("Rabbal is here");
         List<SocialPlatform> platforms = socialPlatformService.getDefaultSocialPlatform();
         return new ResponseEntity<>(new SuccessResponse(platforms), HttpStatus.OK);
     }

@@ -37,7 +37,7 @@ public class ArtCategory {
         updateSlug();
     }
 
-    public ArtCategory(Long id, String artName, String slug, String description, Boolean approved) {
+    public ArtCategory(Long id, String artName, String description, Boolean approved) {
         this.id = id;
         this.artName = artName;
         updateSlug();
