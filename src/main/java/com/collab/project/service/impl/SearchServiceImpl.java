@@ -26,6 +26,9 @@ public class SearchServiceImpl implements SearchService {
                             List<SearchResponse> searchResults,
                             List<ArtCategory> artCategories) {
         for (ArtCategory artCategory : artCategories) {
+            if (!artCategory.getApproved()) {
+                continue;
+            }
             SearchResponse response = new SearchResponse(Enums.EntityType.ART.toString(),
                     artCategory.getArtName(),
                     artCategory.getSlug(),
