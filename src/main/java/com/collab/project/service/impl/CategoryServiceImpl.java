@@ -29,7 +29,6 @@ public class CategoryServiceImpl implements CategoryService {
                     categoryInput.getArtName(), categoryInput.getDescription(), categoryInput.getApproved());
         } else {
             category.setDescription(categoryInput.getDescription());
-            category.setApproved(!category.getApproved());
         }
         return artCategoryRepository.save(category);
     }
@@ -51,6 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<ArtCategory> getDefaultCategory() {
+
         return artCategoryRepository.findAll();
     }
 }
