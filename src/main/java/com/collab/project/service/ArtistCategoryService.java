@@ -13,8 +13,6 @@ public interface ArtistCategoryService {
 
     public List<String> getArtistCategories(String artistId);
 
-    public List<String> getDefaultCategories();
-
     public List<Artist> getArtistsByCategoryId(Long categoryID);
 
     public List<SearchedArtistOutput> getArtistsByCategorySlug(String categorySlug);

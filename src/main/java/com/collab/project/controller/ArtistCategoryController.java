@@ -50,13 +50,6 @@ public class ArtistCategoryController {
     }
 
     @GetMapping
-    @RequestMapping(value = "/categories", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getBasicCategories() {
-        List<String> arts = artistCategoryService.getDefaultCategories();
-        return new ResponseEntity<>(new SuccessResponse(arts), HttpStatus.OK);
-    }
-
-    @GetMapping
     @RequestMapping(value = "/category/id/{categoryId}/artists", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getArtistsByCategoryId(@PathVariable Long categoryId) {
         List<Artist> artists = artistCategoryService.getArtistsByCategoryId(categoryId);
