@@ -186,30 +186,38 @@ public class CollabServiceImpl implements CollabService {
         }
     }
 
-    private CollabRequestOutput createOutput(List<CollabRequest> requests, String artistId, Artist currentArtist) {
+    private CollabRequestOutput createOutput(List<CollabRequest> requests, String loggedInArtistId, Artist loggedInArtist) {
         requests.sort((o1, o2) -> o2.getUpdatedAt().compareTo(o1.getUpdatedAt()));
         CollabRequestOutput collabRequestOutput = new CollabRequestOutput();
         collabRequestOutput.setSent(new CollabRequestsStatus());
         collabRequestOutput.setReceived(new CollabRequestsStatus());
         for (CollabRequest request : requests) {
-            boolean artistIsSender = request.getSenderId().equals(artistId);
-            String otherArtistId = artistIsSender ? request.getReceiverId() : request.getSenderId();
-            Artist otherArtist = artistRepository.findByArtistId(otherArtistId);
-            request.setSenderName(currentArtist.getFirstName());
-            request.setReceiverName(otherArtist.getFirstName());
-            request.setSenderSlug(currentArtist.getSlug());
-            request.setReceiverSlug(otherArtist.getSlug());
-            request.setSenderProfilePicUrl(artistIsSender ? currentArtist.getProfilePicUrl() : otherArtist.getProfilePicUrl());
-            request.setReceiverProfilePicUrl(artistIsSender ? otherArtist.getProfilePicUrl() : currentArtist.getProfilePicUrl());
+            Artist sender;
+            Artist reciever;
+            if (request.getSenderId().equals(loggedInArtistId)) {
+                sender = loggedInArtist;
+                reciever = artistRepository.findByArtistId(request.getReceiverId());
+            } else {
+                sender = artistRepository.findByArtistId(request.getSenderId());
+                reciever = loggedInArtist;
+            }
+
+            request.setSenderName(sender.getFirstName());
+            request.setReceiverName(reciever.getFirstName());
+            request.setSenderSlug(sender.getSlug());
+            request.setReceiverSlug(reciever.getSlug());
+            request.setSenderProfilePicUrl(sender.getProfilePicUrl());
+            request.setReceiverProfilePicUrl(reciever.getProfilePicUrl());
+
                     List<CollabConversationReadStatus> readStatusList =
                     collabConversationReadStatusRepository.findByCollabId(request.getId());
             boolean isNewComment = !readStatusList.isEmpty()
-                    && (readStatusList.get(0).getArtistId().equals(artistId)
-                    || (readStatusList.size() > 1 && readStatusList.get(1).getArtistId().equals(artistId)));
+                    && (readStatusList.get(0).getArtistId().equals(loggedInArtistId)
+                    || (readStatusList.size() > 1 && readStatusList.get(1).getArtistId().equals(loggedInArtistId)));
 
             request.setNewComment(isNewComment);
             CollabRequestsStatus collabRequestsStatus = null;
-            if (request.getSenderId().equals(artistId)) {
+            if (request.getSenderId().equals(loggedInArtistId)) {
                 collabRequestsStatus = collabRequestOutput.getSent();
             } else {
                 collabRequestsStatus = collabRequestOutput.getReceived();
@@ -230,24 +238,24 @@ public class CollabServiceImpl implements CollabService {
     }
 
     @Override
-    public CollabRequestOutput collabRequestsSearch(String artistId, CollabRequestSearch collabRequestSearch) {
+    public CollabRequestOutput collabRequestsSearch(String loggedInArtistId, CollabRequestSearch collabRequestSearch) {
         SpecificationBuilder<CollabRequest> builder =
                 new SpecificationBuilder();
-        Artist currentArtist = artistRepository.findByArtistId(artistId);
+        Artist loggedInArtist = artistRepository.findByArtistId(loggedInArtistId);
         if (collabRequestSearch.getCollabRequestId() != null) {
             Optional<CollabRequest> request = collabRequestRepository.findById(collabRequestSearch.getCollabRequestId());
             if (request.isPresent()) {
                 CollabRequest collabRequest = request.get();
-                if (collabRequest.getSenderId().equals(artistId) || collabRequest.getReceiverId().equals(artistId)) {
+                if (collabRequest.getSenderId().equals(loggedInArtistId) || collabRequest.getReceiverId().equals(loggedInArtistId)) {
                     List<CollabRequest> result = new ArrayList<>();
                     result.add(collabRequest);
-                    return createOutput(result, artistId, currentArtist);
+                    return createOutput(result, loggedInArtistId, loggedInArtist);
                 }
             }
         }
 
 
-        builder.with("senderId", ":", artistId);
+        builder.with("senderId", ":", loggedInArtistId);
         if (collabRequestSearch.getOtherUserId() != null) {
             builder.with("receiverId", ":", collabRequestSearch.getOtherUserId());
         }
@@ -260,7 +268,7 @@ public class CollabServiceImpl implements CollabService {
         updateCollabRequestStatus(collabRequests);
 
         builder = new SpecificationBuilder();
-        builder.with("receiverId", ":", artistId);
+        builder.with("receiverId", ":", loggedInArtistId);
         if (collabRequestSearch.getOtherUserId() != null) {
             builder.with("senderId", ":", collabRequestSearch.getOtherUserId());
         }
@@ -271,7 +279,7 @@ public class CollabServiceImpl implements CollabService {
         specification = builder.build();
         collabRequests.addAll(collabRequestRepository.findAll(specification));
 
-        return createOutput(collabRequests, artistId, currentArtist);
+        return createOutput(collabRequests, loggedInArtistId, loggedInArtist);
     }
 
     private void updateCollabRequestStatus(List<CollabRequest> collabRequests) {
