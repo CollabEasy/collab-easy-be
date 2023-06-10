@@ -111,9 +111,8 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                 resultResponse.getWinners().add(response);
                 winners[0]--;
             } else {
-                // For now passing empty slug. Prashant will fix it.
                 resultResponse.getOtherSubmissions().add(new ContestSubmissionResponse(response.getSubmission(),
-                        response.getFirstName(), response.getLastName(), ""));
+                        response.getFirstName(), response.getLastName(), response.getSlug()));
             }
         });
 
@@ -127,7 +126,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                 contestSubmissionVoteRepository.findBySubmissionId(contestSubmission.getId());
         int positive = (int) (votes.stream().filter(ContestSubmissionVote::getVote)).count();
         return new ContestSubmissionStats(contestSubmission, artist.getFirstName(),
-                artist.getLastName(), positive);
+                artist.getLastName(), artist.getSlug(), positive);
     }
 
     @Override

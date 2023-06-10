@@ -17,5 +17,7 @@ public class ContestSubmissionStats {
 
     String lastName;
 
+    String slug;
+
     int votes;
 }
