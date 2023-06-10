@@ -91,8 +91,9 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         String artistId = contestSubmission.getArtistId();
         Artist artist = artistRepository.findByArtistId(artistId);
         List<ContestSubmissionVote> votes =
-                contestSubmissionVoteRepository.findBySubmissionId_Vote(contestSubmission.getId(), true);
-        return new ContestSubmissionResponse(contestSubmission, votes.size(), artist.getFirstName(),
+                contestSubmissionVoteRepository.findBySubmissionId(contestSubmission.getId());
+        int positive = (int) (votes.stream().filter(ContestSubmissionVote::getVote)).count();
+        return new ContestSubmissionResponse(contestSubmission, positive, artist.getFirstName(),
                 artist.getLastName());
     }
 
