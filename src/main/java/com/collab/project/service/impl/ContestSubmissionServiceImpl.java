@@ -45,6 +45,8 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     @Autowired
     private ContestSubmissionVoteRepository contestSubmissionVoteRepository;
 
+    int totalVotes = 0;
+
     @Override
     public ContestSubmission addContestSubmission(ContestSubmissionInput contestSubmissionInput) {
         // Search by artist first because one artist can submit only one entry.
@@ -84,6 +86,10 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
             ContestSubmissionResponse response = createContestSubmissionResponse(contestSubmission);
             responses.add(response);
         });
+
+        responses.forEach(response -> {
+            response.setVotes(response.getVotes() / totalVotes);
+        });
         return responses;
     }
 
@@ -93,6 +99,9 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         List<ContestSubmissionVote> votes =
                 contestSubmissionVoteRepository.findBySubmissionId(contestSubmission.getId());
         int positive = (int) (votes.stream().filter(ContestSubmissionVote::getVote)).count();
+        synchronized(this) {
+            totalVotes += positive;
+        }
         return new ContestSubmissionResponse(contestSubmission, positive, artist.getFirstName(),
                 artist.getLastName());
     }
