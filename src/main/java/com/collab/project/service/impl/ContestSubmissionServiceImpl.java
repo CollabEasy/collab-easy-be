@@ -88,7 +88,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         });
 
         responses.forEach(response -> {
-            response.setVotes(response.getVotes() / totalVotes);
+            response.setVotes((response.getVotes() * 100) / totalVotes);
         });
         return responses;
     }
