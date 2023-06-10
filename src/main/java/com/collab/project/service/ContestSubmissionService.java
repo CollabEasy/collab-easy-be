@@ -4,6 +4,7 @@ import com.collab.project.model.art.ArtInfo;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.contest.ContestSubmission;
 import com.collab.project.model.contest.ContestSubmissionResponse;
+import com.collab.project.model.contest.ContestSubmissionResultResponse;
 import com.collab.project.model.inputs.ContestSubmissionInput;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,8 @@ public interface ContestSubmissionService {
     public ContestSubmission addContestSubmission(ContestSubmissionInput contestSubmissionInput);
 
     public ContestSubmission updateContestSubmission(ContestSubmission contestSubmission);
+
+    public ContestSubmissionResultResponse getContestSubmissionsResults(String contestSlug);
 
     public List<ContestSubmissionResponse> getContestSubmissions(String contestSlug);
 

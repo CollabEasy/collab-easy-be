@@ -2,6 +2,7 @@ package com.collab.project.controller;
 
 import com.collab.project.model.contest.ContestSubmission;
 import com.collab.project.model.contest.ContestSubmissionResponse;
+import com.collab.project.model.contest.ContestSubmissionResultResponse;
 import com.collab.project.model.contest.ContestSubmissionVote;
 import com.collab.project.model.inputs.ContestSubmissionInput;
 import com.collab.project.model.inputs.ContestSubmissionVoteInput;
@@ -36,6 +37,14 @@ public class ContestSubmissionController {
     public ResponseEntity<SuccessResponse> getContestSubmissions(@PathVariable String contestSlug) {
         List<ContestSubmissionResponse> contestSubmissions = contestSubmissionService.getContestSubmissions(contestSlug);
         return new ResponseEntity<>(new SuccessResponse(contestSubmissions), HttpStatus.OK);
+    }
+
+    @GetMapping
+    @RequestMapping(value = "{contestSlug}/results", method = RequestMethod.GET)
+    public ResponseEntity<SuccessResponse> getContestSubmissionsResult(@PathVariable String contestSlug) {
+        ContestSubmissionResultResponse contestSubmissionResults =
+                contestSubmissionService.getContestSubmissionsResults(contestSlug);
+        return new ResponseEntity<>(new SuccessResponse(contestSubmissionResults), HttpStatus.OK);
     }
 
     @GetMapping

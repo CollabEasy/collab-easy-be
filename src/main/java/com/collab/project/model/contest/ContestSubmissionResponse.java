@@ -4,6 +4,8 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
 import org.hibernate.annotations.TypeDef;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -11,9 +13,7 @@ import org.hibernate.annotations.TypeDef;
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class ContestSubmissionResponse {
 
-    private ContestSubmission contestSubmission;
-
-    private int votes;
+    private ContestSubmission submission;
 
     private String firstName;
 

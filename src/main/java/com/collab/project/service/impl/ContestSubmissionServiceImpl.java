@@ -3,12 +3,10 @@ package com.collab.project.service.impl;
 import com.collab.project.exception.ContestRequestException;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artwork.UploadFile;
-import com.collab.project.model.contest.Contest;
-import com.collab.project.model.contest.ContestSubmission;
-import com.collab.project.model.contest.ContestSubmissionResponse;
-import com.collab.project.model.contest.ContestSubmissionVote;
+import com.collab.project.model.contest.*;
 import com.collab.project.model.inputs.ContestSubmissionInput;
 import com.collab.project.repositories.ArtistRepository;
+import com.collab.project.repositories.ContestRepository;
 import com.collab.project.repositories.ContestSubmissionRepository;
 import com.collab.project.repositories.ContestSubmissionVoteRepository;
 import com.collab.project.service.ContestSubmissionService;
@@ -20,11 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.collab.project.helpers.Constants.FALLBACK_ID;
 
@@ -43,9 +40,10 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     private ArtistRepository artistRepository;
 
     @Autowired
-    private ContestSubmissionVoteRepository contestSubmissionVoteRepository;
+    private ContestRepository contestRepository;
 
-    int totalVotes = 0;
+    @Autowired
+    private ContestSubmissionVoteRepository contestSubmissionVoteRepository;
 
     @Override
     public ContestSubmission addContestSubmission(ContestSubmissionInput contestSubmissionInput) {
@@ -83,27 +81,52 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         List<ContestSubmissionResponse> responses = new ArrayList<>();
 
         submissions.stream().parallel().forEach(contestSubmission -> {
-            ContestSubmissionResponse response = createContestSubmissionResponse(contestSubmission);
-            responses.add(response);
-        });
-
-        responses.forEach(response -> {
-            response.setVotes((response.getVotes() * 100) / totalVotes);
+            Artist artist = artistRepository.findByArtistId(contestSubmission.getArtistId());
+            responses.add(new ContestSubmissionResponse(contestSubmission, artist.getFirstName(),
+                    artist.getLastName()));
         });
         return responses;
     }
 
-    private ContestSubmissionResponse createContestSubmissionResponse(ContestSubmission contestSubmission) {
+    @Override
+    public ContestSubmissionResultResponse getContestSubmissionsResults(String contestSlug) {
+        List<ContestSubmission> submissions = contestSubmissionRepository.findByContestSlug(contestSlug);
+        List<ContestSubmissionStats> responses = new ArrayList<>();
+
+        submissions.stream().parallel().forEach(contestSubmission -> {
+            ContestSubmissionStats stats = createContestSubmissionResponse(contestSubmission);
+            responses.add(stats);
+        });
+
+        Collections.sort(responses, (r1, r2) -> Integer.compare(r2.getVotes(), r1.getVotes()));
+        int totalVotes = responses.stream().mapToInt(ContestSubmissionStats::getVotes).sum();
+
+        ContestSubmissionResultResponse resultResponse = new ContestSubmissionResultResponse();
+        final int[] winners = {2};
+
+        responses.forEach(response -> {
+            if (winners[0] > 0) {
+                int votePercent = (response.getVotes() * 100) / totalVotes;
+                response.setVotes(votePercent);
+                resultResponse.getWinners().add(response);
+                winners[0]--;
+            } else {
+                resultResponse.getOtherSubmissions().add(new ContestSubmissionResponse(response.getSubmission(),
+                        response.getFirstName(), response.getLastName()));
+            }
+        });
+
+        return resultResponse;
+    }
+
+    private ContestSubmissionStats createContestSubmissionResponse(ContestSubmission contestSubmission) {
         String artistId = contestSubmission.getArtistId();
         Artist artist = artistRepository.findByArtistId(artistId);
         List<ContestSubmissionVote> votes =
                 contestSubmissionVoteRepository.findBySubmissionId(contestSubmission.getId());
         int positive = (int) (votes.stream().filter(ContestSubmissionVote::getVote)).count();
-        synchronized(this) {
-            totalVotes += positive;
-        }
-        return new ContestSubmissionResponse(contestSubmission, positive, artist.getFirstName(),
-                artist.getLastName());
+        return new ContestSubmissionStats(contestSubmission, artist.getFirstName(),
+                artist.getLastName(), positive);
     }
 
     @Override
