@@ -18,5 +18,5 @@ public interface ContestSubmissionVoteRepository extends JpaRepository<ContestSu
     @Query(value = "SELECT * FROM contest_submission_vote where artist_id = (?1) AND contest_slug = (?2) AND vote = 1", nativeQuery = true)
     public List<ContestSubmissionVote> findByArtistIdAndContestSlug(String artistSd, String contestSlug);
 
-    public List<ContestSubmissionVote> findBySubmissionId(Long id);
+    public List<ContestSubmissionVote> findBySubmissionId_Vote(Long id, boolean vote);
 }
