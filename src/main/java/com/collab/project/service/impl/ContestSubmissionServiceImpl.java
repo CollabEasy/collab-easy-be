@@ -1,11 +1,16 @@
 package com.collab.project.service.impl;
 
 import com.collab.project.exception.ContestRequestException;
+import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artwork.UploadFile;
 import com.collab.project.model.contest.Contest;
 import com.collab.project.model.contest.ContestSubmission;
+import com.collab.project.model.contest.ContestSubmissionResponse;
+import com.collab.project.model.contest.ContestSubmissionVote;
 import com.collab.project.model.inputs.ContestSubmissionInput;
+import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.ContestSubmissionRepository;
+import com.collab.project.repositories.ContestSubmissionVoteRepository;
 import com.collab.project.service.ContestSubmissionService;
 import com.collab.project.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +38,12 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
 
     @Autowired
     private ContestSubmissionRepository contestSubmissionRepository;
+
+    @Autowired
+    private ArtistRepository artistRepository;
+
+    @Autowired
+    private ContestSubmissionVoteRepository contestSubmissionVoteRepository;
 
     @Override
     public ContestSubmission addContestSubmission(ContestSubmissionInput contestSubmissionInput) {
@@ -65,8 +76,24 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     }
 
     @Override
-    public List<ContestSubmission> getContestSubmissions(String contestSlug) {
-        return contestSubmissionRepository.findByContestSlug(contestSlug);
+    public List<ContestSubmissionResponse> getContestSubmissions(String contestSlug) {
+        List<ContestSubmission> submissions = contestSubmissionRepository.findByContestSlug(contestSlug);
+        List<ContestSubmissionResponse> responses = new ArrayList<>();
+
+        submissions.stream().parallel().forEach(contestSubmission -> {
+            ContestSubmissionResponse response = createContestSubmissionResponse(contestSubmission);
+            responses.add(response);
+        });
+        return responses;
+    }
+
+    private ContestSubmissionResponse createContestSubmissionResponse(ContestSubmission contestSubmission) {
+        String artistId = contestSubmission.getArtistId();
+        Artist artist = artistRepository.findByArtistId(artistId);
+        List<ContestSubmissionVote> votes = contestSubmissionVoteRepository.findByArtistIdAndContestSlug(artistId,
+                contestSubmission.getContestSlug());
+        return new ContestSubmissionResponse(contestSubmission, votes.size(), artist.getFirstName(),
+                artist.getLastName());
     }
 
     @Override
