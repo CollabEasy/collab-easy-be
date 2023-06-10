@@ -18,4 +18,6 @@ public class ContestSubmissionResponse {
     private String firstName;
 
     private String lastName;
+
+    private String slug;
 }

@@ -83,7 +83,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         submissions.stream().parallel().forEach(contestSubmission -> {
             Artist artist = artistRepository.findByArtistId(contestSubmission.getArtistId());
             responses.add(new ContestSubmissionResponse(contestSubmission, artist.getFirstName(),
-                    artist.getLastName()));
+                    artist.getLastName(), artist.getSlug()));
         });
         return responses;
     }
