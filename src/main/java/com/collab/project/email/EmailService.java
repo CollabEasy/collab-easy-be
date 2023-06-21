@@ -166,10 +166,4 @@ public class EmailService {
             return contentBuilder.toString();
         }
     }
-
-//    public static void main(String[] args) throws MessagingException, GeneralSecurityException, IOException, URISyntaxException {
-//        EmailService emailService = new EmailService();
-//        emailService.sendEmail("Welcome to Wondor", "prashant.joshi056@gmail.com",
-//                Paths.get(EmailService.class.getResource("/new_user.html").toURI()).toFile());;
-//    }
 }
