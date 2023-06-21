@@ -175,9 +175,4 @@ public class ArtistServiceImpl implements ArtistService {
         artist.setProfilePicUrl(uploadedFile.getThumbnailURL() + "?updatedAt=" + time);
         return artistRepository.save(artist);
     }
-
-//    public static void main(String[] args) {
-//        ArtistServiceImpl im = new ArtistServiceImpl();
-//        im.sendNewUserEmail("p.joshi2310@gmail.com");
-//    }
 }
