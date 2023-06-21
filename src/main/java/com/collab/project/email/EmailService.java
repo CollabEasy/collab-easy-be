@@ -20,6 +20,7 @@ import org.apache.commons.codec.binary.Base64;
 import com.google.api.services.gmail.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.BadPaddingException;
@@ -41,7 +42,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-@Service
+@Component
 public class EmailService {
 
 

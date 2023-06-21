@@ -16,11 +16,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableWebSecurity
+@EnableAsync
 @EnableConfigurationProperties(S3ConfigProps.class)
 @EnableJpaRepositories(basePackages = {"com.collab.project.repositories"})
 @EntityScan(basePackages = {"com.collab.project.model"})
