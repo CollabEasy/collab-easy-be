@@ -123,6 +123,7 @@ public class EmailService {
         Artist artist = artistRepository.findByArtistId(artistId);
 
         Properties props = new Properties();
+        System.out.println("artist : " + artist.getEmail() + " " + subject + " " + encodedMessage);
         MimeMessage email = createEmailFromEncodedMessage(artist.getEmail(), subject, encodedMessage);
         if (email == null) {
             System.out.println("email is null");
