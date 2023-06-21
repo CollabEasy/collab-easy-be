@@ -19,6 +19,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import com.google.api.services.gmail.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.BadPaddingException;
@@ -117,14 +118,33 @@ public class EmailService {
         return null;
     }
 
+    @Async
+    public void sendEmailToAllUsersFromString(String subject, String encodedMessage) {
+        List<Artist> artists = artistRepository.findAll();
+        artists.stream().parallel().forEach(artist -> {
+            if (artist.getFirstName().equalsIgnoreCase("rahul") || artist.getFirstName().equalsIgnoreCase("prashant")) {
+                try {
+                    System.out.println("processing : " + System.currentTimeMillis());
+                    sendEmailFromString(subject, artist.getArtistId(), artist.getEmail(), encodedMessage);
+                } catch (Exception ex) {
+                    System.out.println("Unable to send email : " + ex.getMessage());
+                }
+            }
+        });
+    }
+
     public Message sendEmailFromString(String subject,
                                      String artistId,
+                                     String emailAddress,
                                      String encodedMessage) throws MessagingException, IOException,
             GeneralSecurityException {
-        Artist artist = artistRepository.findByArtistId(artistId);
+        String artistEmail = emailAddress;
+        if (artistEmail == null) {
+            Artist artist = artistRepository.findByArtistId(artistId);
+            artistEmail = artist.getEmail();
+        }
 
-        Properties props = new Properties();
-        MimeMessage email = createEmailFromEncodedMessage(artist.getEmail(), subject, encodedMessage);
+        MimeMessage email = createEmailFromEncodedMessage(artistEmail, subject, encodedMessage);
         if (email == null) {
             throw new IllegalStateException("Email provided is null.");
         }

@@ -26,7 +26,9 @@ public class EmailController {
 
     @PostMapping
     @RequestMapping(value = "/all", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> sendEmailToAllUsers() {
+    public ResponseEntity<SuccessResponse> sendEmailToAllUsers(@RequestBody EmailNotifyInput input) {
+        emailService.sendEmailToAllUsersFromString(input.getSubject(), input.getContent());
+        System.out.println("Sent response : " + System.currentTimeMillis());
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
     }
 
@@ -35,7 +37,7 @@ public class EmailController {
     public ResponseEntity<SuccessResponse> sendEmailToOneUser(@RequestBody EmailNotifyInput input) throws MessagingException,
             GeneralSecurityException, IOException {
         String artistId = AuthUtils.getArtistId();
-        emailService.sendEmailFromString(input.getSubject(), artistId, input.getContent());
+        emailService.sendEmailFromString(input.getSubject(), artistId, null, input.getContent());
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
     }
 }
