@@ -85,7 +85,7 @@ public class EmailService {
         email.setContent(emailUtils.decryptEmailContent(message), "text/html; charset=utf-8");
         return email;
     }
-    
+
     public Message sendEmailFromFile(String subject,
                                     String toEmailAddress,
                                     String filename) throws MessagingException, IOException, GeneralSecurityException {
@@ -104,8 +104,6 @@ public class EmailService {
         try {
             // Create send message
             message = gmailService.users().messages().send("me", message).execute();
-            System.out.println("Message id: " + message.getId());
-            System.out.println(message.toPrettyString());
             return message;
         } catch (GoogleJsonResponseException e) {
             // TODO(developer) - handle error appropriately
@@ -126,10 +124,9 @@ public class EmailService {
         Artist artist = artistRepository.findByArtistId(artistId);
 
         Properties props = new Properties();
-        System.out.println("artist : " + artist.getEmail() + " " + subject + " " + encodedMessage);
         MimeMessage email = createEmailFromEncodedMessage(artist.getEmail(), subject, encodedMessage);
         if (email == null) {
-            System.out.println("email is null");
+            throw new IllegalStateException("Email provided is null.");
         }
         // Encode and wrap the MIME message into a gmail message
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -142,8 +139,6 @@ public class EmailService {
         try {
             // Create send message
             message = gmailService.users().messages().send("me", message).execute();
-            System.out.println("Message id: " + message.getId());
-            System.out.println(message.toPrettyString());
             return message;
         } catch (GoogleJsonResponseException e) {
             // TODO(developer) - handle error appropriately
