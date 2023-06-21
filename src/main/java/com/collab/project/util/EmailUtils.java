@@ -40,11 +40,14 @@ public class EmailUtils {
     public String decryptEmailContent(String emailMessage) throws NoSuchPaddingException,
             NoSuchAlgorithmException {
         String decryptedContent =  new String(java.util.Base64.getDecoder().decode(emailMessage));
+
        if (decryptedContent != null && decryptedContent.split("::").length == 3) {
+           System.out.println("decrypted content : " + decryptedContent);
             String content = decrypt(decryptedContent.split("::")[1], decryptedContent.split("::")[0],
                     decryptedContent.split("::")[2]);
             return content;
         }
+       System.out.println("null content");
         return null;
     }
 

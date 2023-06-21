@@ -124,7 +124,9 @@ public class EmailService {
 
         Properties props = new Properties();
         MimeMessage email = createEmailFromEncodedMessage(artist.getEmail(), subject, encodedMessage);
-
+        if (email == null) {
+            System.out.println("email is null");
+        }
         // Encode and wrap the MIME message into a gmail message
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         email.writeTo(buffer);

@@ -13,8 +13,6 @@ import org.hibernate.annotations.TypeDef;
 @Setter
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class EmailNotifyInput {
-    String userId;
-
     String subject;
 
     String content;
