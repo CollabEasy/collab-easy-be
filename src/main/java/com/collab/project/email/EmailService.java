@@ -52,6 +52,8 @@ public class EmailService {
 
     final ArtistRepository artistRepository;
 
+    String sender = "Wondor <noreply@wondor.art>";
+
     public EmailService(@Autowired Gmail gmailService, @Autowired EmailUtils emailUtils,
                         @Autowired ArtistRepository artistRepository) {
         this.gmailService = gmailService;
@@ -65,11 +67,11 @@ public class EmailService {
         Session session = Session.getDefaultInstance(props, null);
 
         MimeMessage email = new MimeMessage(session);
-        email.setFrom(new InternetAddress("noreply@wondor.art"));
+        email.setFrom(new InternetAddress(sender));
         email.addRecipient(javax.mail.Message.RecipientType.TO,
                 new InternetAddress(toEmailAddress));
         email.setSubject(subject);
-        email.setSender(new InternetAddress("noreply@wondor.art"));
+        email.setSender(new InternetAddress(sender));
         email.setContent(getHTMLContentFromFile(filename), "text/html; charset=utf-8");
         return email;
     }
@@ -79,11 +81,11 @@ public class EmailService {
         Session session = Session.getDefaultInstance(props, null);
 
         MimeMessage email = new MimeMessage(session);
-        email.setFrom(new InternetAddress("noreply@wondor.art"));
+        email.setFrom(new InternetAddress(sender));
         email.addRecipient(javax.mail.Message.RecipientType.TO,
                 new InternetAddress(toEmailAddress));
         email.setSubject(subject);
-        email.setSender(new InternetAddress("noreply@wondor.art"));
+        email.setSender(new InternetAddress(sender));
         email.setContent(emailUtils.decryptEmailContent(message), "text/html; charset=utf-8");
         return email;
     }
