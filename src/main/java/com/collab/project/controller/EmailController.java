@@ -28,7 +28,6 @@ public class EmailController {
     @RequestMapping(value = "/all", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> sendEmailToAllUsers(@RequestBody EmailNotifyInput input) {
         emailService.sendEmailToAllUsersFromString(input.getSubject(), input.getContent());
-        System.out.println("Sent response : " + System.currentTimeMillis());
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
     }
 

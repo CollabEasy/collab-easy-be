@@ -86,21 +86,16 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setTestUser(false);
             artist = artistRepository.save(artist);
             try {
-                sendNewUserEmail(artist);
+                emailService.sendEmailFromFile(
+                        "Welcome to Wondor",
+                        artist.getEmail(),
+                        "/new_user.html"
+                );
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return artist;
-    }
-
-    @Async
-    private void sendNewUserEmail(Artist artist) throws GeneralSecurityException, IOException, MessagingException {
-        emailService.sendEmailFromFile(
-                "Welcome to Wondor",
-                artist.getEmail(),
-                "/new_user.html"
-        );
     }
 
     @Override

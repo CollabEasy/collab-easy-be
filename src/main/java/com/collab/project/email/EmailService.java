@@ -88,6 +88,7 @@ public class EmailService {
         return email;
     }
 
+    @Async
     public Message sendEmailFromFile(String subject,
                                     String toEmailAddress,
                                     String filename) throws MessagingException, IOException, GeneralSecurityException {
@@ -123,17 +124,15 @@ public class EmailService {
     public void sendEmailToAllUsersFromString(String subject, String encodedMessage) {
         List<Artist> artists = artistRepository.findAll();
         artists.stream().parallel().forEach(artist -> {
-            if (artist.getFirstName().equalsIgnoreCase("rahul") || artist.getFirstName().equalsIgnoreCase("prashant")) {
-                try {
-                    System.out.println("processing : " + System.currentTimeMillis());
-                    sendEmailFromString(subject, artist.getArtistId(), artist.getEmail(), encodedMessage);
-                } catch (Exception ex) {
-                    System.out.println("Unable to send email : " + ex.getMessage());
-                }
+            try {
+                sendEmailFromString(subject, artist.getArtistId(), artist.getEmail(), encodedMessage);
+            } catch (Exception ex) {
+                System.out.println("Unable to send email : " + ex.getMessage());
             }
         });
     }
 
+    @Async
     public Message sendEmailFromString(String subject,
                                      String artistId,
                                      String emailAddress,
