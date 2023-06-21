@@ -1,5 +1,6 @@
 package com.collab.project.service.impl;
 
+import com.collab.project.email.EmailService;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artwork.UploadFile;
@@ -9,14 +10,21 @@ import com.collab.project.service.ArtistService;
 import com.collab.project.util.*;
 import io.jsonwebtoken.lang.Strings;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import javax.mail.MessagingException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +42,9 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Autowired
     S3Utils s3Utils;
+
+    @Autowired
+    EmailService emailService;
 
     private String getSlug(String firstName, String lastName) {
         String firstLastName = firstName.trim() + " " + lastName.trim();
@@ -74,8 +85,22 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setNewUser(true);
             artist.setTestUser(false);
             artist = artistRepository.save(artist);
+            try {
+                sendNewUserEmail(artist);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return artist;
+    }
+
+    @Async
+    private void sendNewUserEmail(Artist artist) throws GeneralSecurityException, IOException, MessagingException {
+        emailService.sendEmailFromFile(
+                "Welcome to Wondor",
+                artist.getEmail(),
+                "/new_user.html"
+        );
     }
 
     @Override

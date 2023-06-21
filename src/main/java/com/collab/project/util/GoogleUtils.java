@@ -52,7 +52,6 @@ public class GoogleUtils {
                 artistInput.setEmail(resObject.getString("email"));
                 return true;
             } else {
-                System.out.println("Invalid ID token.");
                 return false;
             }
         } catch (Exception e) {

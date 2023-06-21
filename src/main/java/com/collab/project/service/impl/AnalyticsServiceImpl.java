@@ -44,7 +44,6 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 //        List<Artist> artistList = artistRepository.findArtistBetweenDates(startTs, endTs);
         List<Artist> artistList = artistRepository.findArtistBetweenDatesString(startDate, endDate);
         int total = artistRepository.getTotalArtists();
-        System.out.println("Fetched artists : " + artistList.size());
 
         SimpleDateFormat sf = new SimpleDateFormat("MMM dd, yyyy");
         for (Artist artist : artistList) {
