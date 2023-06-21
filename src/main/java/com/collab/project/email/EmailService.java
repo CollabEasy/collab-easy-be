@@ -21,6 +21,8 @@ import com.google.api.services.gmail.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -30,6 +32,8 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,7 +72,7 @@ public class EmailService {
         return email;
     }
 
-    public MimeMessage createEmailFromEncodedMessage(String toEmailAddress, String subject, String message) throws MessagingException, IOException, NoSuchPaddingException, NoSuchAlgorithmException {
+    public MimeMessage createEmailFromEncodedMessage(String toEmailAddress, String subject, String message) throws MessagingException, IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
 
@@ -81,8 +85,7 @@ public class EmailService {
         email.setContent(emailUtils.decryptEmailContent(message), "text/html; charset=utf-8");
         return email;
     }
-
-
+    
     public Message sendEmailFromFile(String subject,
                                     String toEmailAddress,
                                     String filename) throws MessagingException, IOException, GeneralSecurityException {
