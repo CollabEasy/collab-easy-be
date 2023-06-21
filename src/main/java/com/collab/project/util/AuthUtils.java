@@ -16,5 +16,4 @@ public class AuthUtils {
         return (UserDetailsImpl) (SecurityContextHolder.getContext().getAuthentication()
             .getPrincipal());
     }
-
 }

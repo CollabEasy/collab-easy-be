@@ -43,6 +43,9 @@ public class ArtistServiceImpl implements ArtistService {
     @Autowired
     S3Utils s3Utils;
 
+    @Autowired
+    EmailService emailService;
+
     private String getSlug(String firstName, String lastName) {
         String firstLastName = firstName.trim() + " " + lastName.trim();
         return Strings.replace(firstLastName.toLowerCase(Locale.ROOT), " ", "-");
@@ -93,7 +96,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Async
     private void sendNewUserEmail(Artist artist) throws GeneralSecurityException, IOException, MessagingException {
-        new EmailService().sendEmail(
+        emailService.sendEmailFromFile(
                 "Welcome to Wondor",
                 artist.getEmail(),
                 "/new_user.html"
