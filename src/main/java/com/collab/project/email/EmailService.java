@@ -1,29 +1,21 @@
 package com.collab.project.email;
 
-import com.collab.project.config.EmailConfig;
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.email.EmailEnumHistory;
 import com.collab.project.repositories.ArtistRepository;
+import com.collab.project.repositories.EmailEnumHistoryRepository;
 import com.collab.project.service.impl.ArtistGroupServiceImpl;
 import com.collab.project.util.EmailUtils;
 import com.collab.project.util.FileUtils;
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.auth.oauth2.TokenResponse;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.client.util.store.MemoryDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
-import com.google.api.services.gmail.GmailScopes;
 import org.apache.commons.codec.binary.Base64;
 
 import com.google.api.services.gmail.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -33,12 +25,12 @@ import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 
 @Component
@@ -53,14 +45,19 @@ public class EmailService {
 
     final ArtistGroupServiceImpl artistGroupService;
 
+    final EmailEnumHistoryRepository emailEnumHistoryRepository;
+
     String sender = "Wondor <noreply@wondor.art>";
 
     public EmailService(@Autowired Gmail gmailService, @Autowired EmailUtils emailUtils,
-                        @Autowired ArtistRepository artistRepository, @Autowired ArtistGroupServiceImpl artistGroupService) {
+                        @Autowired ArtistRepository artistRepository,
+                        @Autowired ArtistGroupServiceImpl artistGroupService,
+                        @Autowired EmailEnumHistoryRepository emailEnumHistoryRepository) {
         this.gmailService = gmailService;
         this.emailUtils = emailUtils;
         this.artistRepository = artistRepository;
         this.artistGroupService = artistGroupService;
+        this.emailEnumHistoryRepository = emailEnumHistoryRepository;
     }
 
     public MimeMessage createEmailFromFile(String toEmailAddress, String subject, String filename) throws MessagingException,
@@ -187,8 +184,6 @@ public class EmailService {
                 return;
         }
 
-        System.out.println(emails);
-
         emails.stream().parallel().forEach(email -> {
             try {
                 sendEmailFromString(subject, null, email, content);
@@ -196,5 +191,12 @@ public class EmailService {
                 System.out.println("Unable to send email : " + ex.getMessage());
             }
         });
+
+        Optional<EmailEnumHistory> history = emailEnumHistoryRepository.findByEmailEnum(groupEnum);
+        EmailEnumHistory enumHistory = history.orElseGet(() -> new EmailEnumHistory(groupEnum,
+                Timestamp.from(Instant.now())));
+
+        enumHistory.setLastSent(Timestamp.from(Instant.now()));
+        emailEnumHistoryRepository.save(enumHistory);
     }
 }
