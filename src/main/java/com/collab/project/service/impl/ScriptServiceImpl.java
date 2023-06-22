@@ -22,7 +22,7 @@ public class ScriptServiceImpl {
         List<Artist> artists = artistRepository.findAll();
 
         for (Artist artist : artists) {
-            if (artist.getBio().isEmpty()) continue;
+            if (artist.getBio() == null || artist.getBio().isEmpty()) continue;
             List<ArtistCategory> categories = artistCategoryRepository.findByArtistId(artist.getArtistId());
             if (categories.isEmpty()) continue;
             artist.setProfileComplete(true);
