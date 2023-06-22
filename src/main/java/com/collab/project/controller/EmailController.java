@@ -53,7 +53,7 @@ public class EmailController {
     }
 
     @GetMapping
-    @RequestMapping(value = "/email/enums/all", method = RequestMethod.GET) 
+    @RequestMapping(value = "/email/enums/all", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> fetchAllEnumDetails() {
         return new ResponseEntity<>(new SuccessResponse(emailHistoryService.getAllEmailEnumsHistory()), HttpStatus.OK);
     }
