@@ -132,8 +132,11 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setGender(inp.getGender());
         }
 
-        if (inp.getDateOfBirth() != null) {
+        if (!artist.getProfileComplete() && !artist.getBio().isEmpty()) {
+            artist.setProfileComplete(true);
+        }
 
+        if (inp.getDateOfBirth() != null) {
             artist.setDateOfBirth(inp.getDateOfBirth());
         }
         artistRepository.save(artist);

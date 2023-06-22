@@ -65,4 +65,18 @@ public class FileUtils {
         return true;
     }
 
+    public static String getHTMLContentFromFile(String filename) throws IOException {
+        StringBuilder contentBuilder = new StringBuilder();
+        try (InputStream in = getClass().getResourceAsStream(filename);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+            // Use resource
+            String str;
+            while ((str = reader.readLine()) != null) {
+                contentBuilder.append(str);
+            }
+            in.close();
+
+            return contentBuilder.toString();
+        }
+    }
 }

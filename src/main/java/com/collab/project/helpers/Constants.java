@@ -43,5 +43,7 @@ public class Constants {
     public static final String IMAGE = "image";
 
 
-
+    public static final Set<String> EmailGroups = new HashSet<String>() {{
+        add("INCOMPLETE_PROFILE");
+    }};
 }

@@ -3,7 +3,9 @@ package com.collab.project.email;
 import com.collab.project.config.EmailConfig;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.repositories.ArtistRepository;
+import com.collab.project.service.impl.ArtistGroupServiceImpl;
 import com.collab.project.util.EmailUtils;
+import com.collab.project.util.FileUtils;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
@@ -37,10 +39,7 @@ import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 @Component
 public class EmailService {
@@ -52,13 +51,16 @@ public class EmailService {
 
     final ArtistRepository artistRepository;
 
+    final ArtistGroupServiceImpl artistGroupService;
+
     String sender = "Wondor <noreply@wondor.art>";
 
     public EmailService(@Autowired Gmail gmailService, @Autowired EmailUtils emailUtils,
-                        @Autowired ArtistRepository artistRepository) {
+                        @Autowired ArtistRepository artistRepository, @Autowired ArtistGroupServiceImpl artistGroupService) {
         this.gmailService = gmailService;
         this.emailUtils = emailUtils;
         this.artistRepository = artistRepository;
+        this.artistGroupService = artistGroupService;
     }
 
     public MimeMessage createEmailFromFile(String toEmailAddress, String subject, String filename) throws MessagingException,
@@ -72,7 +74,7 @@ public class EmailService {
                 new InternetAddress(toEmailAddress));
         email.setSubject(subject);
         email.setSender(new InternetAddress(sender));
-        email.setContent(getHTMLContentFromFile(filename), "text/html; charset=utf-8");
+        email.setContent(FileUtils.getHTMLContentFromFile(filename), "text/html; charset=utf-8");
         return email;
     }
 
@@ -174,18 +176,25 @@ public class EmailService {
         return null;
     }
 
-    private String getHTMLContentFromFile(String filename) throws IOException {
-        StringBuilder contentBuilder = new StringBuilder();
-        try (InputStream in = getClass().getResourceAsStream(filename);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-            // Use resource
-            String str;
-            while ((str = reader.readLine()) != null) {
-                contentBuilder.append(str);
-            }
-            in.close();
-
-            return contentBuilder.toString();
+    @Async
+    public void sendEmailToGroup(String groupEnum, String subject, String content) {
+        List<String> emails;
+        switch (groupEnum) {
+            case "INCOMPLETE_PROFILE":
+                emails = artistGroupService.getEmailListWithIncompleteProfile();
+                break;
+            default:
+                return;
         }
+
+        System.out.println(emails);
+
+//        emails.stream().parallel().forEach(email -> {
+//            try {
+//                sendEmailFromString(subject, null, email, content);
+//            } catch (Exception ex) {
+//                System.out.println("Unable to send email : " + ex.getMessage());
+//            }
+//        });
     }
 }

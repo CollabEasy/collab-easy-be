@@ -1,6 +1,7 @@
 package com.collab.project.controller;
 
 import com.collab.project.email.EmailService;
+import com.collab.project.helpers.Constants;
 import com.collab.project.model.EmailNotifyInput;
 import com.collab.project.model.contest.Contest;
 import com.collab.project.model.inputs.ArtistInput;
@@ -37,6 +38,16 @@ public class EmailController {
             GeneralSecurityException, IOException {
         String artistId = AuthUtils.getArtistId();
         emailService.sendEmailFromString(input.getSubject(), artistId, null, input.getContent());
+        return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
+    }
+
+    @PostMapping
+    @RequestMapping(value = "/group/{group_enum}", method = RequestMethod.POST)
+    public ResponseEntity<SuccessResponse> sendEmailToOneUser(@PathVariable String group_enum, @RequestBody EmailNotifyInput input) throws MessagingException,
+            GeneralSecurityException, IOException {
+        if (Constants.EmailGroups.contains(group_enum)) {
+            emailService.sendEmailToGroup(group_enum, input.getSubject(), input.getContent());
+        }
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
     }
 }

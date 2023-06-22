@@ -62,11 +62,21 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
             ArtistCategory category = new ArtistCategory(FALLBACK_ID, artistId, artCategory.getId());
             savedResults.add(artistCategoryRepository.save(category));
         }
+
+        boolean saveArtist = false;
+        Artist artist = artistRepository.findByArtistId(artistId);
         if (artistCategoryInput.isInitial()) {
-            Artist artist = artistRepository.findByArtistId(artistId);
             artist.setNewUser(false);
-            artistRepository.save(artist);
+            saveArtist = true;
         }
+
+        if (!artist.getProfileComplete() && !artist.getBio().isEmpty() && !savedResults.isEmpty()) {
+            artist.setProfileComplete(true);
+            saveArtist = true;
+        }
+
+        if (saveArtist) artistRepository.save(artist);
+
         return savedResults;
     }
 
