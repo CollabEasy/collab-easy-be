@@ -29,7 +29,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     public UserAnalytics getUsersJoinedCount(String startDate, String endDate) {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
-        DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
         Map<String, Integer> count = new HashMap<String, Integer>();
         while (!start.isAfter(end)) {
             count.put(start.format(customFormatter), 0);
@@ -45,7 +45,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         List<Artist> artistList = artistRepository.findArtistBetweenDatesString(startDate, endDate);
         int total = artistRepository.getTotalArtists();
 
-        SimpleDateFormat sf = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy.MM.dd");
         for (Artist artist : artistList) {
             Timestamp joinedOn = artist.getCreatedAt();
             Date date = new Date();
