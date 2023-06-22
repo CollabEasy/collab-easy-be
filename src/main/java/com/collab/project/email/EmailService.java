@@ -189,12 +189,12 @@ public class EmailService {
 
         System.out.println(emails);
 
-//        emails.stream().parallel().forEach(email -> {
-//            try {
-//                sendEmailFromString(subject, null, email, content);
-//            } catch (Exception ex) {
-//                System.out.println("Unable to send email : " + ex.getMessage());
-//            }
-//        });
+        emails.stream().parallel().forEach(email -> {
+            try {
+                sendEmailFromString(subject, null, email, content);
+            } catch (Exception ex) {
+                System.out.println("Unable to send email : " + ex.getMessage());
+            }
+        });
     }
 }

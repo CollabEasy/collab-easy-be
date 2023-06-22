@@ -1,4 +1,4 @@
-package com.collab.project.model;
+package com.collab.project.model.email;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
