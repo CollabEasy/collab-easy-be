@@ -45,5 +45,6 @@ public class Constants {
 
     public static final Set<String> EmailGroups = new HashSet<String>() {{
         add("INCOMPLETE_PROFILE");
+        add("ADMINS");
     }};
 }

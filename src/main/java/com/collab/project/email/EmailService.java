@@ -177,6 +177,9 @@ public class EmailService {
     public void sendEmailToGroup(String groupEnum, String subject, String content) {
         List<String> emails;
         switch (groupEnum) {
+            case "ADMINS":
+                emails = Arrays.asList("prashant.joshi056@gmail.com", "rahulgupta6007@gmail.com");
+                break;
             case "INCOMPLETE_PROFILE":
                 emails = artistGroupService.getEmailListWithIncompleteProfile();
                 break;
