@@ -45,7 +45,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         List<Artist> artistList = artistRepository.findArtistBetweenDatesString(startDate, endDate);
         int total = artistRepository.getTotalArtists();
 
-        SimpleDateFormat sf = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat sf = new SimpleDateFormat("dd MMM, yyyy");
         for (Artist artist : artistList) {
             Timestamp joinedOn = artist.getCreatedAt();
             Date date = new Date();
