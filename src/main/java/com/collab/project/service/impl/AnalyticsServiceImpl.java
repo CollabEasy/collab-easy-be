@@ -29,7 +29,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     public UserAnalytics getUsersJoinedCount(String startDate, String endDate) {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
-        DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+        DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("dd MMM, yyyy");
         Map<String, Integer> count = new HashMap<String, Integer>();
         while (!start.isAfter(end)) {
             count.put(start.format(customFormatter), 0);
