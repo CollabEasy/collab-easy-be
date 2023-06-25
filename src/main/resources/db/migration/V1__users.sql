@@ -201,6 +201,15 @@ CREATE TABLE IF NOT EXISTS `contest_submissions` (
     unique key(contest_slug, submission_id, artist_id)
 )
 
+CREATE TABLE `email_enum_history` (
+  `email_enum` varchar(50) NOT NULL,
+  `last_sent` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`email_enum`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+insert into email_enum_history values("ADMINS", now());
+insert into email_enum_history values("INCOMPLETE_PROFILE", now());
+
  insert into art_categories values(1, "Dancer", "All Dancers", 1, "dancer");
  insert into art_categories values(2, "Choreographer", "All Choreographer", 1, "choreographer");
  insert into art_categories values(3, "Writer", "All Writer", 1, "writer");
