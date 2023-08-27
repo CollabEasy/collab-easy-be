@@ -26,10 +26,10 @@ CREATE TABLE IF NOT EXISTS artists (
   key(id)
 );
 
-CREATE INDEX  `slug_index` ON `artists` (slug);
-CREATE INDEX `artist_ref_code` ON `artists` (referral_code);
+CREATE INDEX  slug_index ON artists (slug);
+CREATE INDEX artist_ref_code ON artists (referral_code);
 
-CREATE TABLE IF NOT EXISTS `artist_preferences` (
+CREATE TABLE IF NOT EXISTS artist_preferences (
   id int AUTO_INCREMENT,
   artist_id varchar(50),
   setting_name varchar(20),
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `artist_preferences` (
   unique key(artist_id, setting_name)
 );
 
-CREATE TABLE IF NOT EXISTS `artist_samples` (
+CREATE TABLE IF NOT EXISTS artist_samples (
   id int AUTO_INCREMENT,
   artist_id varchar(50),
   original_url varchar(50) unique,
@@ -49,9 +49,9 @@ CREATE TABLE IF NOT EXISTS `artist_samples` (
   key(id)
 );
 
-CREATE INDEX `artist_index` ON `artist_samples` (artist_id);
+CREATE INDEX artist_index ON artist_samples (artist_id);
 
-CREATE TABLE IF NOT EXISTS `art_categories` (
+CREATE TABLE IF NOT EXISTS art_categories (
   id int AUTO_INCREMENT,
   art_name varchar(50),
   description varchar(255),
@@ -61,9 +61,9 @@ CREATE TABLE IF NOT EXISTS `art_categories` (
   primary key(art_name)
 );
 
-CREATE INDEX `art_category_index` ON `art_categories` (slug);
+CREATE INDEX art_category_index ON art_categories (slug);
 
-CREATE TABLE IF NOT EXISTS `artist_categories` (
+CREATE TABLE IF NOT EXISTS artist_categories (
   id int AUTO_INCREMENT,
   artist_id varchar(50),
   art_id int,
@@ -71,35 +71,35 @@ CREATE TABLE IF NOT EXISTS `artist_categories` (
 );
 
 
-CREATE TABLE IF NOT EXISTS `collab_requests` (   
-  `sender_id` varchar(50) DEFAULT NULL,   
-  `receiver_id` varchar(50) DEFAULT NULL,   
-  `request_data` json DEFAULT NULL,   
-  `scheduled_at` timestamp NULL DEFAULT NULL,   
-  `status` varchar(20) DEFAULT NULL,   
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,   
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   
-  `id` varchar(50) NOT NULL,   
-  `artist_profile_pic` varchar(255) DEFAULT NULL,   
-  `sender_name` varchar(255) DEFAULT NULL,   
-  `receiver_name` varchar(255) DEFAULT NULL,   
-  `sender_slug` varchar(150) DEFAULT NULL,   
-  `receiver_slug` varchar(150) DEFAULT NULL,   
-  `sender_profile_pic_url` varchar(255) DEFAULT NULL,   
-  `receiver_profile_pic_url` varchar(255) DEFAULT NULL,   
-   PRIMARY KEY (`id`),   KEY `sender_id` (`sender_id`),   KEY `receiver_id` (`receiver_id`) 
+CREATE TABLE IF NOT EXISTS collab_requests (   
+  sender_id varchar(50) DEFAULT NULL,   
+  receiver_id varchar(50) DEFAULT NULL,   
+  request_data json DEFAULT NULL,   
+  scheduled_at timestamp NULL DEFAULT NULL,   
+  status varchar(20) DEFAULT NULL,   
+  created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,   
+  updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   
+  id varchar(50) NOT NULL,   
+  artist_profile_pic varchar(255) DEFAULT NULL,   
+  sender_name varchar(255) DEFAULT NULL,   
+  receiver_name varchar(255) DEFAULT NULL,   
+  sender_slug varchar(150) DEFAULT NULL,   
+  receiver_slug varchar(150) DEFAULT NULL,   
+  sender_profile_pic_url varchar(255) DEFAULT NULL,   
+  receiver_profile_pic_url varchar(255) DEFAULT NULL,   
+   PRIMARY KEY (id),   KEY sender_id (sender_id),   KEY receiver_id (receiver_id) 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `collab_conversation_read_status` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `collab_id` varchar(50) DEFAULT NULL,
-  `artist_id` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `collab_artist` (`collab_id`,`artist_id`)
+CREATE TABLE collab_conversation_read_status (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  collab_id varchar(50) DEFAULT NULL,
+  artist_id varchar(50) DEFAULT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY collab_artist (collab_id,artist_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE IF NOT EXISTS `collab_reviews` (
+CREATE TABLE IF NOT EXISTS collab_reviews (
     id int AUTO_INCREMENT,
     request_id varchar(50),
     artist_id varchar(50),
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `collab_reviews` (
     primary key(request_id)
 );
 
-CREATE TABLE IF NOT EXISTS `notifications` (
+CREATE TABLE IF NOT EXISTS notifications (
     id int AUTO_INCREMENT,
     artist_id varchar(50),
     notif_type varchar(50),
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `notifications` (
     key(artist_id)
  );
 
-CREATE TABLE IF NOT EXISTS `artist_scratchpads` (
+CREATE TABLE IF NOT EXISTS artist_scratchpads (
     id int AUTO_INCREMENT,
     artist_id varchar(50),
     content varchar(65535),
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `artist_scratchpads` (
     primary key(artist_id)
  );
 
-CREATE TABLE IF NOT EXISTS `social_platforms` (
+CREATE TABLE IF NOT EXISTS social_platforms (
     id int AUTO_INCREMENT,
     name varchar(50),
     base_url varchar(100),
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `social_platforms` (
     key(id)
  );
 
-CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
+CREATE TABLE IF NOT EXISTS artist_social_prospectus (
     id int AUTO_INCREMENT,
     social_platform_id int,
     artist_id varchar(50),
@@ -157,17 +157,17 @@ CREATE TABLE IF NOT EXISTS `artist_social_prospectus` (
     key(id)
  );
  
- CREATE TABLE `collab_conversations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `collab_id` varchar(50) NOT NULL,
-  `artist_id` varchar(50) NOT NULL,
-  `content` varchar(2000) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+ CREATE TABLE collab_conversations (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  collab_id varchar(50) NOT NULL,
+  artist_id varchar(50) NOT NULL,
+  content varchar(2000) DEFAULT NULL,
+  created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `contests` (
+CREATE TABLE IF NOT EXISTS contests (
     id int AUTO_INCREMENT,
     contest_slug varchar(50),
     title varchar(200),
@@ -176,10 +176,10 @@ CREATE TABLE IF NOT EXISTS `contests` (
     end_date timestamp NULL DEFAULT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    primary key(id), KEY contest_slug (`contest_slug`)
+    primary key(id), KEY contest_slug (contest_slug)
  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `contest_submissions` (
+CREATE TABLE IF NOT EXISTS contest_submissions (
     id int AUTO_INCREMENT,
     artist_id varchar(50),
     contest_slug varchar(50),
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `contest_submissions` (
    unique key(artist_id, contest_slug)
  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
  
- CREATE TABLE IF NOT EXISTS `contest_submission_vote` (
+ CREATE TABLE IF NOT EXISTS contest_submission_vote (
     id int AUTO_INCREMENT,
     contest_slug varchar(50),
     submission_id int,
@@ -204,10 +204,10 @@ CREATE TABLE IF NOT EXISTS `contest_submissions` (
     unique key(contest_slug, submission_id, artist_id)
 )
 
-CREATE TABLE `email_enum_history` (
-  `email_enum` varchar(50) NOT NULL,
-  `last_sent` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`email_enum`)
+CREATE TABLE email_enum_history (
+  email_enum varchar(50) NOT NULL,
+  last_sent timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (email_enum)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 insert into email_enum_history values("ADMINS", now());
@@ -255,12 +255,13 @@ insert into social_platforms values(3, "Youtube", "https://youtube.com", "Youtub
 insert into social_platforms values(4, "Tik Tok", "https://tiktok.com", "Tik Tok social platform", 1, now(), now());
 
 
-create table total_points (artist_id varchar(100), total_points int);
+create table total_points (artist_id varchar(100) primary key not null, total_points int);
 
-CREATE TABLE `rewards_activity` (
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `action` varchar(20) DEFAULT NULL,
-  `points` int DEFAULT NULL,
-  `added` tinyint DEFAULT '1',
-  `details` blob
+CREATE TABLE rewards_activity (
+  created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  artist_id varchar(50) primary key not null,
+  action varchar(20) DEFAULT NULL,
+  points int DEFAULT NULL,
+  added tinyint DEFAULT '1',
+  details blob
 );

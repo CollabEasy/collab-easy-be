@@ -80,7 +80,9 @@ public class ArtistServiceImpl implements ArtistService {
         if (Objects.isNull(artist)) {
             String slug = getSlug(inp.getFirstName(), inp.getLastName());
             String newSlug = getNewSlug(slug + "-");
-            String referralCode = Utils.getSHA256(newSlug).substring(0, 7);
+            String referralCode = inp.getFirstName().substring(0, 5).toUpperCase(Locale.ROOT)
+                    + "-"
+                    + Utils.getSHA256(newSlug).substring(0, 5).toUpperCase();
             artist =
                     Artist.builder()
                             .artistId(UUID.randomUUID().toString())

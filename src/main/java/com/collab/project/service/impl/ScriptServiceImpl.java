@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ScriptServiceImpl {
@@ -36,7 +37,9 @@ public class ScriptServiceImpl {
         List<Artist> artists = artistRepository.findAll();
 
         for (Artist artist : artists) {
-            String referralCode = Utils.getSHA256(artist.getSlug()).substring(0, 7);
+            String referralCode = artist.getFirstName().substring(0, 5).toUpperCase(Locale.ROOT)
+                    + "-"
+                    + Utils.getSHA256(artist.getSlug()).substring(0, 5).toUpperCase();
             artist.setReferralCode(referralCode);
             artistRepository.save(artist);
         }
