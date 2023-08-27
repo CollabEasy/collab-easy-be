@@ -27,7 +27,7 @@ public class ScriptController {
     }
 
     @GetMapping
-    @RequestMapping
+    @RequestMapping(value = "/backfill", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> backfillReferralCodes() throws NoSuchAlgorithmException {
         scriptService.backfillReferralCodes();
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
