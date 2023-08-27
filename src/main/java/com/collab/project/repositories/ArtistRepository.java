@@ -40,4 +40,6 @@ public interface ArtistRepository extends JpaRepository<Artist, String> {
     List<Artist> findByCreatedAtBetween(Timestamp startDate, Timestamp endDate);
 
     Long deleteByArtistId(String artistId);
+
+    List<Artist> findByReferralCode(String referralCode);
 }

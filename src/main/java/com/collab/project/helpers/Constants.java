@@ -1,6 +1,10 @@
 package com.collab.project.helpers;
 
+import com.collab.project.model.enums.Enums;
+
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Constants {
@@ -46,5 +50,10 @@ public class Constants {
     public static final Set<String> EmailGroups = new HashSet<String>() {{
         add("INCOMPLETE_PROFILE");
         add("ADMINS");
+    }};
+
+    public static final Map<Enums.RewardTypes, Integer> RewardPoints = new HashMap<Enums.RewardTypes, Integer>() {{
+       put(Enums.RewardTypes.REFERRAL_USER, 50);
+        put(Enums.RewardTypes.REFERRAL_SHARER, 50);
     }};
 }

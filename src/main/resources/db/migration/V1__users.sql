@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS artists (
   country_dial varchar(10),
   new_user boolean,
   test_user boolean,
+  profile_complete tinyint DEFAULT '0',
+  referral_code varchar(10) DEFAULT NULL,
   last_active timestamp default current_timestamp,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP ,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -25,6 +27,7 @@ CREATE TABLE IF NOT EXISTS artists (
 );
 
 CREATE INDEX  `slug_index` ON `artists` (slug);
+CREATE INDEX `artist_ref_code` ON `artists` (referral_code);
 
 CREATE TABLE IF NOT EXISTS `artist_preferences` (
   id int AUTO_INCREMENT,
@@ -250,3 +253,14 @@ insert into social_platforms values(1, "Facebook", "https://facebook.com", "Face
 insert into social_platforms values(2, "Instagram", "https://instagram.com", "Instagram social platform", 1, now(), now());
 insert into social_platforms values(3, "Youtube", "https://youtube.com", "Youtube social platform", 1, now(), now());
 insert into social_platforms values(4, "Tik Tok", "https://tiktok.com", "Tik Tok social platform", 1, now(), now());
+
+
+create table total_points (artist_id varchar(100), total_points int);
+
+CREATE TABLE `rewards_activity` (
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `action` varchar(20) DEFAULT NULL,
+  `points` int DEFAULT NULL,
+  `added` tinyint DEFAULT '1',
+  `details` blob
+);

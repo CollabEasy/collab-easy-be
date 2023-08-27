@@ -13,4 +13,10 @@ public class Enums {
         COMPLETED,
         EXPIRED,
     }
+
+    public enum RewardTypes {
+        REFERRAL_USER,
+        REFERRAL_SHARER,
+        PROFILE_COMPLETION,
+    }
 }

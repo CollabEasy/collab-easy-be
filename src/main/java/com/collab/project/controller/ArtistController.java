@@ -93,7 +93,7 @@ public class ArtistController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> validate(@RequestBody ArtistInput input) {
+    public ResponseEntity<?> validate(@RequestBody ArtistInput input) throws NoSuchAlgorithmException {
         Boolean isValid = googleUtils.isValid(input);
         if (isValid) {
             Artist artist = artistService.createArtist(input);

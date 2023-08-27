@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 
 public interface ArtistService {
 
-    public Artist createArtist(ArtistInput artistInput);
+    public Artist createArtist(ArtistInput artistInput) throws NoSuchAlgorithmException;
 
     public Boolean updateArtist(ArtistInput artistInput);
 

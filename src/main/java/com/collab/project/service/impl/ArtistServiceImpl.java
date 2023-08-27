@@ -75,13 +75,30 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Artist createArtist(ArtistInput inp) {
+    public Artist createArtist(ArtistInput inp) throws NoSuchAlgorithmException {
         Artist artist = artistRepository.findByEmail(inp.getEmail());
         if (Objects.isNull(artist)) {
             String slug = getSlug(inp.getFirstName(), inp.getLastName());
             String newSlug = getNewSlug(slug + "-");
+            String referralCode = Utils.getSHA256(newSlug).substring(0, 7);
             artist =
-                    Artist.builder().artistId(UUID.randomUUID().toString()).artistHandle(inp.getArtistHandle()).age(inp.getAge()).email(inp.getEmail()).firstName(inp.getFirstName()).lastName(inp.getLastName()).country(inp.getCountry()).countryDial(inp.getCountryDial()).countryIso(inp.getCountryIso()).bio(inp.getBio()).profilePicUrl(inp.getProfilePicUrl()).timezone(inp.getTimezone()).phoneNumber(inp.getPhoneNumber()).slug(newSlug).build();
+                    Artist.builder()
+                            .artistId(UUID.randomUUID().toString())
+                            .artistHandle(inp.getArtistHandle())
+                            .age(inp.getAge())
+                            .email(inp.getEmail())
+                            .firstName(inp.getFirstName())
+                            .lastName(inp.getLastName())
+                            .country(inp.getCountry())
+                            .countryDial(inp.getCountryDial())
+                            .countryIso(inp.getCountryIso())
+                            .bio(inp.getBio())
+                            .profilePicUrl(inp.getProfilePicUrl())
+                            .timezone(inp.getTimezone())
+                            .phoneNumber(inp.getPhoneNumber())
+                            .slug(newSlug)
+                            .referralCode(referralCode)
+                            .build();
             artist.setNewUser(true);
             artist.setTestUser(false);
             artist = artistRepository.save(artist);

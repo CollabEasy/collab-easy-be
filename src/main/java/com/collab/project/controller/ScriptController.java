@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 @RestController
@@ -22,6 +23,13 @@ public class ScriptController {
     @RequestMapping(value = "/run", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> runLogic(@RequestBody Map<String, Object> input) {
         scriptService.updateProfileCompleteStatus();
+        return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
+    }
+
+    @GetMapping
+    @RequestMapping
+    public ResponseEntity<SuccessResponse> backfillReferralCodes() throws NoSuchAlgorithmException {
+        scriptService.backfillReferralCodes();
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
     }
 }
