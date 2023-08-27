@@ -38,9 +38,9 @@ public class ScriptServiceImpl {
 
         for (Artist artist : artists) {
             String referralCode =
-                    (artist.getFirstName() + artist.getLastName()).substring(0, 5).toUpperCase(Locale.ROOT)
+                    (artist.getFirstName() + artist.getLastName()).substring(0, 4).toUpperCase(Locale.ROOT)
                     + "-"
-                    + Utils.getSHA256(artist.getSlug()).substring(0, 5).toUpperCase();
+                    + Utils.getSHA256(artist.getSlug()).substring(0, 4).toUpperCase();
             artist.setReferralCode(referralCode);
             artistRepository.save(artist);
         }
