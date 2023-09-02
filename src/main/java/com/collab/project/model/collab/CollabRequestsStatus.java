@@ -16,15 +16,15 @@ import java.util.List;
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class CollabRequestsStatus {
 
-    List<CollabRequest> all;
+    List<CollabRequestResponse> all;
 
-    List<CollabRequest> active;
+    List<CollabRequestResponse> active;
 
-    List<CollabRequest> pending;
+    List<CollabRequestResponse> pending;
 
-    List<CollabRequest> rejected;
+    List<CollabRequestResponse> rejected;
 
-    List<CollabRequest> completed;
+    List<CollabRequestResponse> completed;
 
     public CollabRequestsStatus() {
         this.all = new ArrayList<>();

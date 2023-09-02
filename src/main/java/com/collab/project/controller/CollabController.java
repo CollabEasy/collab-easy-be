@@ -2,6 +2,7 @@ package com.collab.project.controller;
 
 import com.collab.project.model.collab.CollabRequest;
 import com.collab.project.model.collab.CollabRequestOutput;
+import com.collab.project.model.collab.CollabRequestResponse;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
 import com.collab.project.model.response.SuccessResponse;
@@ -36,13 +37,13 @@ public class CollabController {
     public ResponseEntity<SuccessResponse> sendRequest(
             @RequestBody @Validated CollabRequestInput collabRequestInput
     ) throws JsonProcessingException {
-        CollabRequest collabRequest = collabService.sendRequest(AuthUtils.getArtistId(), collabRequestInput);
+        CollabRequestResponse collabRequest = collabService.sendRequest(AuthUtils.getArtistId(), collabRequestInput);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
     @PostMapping(value = "/request/update")
     public ResponseEntity<SuccessResponse> updateRequest(@RequestBody @Validated CollabRequest collabRequestInput) {
-        CollabRequest collabRequest = collabService.updateRequest(AuthUtils.getArtistId(), collabRequestInput);
+        CollabRequestResponse collabRequest = collabService.updateRequest(AuthUtils.getArtistId(), collabRequestInput);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
@@ -54,19 +55,19 @@ public class CollabController {
 
     @PostMapping(value = "/reject/request/{requestId}")
     public ResponseEntity<SuccessResponse> rejectRequest(@PathVariable("requestId") String rejectRequestId) {
-        CollabRequest collabRequest = collabService.rejectRequest(AuthUtils.getArtistId(), rejectRequestId);
+        CollabRequestResponse collabRequest = collabService.rejectRequest(AuthUtils.getArtistId(), rejectRequestId);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
     @PostMapping(value = "/accept/request/{requestId}")
     public ResponseEntity<SuccessResponse> acceptRequest(@PathVariable("requestId") String acceptRequestId) {
-        CollabRequest collabRequest = collabService.acceptRequest(AuthUtils.getArtistId(), acceptRequestId);
+        CollabRequestResponse collabRequest = collabService.acceptRequest(AuthUtils.getArtistId(), acceptRequestId);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
     @PostMapping(value = "/complete/request/{requestId}")
     public ResponseEntity<SuccessResponse> completeRequest(@PathVariable("requestId") String completeRequestId) {
-        CollabRequest collabRequest = collabService.completeRequest(AuthUtils.getArtistId(), completeRequestId);
+        CollabRequestResponse collabRequest = collabService.completeRequest(AuthUtils.getArtistId(), completeRequestId);
         return new ResponseEntity<>(new SuccessResponse(collabRequest), HttpStatus.OK);
     }
 
