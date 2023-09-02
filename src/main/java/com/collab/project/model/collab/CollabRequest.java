@@ -35,22 +35,22 @@ public class CollabRequest {
     @Column(name = "receiver_id", nullable = false, unique = true)
     private String receiverId;
 
-    @Transient
+//    @Transient
     private String senderName;
 
-    @Transient
+//    @Transient
     private String receiverName;
 
-    @Transient
+//    @Transient
     private String senderSlug;
 
-    @Transient
+//    @Transient
     private String receiverSlug;
 
-    @Transient
+//    @Transient
     private String senderProfilePicUrl;
 
-    @Transient
+//    @Transient
     private String receiverProfilePicUrl;
 
     @Column(name = "scheduled_at")
@@ -68,7 +68,7 @@ public class CollabRequest {
     @Column(name = "updated_At")
     private Timestamp updatedAt;
 
-    @Transient
+//    @Transient
     private boolean newComment;
 
     @Slf4j

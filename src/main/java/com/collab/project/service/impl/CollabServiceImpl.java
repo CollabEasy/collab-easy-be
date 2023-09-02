@@ -85,7 +85,7 @@ public class CollabServiceImpl implements CollabService {
                 .updatedAt(Timestamp.from(Instant.now()))
                 .build();
 
-        saveCollabRequest = collabRequestRepository.save(saveCollabRequest);
+        collabRequestRepository.save(saveCollabRequest);
         artistPreferencesService.updateArtistPreferences(artistId, new HashMap<String, Object>() {{
             put("upForCollaboration", true);
         }});
