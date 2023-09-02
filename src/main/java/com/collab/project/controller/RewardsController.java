@@ -24,16 +24,16 @@ public class RewardsController {
     @Autowired
     RewardsService rewardsService;
 
-    @GetMapping
-    @RequestMapping(value = "/referral/verify/{referralCode}", method = RequestMethod.GET)
+    @PostMapping
+    @RequestMapping(value = "/referral/verify/{referralCode}", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> verifyReferralCode(@PathVariable String referralCode) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         ReferralCodeResponse response = rewardsService.fetchArtistWithReferralCode(artistId, referralCode);
         return new ResponseEntity<>(new SuccessResponse(response), HttpStatus.OK);
     }
 
-    @GetMapping
-    @RequestMapping(value = "/referral/noref", method = RequestMethod.GET)
+    @PostMapping
+    @RequestMapping(value = "/referral/noref", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> updateNoReferralCode() throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         rewardsService.updateReferralCodeField(artistId);
