@@ -21,4 +21,7 @@ public class TotalPoints {
 
     @Column(name = "total_points")
     private int totalPoints;
+
+    @Column(name = "lifetime_points")
+    private int lifetimePoints;
 }

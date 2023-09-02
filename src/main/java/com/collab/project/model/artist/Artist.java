@@ -77,6 +77,9 @@ public class Artist implements Serializable {
     private Boolean newUser;
 
     @Column
+    Boolean isReferralDone;
+
+    @Column
     private Boolean testUser;
 
     @Column

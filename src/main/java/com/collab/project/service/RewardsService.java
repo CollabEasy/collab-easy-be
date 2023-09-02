@@ -3,11 +3,16 @@ package com.collab.project.service;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.model.rewards.ReferralCodeResponse;
 import com.collab.project.model.rewards.TotalPoints;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.util.Map;
 
 public interface RewardsService {
 
-    ReferralCodeResponse fetchArtistWithReferralCode(String artistId, String referralCode);
+    ReferralCodeResponse fetchArtistWithReferralCode(String artistId, String referralCode) throws JsonProcessingException;
 
-    TotalPoints addPointsToUser(String artistSlug, String rewardType);
+    TotalPoints addPointsToUser(String artistSlug, String rewardType, Map<String, Object> details) throws JsonProcessingException;
+
+    void updateReferralCodeField(String artistID);
 
 }
