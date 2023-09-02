@@ -3,6 +3,7 @@ package com.collab.project.controller;
 import com.collab.project.email.EmailService;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.email.EmailNotifyInput;
+import com.collab.project.model.email.EmailNotifyInputSlug;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.EmailHistoryService;
 import com.collab.project.util.AuthUtils;
@@ -39,6 +40,14 @@ public class EmailController {
             GeneralSecurityException, IOException {
         String artistId = AuthUtils.getArtistId();
         emailService.sendEmailFromString(input.getSubject(), artistId, null, input.getContent());
+        return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
+    }
+
+    @PostMapping
+    @RequestMapping(value = "/notify/user/any", method = RequestMethod.POST)
+    public ResponseEntity<SuccessResponse> sendEmailToOneUserBySlug(@RequestBody EmailNotifyInputSlug input) throws MessagingException,
+            GeneralSecurityException, IOException {
+        emailService.sendEmailFromStringToSlug(input.getSlug(), input.getSubject(), input.getContent());
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
     }
 

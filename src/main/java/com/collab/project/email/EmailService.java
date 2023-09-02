@@ -173,6 +173,15 @@ public class EmailService {
         return null;
     }
 
+    public void sendEmailFromStringToSlug(String slug, String subject, String content) throws MessagingException,
+            GeneralSecurityException, IOException {
+        List<Artist> artists = artistRepository.findBySlug(slug);
+        if (artists.size() != 1) {
+            return;
+        }
+        sendEmailFromString(subject, null, artists.get(0).getEmail(), content);
+    }
+
     @Async
     public void sendEmailToGroup(String groupEnum, String subject, String content) {
         List<String> emails;

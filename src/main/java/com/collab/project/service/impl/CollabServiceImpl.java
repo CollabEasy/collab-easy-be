@@ -68,6 +68,9 @@ public class CollabServiceImpl implements CollabService {
             throw new CollabRequestException("Collab Request already exists");
         }
 
+        Artist sender = artistRepository.getOne(artistId);
+        Artist receiver = artistRepository.getOne(collabRequestInput.getReceiverId());
+
         CollabRequest saveCollabRequest = CollabRequest.builder()
                 .id(UUID.randomUUID().toString())
                 .senderId(artistId).receiverId(collabRequestInput.getReceiverId())
@@ -75,6 +78,10 @@ public class CollabServiceImpl implements CollabService {
                 .status(Enums.CollabStatus.PENDING.toString())
                 .requestData(collabRequestInput.getRequestData())
                 .createdAt(Timestamp.from(Instant.now()))
+                .senderName(sender.getFirstName())
+                .receiverName(receiver.getFirstName())
+                .senderSlug(sender.getSlug())
+                .receiverSlug(receiver.getFirstName())
                 .updatedAt(Timestamp.from(Instant.now()))
                 .build();
 
