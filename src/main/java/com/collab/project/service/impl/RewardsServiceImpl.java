@@ -36,6 +36,11 @@ public class RewardsServiceImpl implements RewardsService {
 
     @Override
     public ReferralCodeResponse fetchArtistWithReferralCode(String artistId, String referralCode) throws JsonProcessingException {
+        Artist current = artistRepository.getOne(artistId);
+        if (current.getIsReferralDone()) {
+            return new ReferralCodeResponse(false, null, null, null);
+        }
+
         List<Artist> artist = artistRepository.findByReferralCode(referralCode);
         if (artist.size() != 1) {
             return new ReferralCodeResponse(false, null, null, null);
@@ -47,7 +52,6 @@ public class RewardsServiceImpl implements RewardsService {
         details.clear();
         details.put("referred_to", artistId);
         addPointsByArtistId(referrer.getSlug(), Enums.RewardTypes.REFERRAL_SHARER, details);
-        Artist current = artistRepository.getOne(artistId);
         current.setIsReferralDone(true);
         artistRepository.save(current);
         return new ReferralCodeResponse(true, referrer.getFirstName(), referrer.getLastName(), referrer.getSlug());
