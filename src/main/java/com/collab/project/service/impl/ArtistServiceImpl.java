@@ -103,6 +103,8 @@ public class ArtistServiceImpl implements ArtistService {
                             .build();
             artist.setNewUser(true);
             artist.setTestUser(false);
+            artist.setIsReferralDone(false);
+            artist.setProfileComplete(false);
             artist = artistRepository.save(artist);
             try {
                 emailService.sendEmailFromFile(
