@@ -50,7 +50,7 @@ public class RewardsController {
     }
 
     @GetMapping
-    @RequestMapping(value = "/get", method = RequestMethod.POST)
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getRewardsActivity() throws JsonProcessingException {
         List<RewardsActivity> activity = rewardsService.getRewardsActivity(AuthUtils.getArtistId());
         return new ResponseEntity<>(new SuccessResponse(activity), HttpStatus.OK);
