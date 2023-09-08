@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface RewardsActivityRepository extends JpaRepository<RewardsActivity, String> {
-    public Optional<List<RewardsActivity>> findByArtistId(Long id);
+    public Optional<List<RewardsActivity>> findByArtistId(String id);
 }

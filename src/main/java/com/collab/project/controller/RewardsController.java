@@ -6,6 +6,7 @@ import com.collab.project.model.response.SearchResponse;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.model.rewards.AwardInput;
 import com.collab.project.model.rewards.ReferralCodeResponse;
+import com.collab.project.model.rewards.RewardsActivity;
 import com.collab.project.model.rewards.TotalPoints;
 import com.collab.project.service.RewardsService;
 import com.collab.project.service.SearchService;
@@ -48,5 +49,10 @@ public class RewardsController {
         return new ResponseEntity<>(new SuccessResponse(points), HttpStatus.OK);
     }
 
-
+    @GetMapping
+    @RequestMapping(value = "/get", method = RequestMethod.POST)
+    public ResponseEntity<SuccessResponse> getRewardsActivity() throws JsonProcessingException {
+        List<RewardsActivity> activity = rewardsService.getRewardsActivity(AuthUtils.getArtistId());
+        return new ResponseEntity<>(new SuccessResponse(activity), HttpStatus.OK);
+    }
 }

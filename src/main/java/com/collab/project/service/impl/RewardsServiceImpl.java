@@ -1,5 +1,6 @@
 package com.collab.project.service.impl;
 
+import com.collab.project.exception.RecordNotFoundException;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.enums.Enums;
@@ -17,10 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RewardsServiceImpl implements RewardsService {
@@ -38,12 +36,12 @@ public class RewardsServiceImpl implements RewardsService {
     public ReferralCodeResponse fetchArtistWithReferralCode(String artistId, String referralCode) throws JsonProcessingException {
         Artist current = artistRepository.getOne(artistId);
         if (current.getIsReferralDone()) {
-            return new ReferralCodeResponse(false, null, null, null);
+            throw new IllegalStateException("You cannot claim referral code after claiming/skipping once.");
         }
 
         List<Artist> artist = artistRepository.findByReferralCode(referralCode);
         if (artist.size() != 1) {
-            return new ReferralCodeResponse(false, null, null, null);
+            throw new RecordNotFoundException("The referral code is not valid");
         }
         Artist referrer = artist.get(0);
         Map<String, Object> details = new HashMap<>();
@@ -69,6 +67,12 @@ public class RewardsServiceImpl implements RewardsService {
         Artist artist = artistRepository.getOne(artistID);
         artist.setIsReferralDone(true);
         artistRepository.save(artist);
+    }
+
+    @Override
+    public List<RewardsActivity> getRewardsActivity(String artistID) {
+        Optional<List<RewardsActivity>> list = rewardsActivityRepository.findByArtistId(artistID);
+        return list.orElseGet(ArrayList::new);
     }
 
     private TotalPoints addPointsByArtistId(String artistID, Enums.RewardTypes rewardType,
