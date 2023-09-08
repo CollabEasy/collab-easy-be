@@ -75,6 +75,12 @@ public class RewardsServiceImpl implements RewardsService {
         return list.orElseGet(ArrayList::new);
     }
 
+    @Override
+    public TotalPoints getPoints(String artistID) {
+        Optional<TotalPoints> points = totalPointsRepository.findByArtistId(artistID);
+        return points.orElseGet(TotalPoints::new);
+    }
+
     private TotalPoints addPointsByArtistId(String artistID, Enums.RewardTypes rewardType,
                                             Map<String, Object> details) throws JsonProcessingException {
         Integer points = Constants.RewardPoints.getOrDefault(rewardType, 50);

@@ -19,4 +19,6 @@ public interface RewardsService {
 
     List<RewardsActivity> getRewardsActivity(String artistID);
 
+    TotalPoints getPoints(String artistID);
+
 }

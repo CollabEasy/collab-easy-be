@@ -55,4 +55,11 @@ public class RewardsController {
         List<RewardsActivity> activity = rewardsService.getRewardsActivity(AuthUtils.getArtistId());
         return new ResponseEntity<>(new SuccessResponse(activity), HttpStatus.OK);
     }
+
+    @GetMapping
+    @RequestMapping(value = "/points/get", method = RequestMethod.GET)
+    public ResponseEntity<SuccessResponse> getTotalPoints() throws JsonProcessingException {
+        TotalPoints points = rewardsService.getPoints(AuthUtils.getArtistId());
+        return new ResponseEntity<>(new SuccessResponse(points), HttpStatus.OK);
+    }
 }
