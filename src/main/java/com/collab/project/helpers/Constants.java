@@ -55,5 +55,8 @@ public class Constants {
     public static final Map<Enums.RewardTypes, Integer> RewardPoints = new HashMap<Enums.RewardTypes, Integer>() {{
        put(Enums.RewardTypes.REFERRAL_USER, 150);
         put(Enums.RewardTypes.REFERRAL_SHARER, 150);
+        put(Enums.RewardTypes.REFERRAL_SHARER, 50);
+        put(Enums.RewardTypes.SUCCESSFUL_COLLAB, 50);
+        put(Enums.RewardTypes.MONTHLY_CONTEST, 50);
     }};
 }
