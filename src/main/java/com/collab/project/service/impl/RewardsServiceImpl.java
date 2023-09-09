@@ -41,7 +41,7 @@ public class RewardsServiceImpl implements RewardsService {
 
         List<Artist> artist = artistRepository.findByReferralCode(referralCode);
         if (artist.size() != 1) {
-            throw new RecordNotFoundException("The referral code is not valid");
+            throw new RecordNotFoundException("Sorry, the " + referralCode + " referral code is not valid.");
         }
         Artist referrer = artist.get(0);
         Map<String, Object> details = new HashMap<>();
