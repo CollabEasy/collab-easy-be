@@ -18,5 +18,7 @@ public class Enums {
         REFERRAL_USER,
         REFERRAL_SHARER,
         PROFILE_COMPLETION,
+        SUCCESSFUL_COLLAB,
+        MONTHLY_CONTEST,
     }
 }
