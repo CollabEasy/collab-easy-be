@@ -6,6 +6,7 @@ import com.collab.project.model.contest.ContestSubmission;
 import com.collab.project.model.contest.ContestSubmissionResponse;
 import com.collab.project.model.contest.ContestSubmissionResultResponse;
 import com.collab.project.model.inputs.ContestSubmissionInput;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 public interface ContestSubmissionService {
 
-    public ContestSubmission addContestSubmission(ContestSubmissionInput contestSubmissionInput);
+    public ContestSubmission addContestSubmission(ContestSubmissionInput contestSubmissionInput) throws JsonProcessingException;
 
     public ContestSubmission updateContestSubmission(ContestSubmission contestSubmission);
 

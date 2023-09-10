@@ -46,9 +46,13 @@ public class RewardsServiceImpl implements RewardsService {
         Artist referrer = artist.get(0);
         Map<String, Object> details = new HashMap<>();
         details.put("referred_by", referrer.getArtistId());
+        details.put("referred_by_slug", referrer.getSlug());
+        details.put("referred_by_name", referrer.getFirstName());
         addPointsByArtistId(artistId, Enums.RewardTypes.REFERRAL_USER, details);
         details.clear();
         details.put("referred_to", artistId);
+        details.put("referred_to_slug", current.getSlug());
+        details.put("referred_to_name", current.getFirstName());
         addPointsByArtistId(referrer.getSlug(), Enums.RewardTypes.REFERRAL_SHARER, details);
         current.setIsReferralDone(true);
         artistRepository.save(current);

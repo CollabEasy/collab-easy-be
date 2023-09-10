@@ -10,6 +10,7 @@ import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.impl.ContestSubmissionServiceImpl;
 import com.collab.project.service.impl.ContestSubmissionVoteServiceImpl;
 import com.collab.project.util.AuthUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,7 +58,7 @@ public class ContestSubmissionController {
 
     @PostMapping
     @RequestMapping(value = "add/entry", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> AddContestSubmission(@RequestBody ContestSubmissionInput contestSubmissionInput) {
+    public ResponseEntity<SuccessResponse> AddContestSubmission(@RequestBody ContestSubmissionInput contestSubmissionInput) throws JsonProcessingException {
         ContestSubmission contestSubmission = contestSubmissionService.addContestSubmission(contestSubmissionInput);
         return new ResponseEntity<>(new SuccessResponse(contestSubmission), HttpStatus.OK);
     }

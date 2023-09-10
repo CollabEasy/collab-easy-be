@@ -4,13 +4,16 @@ import com.collab.project.exception.ContestRequestException;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artwork.UploadFile;
 import com.collab.project.model.contest.*;
+import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.ContestSubmissionInput;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.ContestRepository;
 import com.collab.project.repositories.ContestSubmissionRepository;
 import com.collab.project.repositories.ContestSubmissionVoteRepository;
 import com.collab.project.service.ContestSubmissionService;
+import com.collab.project.service.RewardsService;
 import com.collab.project.util.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,8 +48,11 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     @Autowired
     private ContestSubmissionVoteRepository contestSubmissionVoteRepository;
 
+    @Autowired
+    private RewardsService rewardsService;
+
     @Override
-    public ContestSubmission addContestSubmission(ContestSubmissionInput contestSubmissionInput) {
+    public ContestSubmission addContestSubmission(ContestSubmissionInput contestSubmissionInput) throws JsonProcessingException {
         // Search by artist first because one artist can submit only one entry.
         Optional<ContestSubmission> contestSubmission =
                 contestSubmissionRepository.findByArtistId(contestSubmissionInput.getArtistId());
@@ -61,6 +67,10 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         newContestSubmission.setDescription(contestSubmissionInput.getDescription());
         contestSubmissionRepository.save(newContestSubmission);
 
+        Artist artist = artistRepository.getOne(AuthUtils.getArtistId());
+        Map<String, Object> details = new HashMap();
+        details.put("contest_slug", contestSubmissionInput.getContestSlug());
+        rewardsService.addPointsToUser(artist.getSlug(), Enums.RewardTypes.MONTHLY_CONTEST.toString(), details);
         return newContestSubmission;
     }
 
