@@ -36,7 +36,7 @@ public class ScriptServiceImpl {
 
         for (Artist artist : artists) {
             int profileBits = 0;
-            if (artist.getBio() != null && StringUtils.isEmpty(artist.getBio())) {
+            if (artist.getBio() != null && !StringUtils.isEmpty(artist.getBio())) {
                 profileBits = profileBits | (1 << Constants.profileBits.get("BIO"));
             }
 
