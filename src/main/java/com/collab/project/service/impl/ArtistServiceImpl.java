@@ -8,7 +8,9 @@ import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistService;
+import com.collab.project.service.RewardsService;
 import com.collab.project.util.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.lang.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -48,6 +50,8 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Autowired
     EmailService emailService;
+    @Autowired
+    RewardsService rewardsService;
 
     private String getSlug(String firstName, String lastName) {
         String firstLastName = firstName.trim() + " " + lastName.trim();
@@ -123,7 +127,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Boolean updateArtist(ArtistInput inp) {
+    public Boolean updateArtist(ArtistInput inp) throws JsonProcessingException {
         Artist artist = artistRepository.findByArtistId(AuthUtils.getArtistId());
         Integer profileCompletedBits = artist.getProfileBits();
         boolean isIncomplete = artist.getProfileComplete() == false;
@@ -161,7 +165,7 @@ public class ArtistServiceImpl implements ArtistService {
 
         if (isIncomplete && profileCompletedBits == Constants.ALL_PROFILE_BIT_SET) {
             artist.setProfileComplete(true);
-            rewardsService.addPointsToUser(artist.getSlug(), Constants.RewardPoints.get(Enums.RewardTypes.PROFILE_COMPLETION), null);
+            rewardsService.addPointsToUser(artist.getSlug(), Constants.RewardPoints.get(Enums.RewardTypes.PROFILE_COMPLETION).toString(), null);
         }
 
         if (inp.getDateOfBirth() != null) {

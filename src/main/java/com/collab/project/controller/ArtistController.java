@@ -14,6 +14,7 @@ import com.collab.project.service.ArtistService;
 import com.collab.project.util.AuthUtils;
 import com.collab.project.util.GoogleUtils;
 import com.collab.project.util.JwtUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -93,7 +94,7 @@ public class ArtistController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> validate(@RequestBody ArtistInput input) throws NoSuchAlgorithmException {
+    public ResponseEntity<?> validate(@RequestBody ArtistInput input) throws NoSuchAlgorithmException, JsonProcessingException {
         Boolean isValid = googleUtils.isValid(input);
         if (isValid) {
             Artist artist = artistService.createArtist(input);
@@ -113,7 +114,7 @@ public class ArtistController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseEntity<?> update(@RequestBody ArtistInput input) {
+    public ResponseEntity<?> update(@RequestBody ArtistInput input) throws JsonProcessingException {
         return new ResponseEntity<>(
             new SuccessResponse(artistService.updateArtist(input) ? "Details Updated SuccessFully"
                 : "Failure while Details Update",

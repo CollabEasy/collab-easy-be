@@ -9,7 +9,9 @@ import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.ArtistSocialProspectusRepository;
 import com.collab.project.repositories.SocialPlatformRepository;
 import com.collab.project.service.ArtistSocialProspectusService;
+import com.collab.project.service.RewardsService;
 import com.collab.project.util.AuthUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +30,11 @@ public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService
     @Autowired
     private ArtistRepository artistRepository;
 
+    @Autowired
+    private RewardsService rewardsService;
+
     @Override
-    public ArtistSocialProspectus addArtistSocialProspectus(ArtistSocialProspectusInput artistSocialProspectusInput) {
+    public ArtistSocialProspectus addArtistSocialProspectus(ArtistSocialProspectusInput artistSocialProspectusInput) throws JsonProcessingException {
         ArtistSocialProspectus prospectus = artistSocialProspectusRepository.findByArtistAndPlatformId(AuthUtils.getArtistId(), artistSocialProspectusInput.getSocialPlatformId());
         if (prospectus == null) {
             prospectus = new ArtistSocialProspectus(FALLBACK_ID, AuthUtils.getArtistId(),
@@ -41,14 +46,14 @@ public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService
             prospectus.setUpForCollab(artistSocialProspectusInput.getUpForCollab());
         }
         Artist artist = artistRepository.findByArtistId(AuthUtils.getArtistId());
-        boolean isIncomplete = artist.getProfileIncomplete() == false;
+        boolean isIncomplete = artist.getProfileComplete() == false;
         if ((artist.getProfileBits() >> (Constants.profileBits.get(socialKey)) % 2) == 0) {
             artist.setProfileBits(artist.getProfileBits() | (1 << Constants.profileBits.get(socialKey)));
             if (artist.getProfileBits() == Constants.ALL_PROFILE_BIT_SET) {
                 artist.setProfileComplete(true);
             }
             if (isIncomplete) {
-                rewardsService.addPointsToUser(artist.getSlug(), Constants.RewardPoints.get(Enums.RewardTypes.PROFILE_COMPLETION), null);
+                rewardsService.addPointsToUser(artist.getSlug(), Constants.RewardPoints.get(Enums.RewardTypes.PROFILE_COMPLETION).toString(), null);
             }
             artistRepository.save(artist);
         }

@@ -62,13 +62,13 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
 
         artistSampleRepository.save(artSample);
         Artist artist = artistRepository.findByArtistId(artistId);
-        boolean isIncomplete = artist.getProfileIncomplete() == false;
+        boolean isIncomplete = artist.getProfileComplete() == false;
         if (((artist.getProfileBits() >> (Constants.profileBits.get(sampleKey))) % 2) == 0) {
             artist.setProfileBits(artist.getProfileBits() | (1 << Constants.profileBits.get(sampleKey)));
             if (artist.getProfileBits() == Constants.ALL_PROFILE_BIT_SET) {
                 artist.setProfileComplete(true);
                 if (isIncomplete) {
-                    rewardsService.addPointsToUser(artist.getSlug(), Constants.RewardPoints.get(Enums.RewardTypes.PROFILE_COMPLETION), null);
+                    rewardsService.addPointsToUser(artist.getSlug(), Constants.RewardPoints.get(Enums.RewardTypes.PROFILE_COMPLETION).toString(), null);
                 }
             }
             artistRepository.save(artist);

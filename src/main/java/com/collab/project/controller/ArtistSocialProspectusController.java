@@ -7,6 +7,7 @@ import com.collab.project.model.socialprospectus.ArtistSocialProspectus;
 import com.collab.project.service.ArtistService;
 import com.collab.project.service.ArtistSocialProspectusService;
 import com.collab.project.util.AuthUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +30,14 @@ public class ArtistSocialProspectusController {
 
     @PostMapping
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> UpdateArtistSocialProspectus(@RequestBody ArtistSocialProspectusInput artistSocialProspectusInput) {
+    public ResponseEntity<SuccessResponse> UpdateArtistSocialProspectus(@RequestBody ArtistSocialProspectusInput artistSocialProspectusInput) throws JsonProcessingException {
         ArtistSocialProspectus prospectus = artistSocialProspectusService.addArtistSocialProspectus(artistSocialProspectusInput);
         return new ResponseEntity<>(new SuccessResponse(prospectus), HttpStatus.OK);
     }
 
     @GetMapping
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getArtistSocialProspectus(@RequestParam(required = false) String handle) {
+    public ResponseEntity<SuccessResponse> getArtistSocialProspectus(@RequestParam(required = false) String handle) throws JsonProcessingException {
         Artist artist;
         if (handle == null || handle.equals("")) {
             artist = artistService.getArtistById(AuthUtils.getArtistId());
