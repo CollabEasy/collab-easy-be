@@ -37,6 +37,8 @@ public class ArtistServiceImpl implements ArtistService {
 
     String bucketName = "wondor-profile-pictures";
 
+    String bioKey = "BIO";
+
     @Autowired
     ArtistRepository artistRepository;
 
@@ -122,6 +124,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Boolean updateArtist(ArtistInput inp) {
         Artist artist = artistRepository.findByArtistId(AuthUtils.getArtistId());
+        Integer profileCompletedBits = artist.getProfileBits();
         if (Objects.nonNull(inp.getFirstName()) && inp.getFirstName().length() > 0) {
             artist.setFirstName(inp.getFirstName());
         }
@@ -148,12 +151,13 @@ public class ArtistServiceImpl implements ArtistService {
         }
         if (!StringUtils.isEmpty(inp.getBio())) {
             artist.setBio(inp.getBio());
+            profileCompletedBits = profileCompletedBits | (1 << Constants.profileBits.get(bioKey));
         }
         if (!StringUtils.isEmpty(inp.getGender())) {
             artist.setGender(inp.getGender());
         }
 
-        if (!artist.getProfileComplete() && !artist.getBio().isEmpty()) {
+        if (profileCompletedBits == Constants.ALL_PROFILE_BIT_SET) {
             artist.setProfileComplete(true);
         }
 

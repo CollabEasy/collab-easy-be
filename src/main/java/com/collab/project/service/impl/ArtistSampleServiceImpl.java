@@ -27,6 +27,8 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
 
     String bucketName = "artist-samples";
 
+    String sampleKey = "SAMPLES";
+
     @Autowired
     S3Utils s3Utils;
 
@@ -54,6 +56,15 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                 uploadedFile.getThumbnailURL(), caption, Constants.IMAGE, new Timestamp(System.currentTimeMillis()));
 
         artistSampleRepository.save(artSample);
+        Artist artist = artistRepository.findByArtistId(artistId);
+        if (((artist.getProfileBits() >> (Constants.profileBits.get(sampleKey))) % 2) == 0) {
+            artist.setProfileBits(artist.getProfileBits() | (1 << Constants.profileBits.get(sampleKey)));
+            if (artist.getProfileBits() == Constants.ALL_PROFILE_BIT_SET) {
+                artist.setProfileComplete(true);
+
+            }
+            artistRepository.save(artist);
+        }
 
         return new ArtInfo(artSample.getCaption(), artSample.getFileType(), artSample.getOriginalUrl(),
                 artSample.getThumbnailUrl(), artSample.getCreatedAt());

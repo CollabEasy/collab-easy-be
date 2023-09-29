@@ -86,6 +86,9 @@ public class Artist implements Serializable {
     private Boolean profileComplete;
 
     @Column
+    private Integer profileBits;
+
+    @Column
     private String referralCode;
 
     @Transient

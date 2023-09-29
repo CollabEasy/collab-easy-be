@@ -59,4 +59,12 @@ public class Constants {
         put(Enums.RewardTypes.SUCCESSFUL_COLLAB, 50);
         put(Enums.RewardTypes.MONTHLY_CONTEST, 50);
     }};
+
+    public static final Map<String, Integer> profileBits = new HashMap<String, Integer>() {{
+        put("BIO", 0);
+        put("SAMPLES", 1);
+        put("SOCIAL", 2);
+    }};
+
+    public static final int ALL_PROFILE_BIT_SET = (int)(Math.pow(2, profileBits.size()) - 1);
 }

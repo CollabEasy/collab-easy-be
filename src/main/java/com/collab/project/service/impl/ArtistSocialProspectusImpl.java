@@ -1,5 +1,7 @@
 package com.collab.project.service.impl;
 
+import com.collab.project.helpers.Constants;
+import com.collab.project.model.artist.Artist;
 import com.collab.project.model.inputs.ArtistSocialProspectusInput;
 import com.collab.project.model.socialprospectus.ArtistSocialProspectus;
 import com.collab.project.repositories.ArtistRepository;
@@ -17,6 +19,8 @@ import static com.collab.project.helpers.Constants.FALLBACK_ID;
 
 @Service
 public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService {
+
+    String socialKey = "SOCIAL";
     @Autowired
     private ArtistSocialProspectusRepository artistSocialProspectusRepository;
 
@@ -34,6 +38,14 @@ public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService
             prospectus.setDescription(artistSocialProspectusInput.getDescription());
             prospectus.setHandle(artistSocialProspectusInput.getHandle());
             prospectus.setUpForCollab(artistSocialProspectusInput.getUpForCollab());
+        }
+        Artist artist = artistRepository.findByArtistId(AuthUtils.getArtistId());
+        if ((artist.getProfileBits() >> (Constants.profileBits.get(socialKey)) % 2) == 0) {
+            artist.setProfileBits(artist.getProfileBits() | (1 << Constants.profileBits.get(socialKey)));
+            if (artist.getProfileBits() == Constants.ALL_PROFILE_BIT_SET) {
+                artist.setProfileComplete(true);
+            }
+            artistRepository.save(artist);
         }
         return artistSocialProspectusRepository.save(prospectus);
     }
