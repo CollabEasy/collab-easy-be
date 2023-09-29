@@ -21,7 +21,7 @@ public class ScriptController {
 
     @PostMapping
     @RequestMapping(value = "/run", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> runLogic(@RequestBody Map<String, Object> input) {
+    public ResponseEntity<SuccessResponse> runLogic() {
         scriptService.updateProfileCompleteStatus();
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
     }
