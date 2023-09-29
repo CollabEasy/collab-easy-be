@@ -5,9 +5,11 @@ import com.collab.project.model.art.ArtInfo;
 import com.collab.project.model.artist.ArtSample;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artwork.UploadFile;
+import com.collab.project.model.enums.Enums;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.ArtistSampleRepository;
 import com.collab.project.service.ArtistSampleService;
+import com.collab.project.service.RewardsService;
 import com.collab.project.util.FileUpload;
 import com.collab.project.util.S3Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,9 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
     @Autowired
     ArtistRepository artistRepository;
 
+    @Autowired
+    RewardsService rewardsService;
+
     @Async
     @Override
     public ArtInfo uploadFile(String artistId, String caption, String fileType, MultipartFile fileToUpload) throws IOException, NoSuchAlgorithmException {
@@ -57,11 +62,14 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
 
         artistSampleRepository.save(artSample);
         Artist artist = artistRepository.findByArtistId(artistId);
+        boolean isIncomplete = artist.getProfileIncomplete() == false;
         if (((artist.getProfileBits() >> (Constants.profileBits.get(sampleKey))) % 2) == 0) {
             artist.setProfileBits(artist.getProfileBits() | (1 << Constants.profileBits.get(sampleKey)));
             if (artist.getProfileBits() == Constants.ALL_PROFILE_BIT_SET) {
                 artist.setProfileComplete(true);
-
+                if (isIncomplete) {
+                    rewardsService.addPointsToUser(artist.getSlug(), Constants.RewardPoints.get(Enums.RewardTypes.PROFILE_COMPLETION), null);
+                }
             }
             artistRepository.save(artist);
         }

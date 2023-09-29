@@ -4,6 +4,7 @@ import com.collab.project.email.EmailService;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artwork.UploadFile;
+import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistService;
@@ -125,6 +126,7 @@ public class ArtistServiceImpl implements ArtistService {
     public Boolean updateArtist(ArtistInput inp) {
         Artist artist = artistRepository.findByArtistId(AuthUtils.getArtistId());
         Integer profileCompletedBits = artist.getProfileBits();
+        boolean isIncomplete = artist.getProfileComplete() == false;
         if (Objects.nonNull(inp.getFirstName()) && inp.getFirstName().length() > 0) {
             artist.setFirstName(inp.getFirstName());
         }
@@ -157,8 +159,9 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setGender(inp.getGender());
         }
 
-        if (profileCompletedBits == Constants.ALL_PROFILE_BIT_SET) {
+        if (isIncomplete && profileCompletedBits == Constants.ALL_PROFILE_BIT_SET) {
             artist.setProfileComplete(true);
+            rewardsService.addPointsToUser(artist.getSlug(), Constants.RewardPoints.get(Enums.RewardTypes.PROFILE_COMPLETION), null);
         }
 
         if (inp.getDateOfBirth() != null) {
