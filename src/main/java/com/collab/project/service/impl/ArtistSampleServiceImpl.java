@@ -76,7 +76,12 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
             artistRepository.save(artist);
         }
 
-        System.out.println("RETURNING DATA");
+        System.out.println("RETURNING DATA : " + artSample.getCaption());
+        System.out.println("RETURNING DATA : " + artSample.getFileType());
+        System.out.println("RETURNING DATA : " + artSample.getOriginalUrl());
+        System.out.println("RETURNING DATA : " + artSample.getThumbnailUrl());
+        System.out.println("RETURNING DATA : " + artSample.getCreatedAt());
+
         return new ArtInfo(artSample.getCaption(), artSample.getFileType(), artSample.getOriginalUrl(),
                 artSample.getThumbnailUrl(), artSample.getCreatedAt());
     }
