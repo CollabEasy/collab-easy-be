@@ -43,7 +43,6 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
     @Autowired
     RewardsService rewardsService;
 
-    @Async
     @Override
     public ArtInfo uploadFile(String artistId, String caption, String fileType, MultipartFile fileToUpload) throws IOException, NoSuchAlgorithmException {
         FileUpload fileUploadHelper =
