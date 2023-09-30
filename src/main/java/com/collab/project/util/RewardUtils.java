@@ -20,16 +20,13 @@ public class RewardUtils {
 
     public void addPointsIfProfileComplete(Artist artist, String actionKey) throws JsonProcessingException {
         boolean isComplete = artist.getProfileComplete();
-        System.out.println("complete : " + isComplete);
         if (isComplete) return;
         if (((artist.getProfileBits() >> Constants.profileBits.get(actionKey)) % 2) == 0) {
-            System.out.println("bits  : " + artist.getProfileBits() + " " + (1 << Constants.profileBits.get(actionKey)) + " , " + (artist.getProfileBits() | (1 << Constants.profileBits.get(actionKey))));
             artist.setProfileBits(artist.getProfileBits() | (1 << Constants.profileBits.get(actionKey)));
             if (artist.getProfileBits() == Constants.ALL_PROFILE_BIT_SET) {
                 artist.setProfileComplete(true);
                 rewardsService.addPointsToUserByArtist(artist, Enums.RewardTypes.PROFILE_COMPLETION, null);
             }
-            System.out.println("setting points : " + artist.getProfileBits());
             artistRepository.save(artist);
         }
     }
