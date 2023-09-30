@@ -63,17 +63,20 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
         artistSampleRepository.save(artSample);
         Artist artist = artistRepository.findByArtistId(artistId);
         boolean isIncomplete = artist.getProfileComplete() == false;
-        if (((artist.getProfileBits() >> (Constants.profileBits.get(sampleKey))) % 2) == 0) {
+        if (((artist.getProfileBits() >> Constants.profileBits.get(sampleKey)) % 2) == 0) {
+            System.out.println("trying to set bits");
             artist.setProfileBits(artist.getProfileBits() | (1 << Constants.profileBits.get(sampleKey)));
             if (artist.getProfileBits() == Constants.ALL_PROFILE_BIT_SET) {
                 artist.setProfileComplete(true);
+                System.out.println("giving points to users");
                 if (isIncomplete) {
-                    rewardsService.addPointsToUser(artist.getSlug(), Constants.RewardPoints.get(Enums.RewardTypes.PROFILE_COMPLETION).toString(), null);
+                    rewardsService.addPointsToUserByArtist(artist, Enums.RewardTypes.PROFILE_COMPLETION, null);
                 }
             }
             artistRepository.save(artist);
         }
 
+        System.out.println("RETURNING DATA");
         return new ArtInfo(artSample.getCaption(), artSample.getFileType(), artSample.getOriginalUrl(),
                 artSample.getThumbnailUrl(), artSample.getCreatedAt());
     }

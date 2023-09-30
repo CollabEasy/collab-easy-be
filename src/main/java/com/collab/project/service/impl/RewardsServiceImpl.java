@@ -67,6 +67,11 @@ public class RewardsServiceImpl implements RewardsService {
     }
 
     @Override
+    public TotalPoints addPointsToUserByArtist(Artist artist, Enums.RewardTypes rewardType, Map<String, Object> details) throws JsonProcessingException {
+        return addPointsByArtistId(artist.getArtistId(), rewardType, details);
+    }
+
+    @Override
     public void updateReferralCodeField(String artistID) {
         Artist artist = artistRepository.getOne(artistID);
         artist.setIsReferralDone(true);
