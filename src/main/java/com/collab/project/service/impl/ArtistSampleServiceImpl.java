@@ -11,6 +11,7 @@ import com.collab.project.repositories.ArtistSampleRepository;
 import com.collab.project.service.ArtistSampleService;
 import com.collab.project.service.RewardsService;
 import com.collab.project.util.FileUpload;
+import com.collab.project.util.RewardUtils;
 import com.collab.project.util.S3Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -41,7 +42,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
     ArtistRepository artistRepository;
 
     @Autowired
-    RewardsService rewardsService;
+    RewardUtils rewardUtils;
 
     @Override
     public ArtInfo uploadFile(String artistId, String caption, String fileType, MultipartFile fileToUpload) throws IOException, NoSuchAlgorithmException {
@@ -61,18 +62,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
         artistSampleRepository.save(artSample);
         Artist artist = artistRepository.findByArtistId(artistId);
         boolean isIncomplete = artist.getProfileComplete() == false;
-        if (((artist.getProfileBits() >> Constants.profileBits.get(sampleKey)) % 2) == 0) {
-
-            artist.setProfileBits(artist.getProfileBits() | (1 << Constants.profileBits.get(sampleKey)));
-            if (artist.getProfileBits() == Constants.ALL_PROFILE_BIT_SET) {
-                artist.setProfileComplete(true);
-
-                if (isIncomplete) {
-                    rewardsService.addPointsToUserByArtist(artist, Enums.RewardTypes.PROFILE_COMPLETION, null);
-                }
-            }
-            artistRepository.save(artist);
-        }
+        rewardUtils.addPointsIfProfileComplete(artist, sampleKey);
 
         return new ArtInfo(artSample.getCaption(), artSample.getFileType(), artSample.getOriginalUrl(),
                 artSample.getThumbnailUrl(), artSample.getCreatedAt());

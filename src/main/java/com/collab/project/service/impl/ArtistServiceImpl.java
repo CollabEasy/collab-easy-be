@@ -51,7 +51,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Autowired
     EmailService emailService;
     @Autowired
-    RewardsService rewardsService;
+    RewardUtils rewardUtils;
 
     private String getSlug(String firstName, String lastName) {
         String firstLastName = firstName.trim() + " " + lastName.trim();
@@ -157,15 +157,10 @@ public class ArtistServiceImpl implements ArtistService {
         }
         if (!StringUtils.isEmpty(inp.getBio())) {
             artist.setBio(inp.getBio());
-            profileCompletedBits = profileCompletedBits | (1 << Constants.profileBits.get(bioKey));
+            rewardUtils.addPointsIfProfileComplete(artist, bioKey);
         }
         if (!StringUtils.isEmpty(inp.getGender())) {
             artist.setGender(inp.getGender());
-        }
-
-        if (isIncomplete && profileCompletedBits == Constants.ALL_PROFILE_BIT_SET) {
-            artist.setProfileComplete(true);
-            rewardsService.addPointsToUser(artist.getSlug(), Constants.RewardPoints.get(Enums.RewardTypes.PROFILE_COMPLETION).toString(), null);
         }
 
         if (inp.getDateOfBirth() != null) {

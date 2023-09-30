@@ -40,11 +40,11 @@ public class ScriptServiceImpl {
                 profileBits = profileBits | (1 << Constants.profileBits.get("BIO"));
             }
 
-            if (artistSampleRepository.findByArtistId(artist.getArtistId()).size() > 0) {
+            if (!artistSampleRepository.findByArtistId(artist.getArtistId()).isEmpty()) {
                 profileBits = profileBits | (1 << Constants.profileBits.get("SAMPLES"));
             }
 
-            if (artistSocialProspectusRepository.findByArtistId(artist.getArtistId()).size() > 0) {
+            if (!artistSocialProspectusRepository.findByArtistId(artist.getArtistId()).isEmpty()) {
                 profileBits = profileBits | (1 << Constants.profileBits.get("SOCIAL"));
             }
 
