@@ -73,7 +73,7 @@ public class FileUpload {
     private UploadFile uploadFile() throws NoSuchAlgorithmException, IOException {
         // Creating original file
         if (fileName == null) {
-            fileName = "/mnt/" + Utils.getSHA256(artistId).substring(0, 15) + "_" + System.currentTimeMillis();
+            fileName = Utils.getSHA256(artistId).substring(0, 15) + "_" + System.currentTimeMillis();
             System.out.println("new file name : " + fileName);
         }
         boolean isNull = fileToUpload == null;
