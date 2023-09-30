@@ -2,6 +2,7 @@ package com.collab.project.model.artist;
 
 
 import com.collab.project.security.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 
 import java.sql.Date;
@@ -86,6 +87,7 @@ public class Artist implements Serializable {
     private Boolean profileComplete;
 
     @Column
+    @JsonIgnore
     private Integer profileBits;
 
     @Column
