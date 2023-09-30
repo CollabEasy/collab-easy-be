@@ -28,8 +28,6 @@ public class ArtistSampleController {
     @RequestMapping(value = "/sample/upload", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<SuccessResponse> uploadArtSample(@RequestPart MultipartFile filename, @RequestPart String filetype, @RequestPart Optional<String> caption) throws IOException, NoSuchAlgorithmException {
         String captionString = caption.orElse("");
-        boolean isNull1st = filename == null;
-        System.out.println("is null 1st : " + isNull1st);
         ArtInfo artInfo = artistSampleService.uploadFile(AuthUtils.getArtistId(), captionString, filetype, filename);
         return new ResponseEntity<>(new SuccessResponse(artInfo), HttpStatus.OK);
     }
