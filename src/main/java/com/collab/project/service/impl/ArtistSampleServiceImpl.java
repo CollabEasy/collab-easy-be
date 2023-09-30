@@ -49,11 +49,11 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
         System.out.println("is null  2 : " + (fileToUpload == null));
         FileUpload fileUploadHelper =
                 FileUpload.builder()
-                        .s3Utils(s3Utils)
-                        .artistId(artistId)
                         .fileToUpload(fileToUpload)
+                        .artistId(artistId)
                         .s3BucketName(bucketName)
                         .fileType(fileType)
+                        .s3Utils(s3Utils)
                         .s3Path(artistId).build();
 
         UploadFile uploadedFile = fileUploadHelper.checkFileTypeAndGetUploadURL();
