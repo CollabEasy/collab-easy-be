@@ -16,6 +16,7 @@ import java.util.Objects;
 @Slf4j
 public class FileUtils {
     public static File convertMultiPartFileToFile(final MultipartFile multipartFile, String fileName) throws IOException {
+        System.out.println("file is null : " + (multipartFile == null));
         final File file = new File(fileName);
         FileOutputStream outputStream = null;
         try {
