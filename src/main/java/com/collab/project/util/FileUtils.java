@@ -23,7 +23,7 @@ public class FileUtils {
             outputStream = new FileOutputStream(file);
             outputStream.write(multipartFile.getBytes());
         } finally {
-            Objects.requireNonNull(outputStream).close();
+            if (outputStream != null) outputStream.close();
         }
         return file;
     }
