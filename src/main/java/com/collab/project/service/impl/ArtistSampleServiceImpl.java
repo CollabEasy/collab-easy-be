@@ -56,7 +56,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                         .s3Path(artistId).build();
 
         UploadFile uploadedFile = fileUploadHelper.checkFileTypeAndGetUploadURL();
-
+        System.out.println("sample url : ", uploadedFile.getOriginalURL());
         ArtSample artSample = new ArtSample(Constants.FALLBACK_ID, artistId, uploadedFile.getOriginalURL(),
                 uploadedFile.getThumbnailURL(), caption, Constants.IMAGE, new Timestamp(System.currentTimeMillis()));
 
