@@ -55,7 +55,6 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                         .s3Path(artistId).build();
 
         UploadFile uploadedFile = fileUploadHelper.checkFileTypeAndGetUploadURL();
-        System.out.println("sample url : " + uploadedFile.getOriginalURL());
         ArtSample artSample = new ArtSample(Constants.FALLBACK_ID, artistId, uploadedFile.getOriginalURL(),
                 uploadedFile.getThumbnailURL(), caption, Constants.IMAGE, new Timestamp(System.currentTimeMillis()));
 
@@ -63,23 +62,17 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
         Artist artist = artistRepository.findByArtistId(artistId);
         boolean isIncomplete = artist.getProfileComplete() == false;
         if (((artist.getProfileBits() >> Constants.profileBits.get(sampleKey)) % 2) == 0) {
-            System.out.println("trying to set bits");
+
             artist.setProfileBits(artist.getProfileBits() | (1 << Constants.profileBits.get(sampleKey)));
             if (artist.getProfileBits() == Constants.ALL_PROFILE_BIT_SET) {
                 artist.setProfileComplete(true);
-                System.out.println("giving points to users");
+
                 if (isIncomplete) {
                     rewardsService.addPointsToUserByArtist(artist, Enums.RewardTypes.PROFILE_COMPLETION, null);
                 }
             }
             artistRepository.save(artist);
         }
-
-        System.out.println("RETURNING DATA : " + artSample.getCaption());
-        System.out.println("RETURNING DATA : " + artSample.getFileType());
-        System.out.println("RETURNING DATA : " + artSample.getOriginalUrl());
-        System.out.println("RETURNING DATA : " + artSample.getThumbnailUrl());
-        System.out.println("RETURNING DATA : " + artSample.getCreatedAt());
 
         return new ArtInfo(artSample.getCaption(), artSample.getFileType(), artSample.getOriginalUrl(),
                 artSample.getThumbnailUrl(), artSample.getCreatedAt());
