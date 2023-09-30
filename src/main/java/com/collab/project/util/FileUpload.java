@@ -75,7 +75,6 @@ public class FileUpload {
         if (fileName == null) {
             fileName = Utils.getSHA256(artistId).substring(0, 15) + "_" + System.currentTimeMillis();
         }
-        boolean isNull = fileToUpload == null;
         File file = FileUtils.convertMultiPartFileToFile(fileToUpload, fileName + "." + fileExtension);
         // Creating thumbnail file
         String thumbnailUrl = null;
