@@ -19,7 +19,6 @@ import java.util.Set;
 
 @Builder
 @Component
-@NoArgsConstructor
 @AllArgsConstructor
 public class FileUpload {
 
