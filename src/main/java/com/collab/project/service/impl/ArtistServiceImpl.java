@@ -112,6 +112,7 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setTestUser(false);
             artist.setIsReferralDone(false);
             artist.setProfileComplete(false);
+            artist.setProfileBits(0);
             artist = artistRepository.save(artist);
             try {
                 emailService.sendEmailFromFile(
@@ -166,6 +167,7 @@ public class ArtistServiceImpl implements ArtistService {
         if (inp.getDateOfBirth() != null) {
             artist.setDateOfBirth(inp.getDateOfBirth());
         }
+
         artistRepository.save(artist);
         log.info("Update Artist Details with Id {}", artist.getArtistId());
         return true;
