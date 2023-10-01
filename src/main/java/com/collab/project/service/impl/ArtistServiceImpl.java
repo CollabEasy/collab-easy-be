@@ -95,6 +95,7 @@ public class ArtistServiceImpl implements ArtistService {
                             .artistId(UUID.randomUUID().toString())
                             .artistHandle(inp.getArtistHandle())
                             .age(inp.getAge())
+                            .bio("")
                             .email(inp.getEmail())
                             .firstName(inp.getFirstName())
                             .lastName(inp.getLastName())
