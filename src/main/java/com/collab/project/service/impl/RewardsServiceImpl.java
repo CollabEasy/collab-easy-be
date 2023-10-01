@@ -94,7 +94,7 @@ public class RewardsServiceImpl implements RewardsService {
                                             Map<String, Object> details) throws JsonProcessingException {
         Integer points = Constants.RewardPoints.getOrDefault(rewardType, 50);
         String detailString = (new ObjectMapper()).writeValueAsString(details);
-        rewardsActivityRepository.save(new RewardsActivity(Timestamp.from(Instant.now()), artistID,
+        rewardsActivityRepository.save(new RewardsActivity(Constants.FALLBACK_ID, Timestamp.from(Instant.now()), artistID,
                 rewardType.toString(),
                 points, true, detailString));
         Optional<TotalPoints> totalPointsOptional = totalPointsRepository.findByArtistId(artistID);
