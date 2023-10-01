@@ -24,7 +24,6 @@ public class RewardsActivity {
     @Column(name = "created_at ")
     private Timestamp createdAt;
 
-    @Id
     @Column(name = "artist_id")
     private String artistId;
 
