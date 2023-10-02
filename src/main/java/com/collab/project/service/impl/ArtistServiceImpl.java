@@ -149,6 +149,9 @@ public class ArtistServiceImpl implements ArtistService {
         if (!StringUtils.isEmpty(inp.getCountry())) {
             artist.setCountry(inp.getCountry());
         }
+        if (!StringUtils.isEmpty(inp.getCity())) {
+            artist.setCity(inp.getCity());
+        }
         if (!StringUtils.isEmpty(inp.getCountryDial())) {
             artist.setCountry(inp.getCountryDial());
         }
