@@ -55,7 +55,7 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     public ContestSubmission addContestSubmission(ContestSubmissionInput contestSubmissionInput) throws JsonProcessingException {
         // Search by artist first because one artist can submit only one entry.
         Optional<ContestSubmission> contestSubmission =
-                contestSubmissionRepository.findByArtistId(contestSubmissionInput.getArtistId());
+                contestSubmissionRepository.findByContestSlugAndArtistId(contestSubmissionInput.getContestSlug(), contestSubmissionInput.getArtistId());
         if (contestSubmission.isPresent()) {
             throw new ContestRequestException("You have already submitted an entry to this contest");
         }
@@ -66,11 +66,6 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         newContestSubmission.setArtworkUrl(contestSubmissionInput.getArtworkUrl());
         newContestSubmission.setDescription(contestSubmissionInput.getDescription());
         contestSubmissionRepository.save(newContestSubmission);
-
-        Artist artist = artistRepository.getOne(AuthUtils.getArtistId());
-        Map<String, Object> details = new HashMap();
-        details.put("contest_slug", contestSubmissionInput.getContestSlug());
-        rewardsService.addPointsToUser(artist.getSlug(), Enums.RewardTypes.MONTHLY_CONTEST.toString(), details);
         return newContestSubmission;
     }
 
@@ -141,13 +136,13 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
 
     @Override
     public List<ContestSubmission> getContestSubmission(String contestSlug, String artistId) {
-        ContestSubmission contestSubmission = contestSubmissionRepository.findByContestSlugAndArtistId(contestSlug,
+        Optional<ContestSubmission> contestSubmission = contestSubmissionRepository.findByContestSlugAndArtistId(contestSlug,
                 artistId);
         List<ContestSubmission> submissions = new ArrayList<ContestSubmission>();
-        if (contestSubmission == null) {
+        if (!contestSubmission.isPresent()) {
             return submissions;
         } else {
-            submissions.add(contestSubmission);
+            submissions.add(contestSubmission.get());
         }
         return submissions;
     }
@@ -155,6 +150,11 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
     @Override
     public ContestSubmission addArtwork(String artistId, MultipartFile fileToUpload, String fileType,
                               String description, String contestId) throws NoSuchAlgorithmException, IOException {
+        Optional<ContestSubmission> contestSubmission =
+                contestSubmissionRepository.findByContestSlugAndArtistId(contestId, artistId);
+        if (contestSubmission.isPresent()) {
+            throw new ContestRequestException("You have already submitted an entry to this contest");
+        }
         FileUpload fileUploadBuilder =
                 FileUpload.builder()
                         .fileToUpload(fileToUpload)
@@ -170,8 +170,11 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                 uploadedFile.getOriginalURL(), uploadedFile.getThumbnailURL(), description,
                 Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
 
-
         contestSubmissionRepository.save(submission);
+        Artist artist = artistRepository.getOne(artistId);
+        Map<String, Object> details = new HashMap<String, Object>();
+        details.put("contest_slug", contestId);
+        rewardsService.addPointsToUser(artist.getSlug(), Enums.RewardTypes.MONTHLY_CONTEST.toString(), details);
 
         return submission;
     }

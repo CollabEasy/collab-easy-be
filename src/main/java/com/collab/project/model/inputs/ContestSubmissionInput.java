@@ -1,10 +1,14 @@
 package com.collab.project.model.inputs;
 
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ContestSubmissionInput {
     Long id;
     String contestSlug;
