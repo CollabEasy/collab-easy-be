@@ -2,9 +2,11 @@ package com.collab.project.service.impl;
 
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.artist.ArtistPreference;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.ArtistSocialProspectusInput;
 import com.collab.project.model.socialprospectus.ArtistSocialProspectus;
+import com.collab.project.repositories.ArtistPreferenceRepository;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.ArtistSocialProspectusRepository;
 import com.collab.project.repositories.SocialPlatformRepository;
@@ -16,6 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +40,9 @@ public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService
     @Autowired
     RewardUtils rewardUtils;
 
+    @Autowired
+    ArtistPreferenceRepository artistPreferenceRepository;
+
     @Override
     public ArtistSocialProspectus addArtistSocialProspectus(ArtistSocialProspectusInput artistSocialProspectusInput) throws JsonProcessingException {
         ArtistSocialProspectus prospectus = artistSocialProspectusRepository.findByArtistAndPlatformId(AuthUtils.getArtistId(), artistSocialProspectusInput.getSocialPlatformId());
@@ -52,6 +58,11 @@ public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService
         Artist artist = artistRepository.findByArtistId(AuthUtils.getArtistId());
         rewardUtils.addPointsIfProfileComplete(artist, socialKey);
 
+        if (prospectus.getUpForCollab().equals("true")) {
+            ArtistPreference preference = new ArtistPreference(artist.getArtistId(), "upForCollaboration", "true");
+            preference.setId(FALLBACK_ID);
+            artistPreferenceRepository.save(preference);
+        }
         return artistSocialProspectusRepository.save(prospectus);
     }
 
