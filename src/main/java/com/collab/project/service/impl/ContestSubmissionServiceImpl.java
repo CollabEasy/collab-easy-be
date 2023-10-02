@@ -66,11 +66,6 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
         newContestSubmission.setArtworkUrl(contestSubmissionInput.getArtworkUrl());
         newContestSubmission.setDescription(contestSubmissionInput.getDescription());
         contestSubmissionRepository.save(newContestSubmission);
-
-        Artist artist = artistRepository.getOne(AuthUtils.getArtistId());
-        Map<String, Object> details = new HashMap();
-        details.put("contest_slug", contestSubmissionInput.getContestSlug());
-        rewardsService.addPointsToUser(artist.getSlug(), Enums.RewardTypes.MONTHLY_CONTEST.toString(), details);
         return newContestSubmission;
     }
 
@@ -170,8 +165,11 @@ public class ContestSubmissionServiceImpl implements ContestSubmissionService {
                 uploadedFile.getOriginalURL(), uploadedFile.getThumbnailURL(), description,
                 Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
 
-
         contestSubmissionRepository.save(submission);
+        Artist artist = artistRepository.getOne(artistId);
+        Map<String, Object> details = new HashMap<String, Object>();
+        details.put("contest_slug", contestSubmissionInput.getContestSlug());
+        rewardsService.addPointsToUser(artist.getSlug(), Enums.RewardTypes.MONTHLY_CONTEST.toString(), details);
 
         return submission;
     }
