@@ -100,6 +100,7 @@ public class ArtistServiceImpl implements ArtistService {
                             .firstName(inp.getFirstName())
                             .lastName(inp.getLastName())
                             .country(inp.getCountry())
+                            .city(inp.getCity())
                             .countryDial(inp.getCountryDial())
                             .countryIso(inp.getCountryIso())
                             .bio(inp.getBio())

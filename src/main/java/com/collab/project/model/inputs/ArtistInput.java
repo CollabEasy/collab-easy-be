@@ -20,6 +20,7 @@ public class ArtistInput {
     String email;
     Long phoneNumber;
     String country;
+    String city;
     String countryIso;
     String countryDial;
     String profilePicUrl;
