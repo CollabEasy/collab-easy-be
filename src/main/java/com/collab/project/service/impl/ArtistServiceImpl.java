@@ -100,6 +100,7 @@ public class ArtistServiceImpl implements ArtistService {
                             .firstName(inp.getFirstName())
                             .lastName(inp.getLastName())
                             .country(inp.getCountry())
+                            .state(inp.getState())
                             .city(inp.getCity())
                             .countryDial(inp.getCountryDial())
                             .countryIso(inp.getCountryIso())
@@ -148,6 +149,9 @@ public class ArtistServiceImpl implements ArtistService {
         }
         if (!StringUtils.isEmpty(inp.getCountry())) {
             artist.setCountry(inp.getCountry());
+        }
+        if (!StringUtils.isEmpty(inp.getState())) {
+            artist.setState(inp.getState());
         }
         if (!StringUtils.isEmpty(inp.getCity())) {
             artist.setCity(inp.getCity());

@@ -48,6 +48,7 @@ public class Artist implements Serializable {
 
     private String country;
 
+    private String state;
     private String city;
 
     private String profilePicUrl;
