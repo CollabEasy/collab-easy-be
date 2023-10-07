@@ -150,12 +150,6 @@ public class ArtistServiceImpl implements ArtistService {
         if (!StringUtils.isEmpty(inp.getCountry())) {
             artist.setCountry(inp.getCountry());
         }
-        if (!StringUtils.isEmpty(inp.getState())) {
-            artist.setState(inp.getState());
-        }
-        if (!StringUtils.isEmpty(inp.getCity())) {
-            artist.setCity(inp.getCity());
-        }
         if (!StringUtils.isEmpty(inp.getCountryDial())) {
             artist.setCountry(inp.getCountryDial());
         }
@@ -172,10 +166,13 @@ public class ArtistServiceImpl implements ArtistService {
         if (!StringUtils.isEmpty(inp.getGender())) {
             artist.setGender(inp.getGender());
         }
-
         if (inp.getDateOfBirth() != null) {
             artist.setDateOfBirth(inp.getDateOfBirth());
         }
+
+        // Save state and city as is.
+        artist.setState(inp.getState());
+        artist.setCity(inp.getCity());
 
         artistRepository.save(artist);
         log.info("Update Artist Details with Id {}", artist.getArtistId());
