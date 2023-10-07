@@ -211,4 +211,10 @@ public class ArtistServiceImpl implements ArtistService {
         artist.setProfilePicUrl(uploadedFile.getThumbnailURL() + "?updatedAt=" + time);
         return artistRepository.save(artist);
     }
+
+    @Override
+    public Boolean isProfileComplete(String artistId) {
+        Artist artist = artistRepository.findByArtistId(artistId);
+        return artist.getProfileComplete();
+    }
 }

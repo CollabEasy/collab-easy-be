@@ -23,4 +23,6 @@ public interface ArtistService {
     Artist getArtistBySlug(String handle);
 
     Artist updateProfilePicture(String artistId, MultipartFile filename) throws NoSuchAlgorithmException, IOException;
+
+    Boolean isProfileComplete(String artistId);
 }

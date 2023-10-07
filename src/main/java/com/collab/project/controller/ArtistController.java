@@ -113,12 +113,19 @@ public class ArtistController {
             HttpStatus.BAD_REQUEST);
     }
 
+    @RequestMapping(value = "/profile/complete", method = RequestMethod.GET)
+    public ResponseEntity<?> isProfileComplete() {
+        String artistId = AuthUtils.getArtistId();
+        return new ResponseEntity<>(
+            new SuccessResponse(artistService.isProfileComplete(artistId)), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<?> update(@RequestBody ArtistInput input) throws JsonProcessingException {
         return new ResponseEntity<>(
-            new SuccessResponse(artistService.updateArtist(input) ? "Details Updated SuccessFully"
-                : "Failure while Details Update",
-                "SUCCESS"), HttpStatus.OK);
+                new SuccessResponse(artistService.updateArtist(input) ? "Details Updated SuccessFully"
+                        : "Failure while Details Update",
+                        "SUCCESS"), HttpStatus.OK);
     }
 
 
