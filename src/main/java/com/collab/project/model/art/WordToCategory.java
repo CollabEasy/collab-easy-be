@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "art_categories")
+@Table(name = "word_to_category")
 @Getter
 @Setter
 public class WordToCategory {
