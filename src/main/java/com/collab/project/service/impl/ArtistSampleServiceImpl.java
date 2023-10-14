@@ -94,7 +94,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
     @Override
     public List<ArtSample> getAllArtSamples(String slug) {
         List<Artist> artist = artistRepository.findBySlug(slug);
-        if (artist.size() > 0) {
+        if (!artist.isEmpty()) {
             return artistSampleRepository.findByArtistId(artist.get(0).getArtistId());
         }
         return new ArrayList<>();

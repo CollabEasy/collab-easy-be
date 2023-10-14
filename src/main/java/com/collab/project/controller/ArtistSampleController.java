@@ -35,7 +35,7 @@ public class ArtistSampleController {
     @RequestMapping(value = "/{slug}/sample/list", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getArtistSamples(@PathVariable String slug) {
         List<ArtSample> samples = artistSampleService.getAllArtSamples(slug);
-        ArtistSampleResponse response = new ArtistSampleResponse(AuthUtils.getArtistId(), samples);
+        ArtistSampleResponse response = new ArtistSampleResponse(slug, samples);
         return new ResponseEntity<>(new SuccessResponse(response), HttpStatus.OK);
     }
 
