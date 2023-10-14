@@ -118,10 +118,12 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setProfileBits(0);
             artist = artistRepository.save(artist);
             try {
-                emailService.sendEmailFromFile(
+                emailService.sendEmailFromStringFinal(
                         "Welcome to Wondor",
+                        artist.getArtistId(),
                         artist.getEmail(),
-                        "/new_user.html"
+                        NewUserEmail.getContent(artist.getFirstName()),
+                        false
                 );
             } catch (Exception e) {
                 e.printStackTrace();
