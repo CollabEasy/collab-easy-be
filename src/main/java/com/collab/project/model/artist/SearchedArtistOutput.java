@@ -21,6 +21,7 @@ import java.util.List;
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class SearchedArtistOutput implements Serializable {
 
+
     private String artistId;
 
     private String slug;
@@ -29,6 +30,11 @@ public class SearchedArtistOutput implements Serializable {
 
     private String lastName;
 
+    private String country;
+
+    private String state;
+
+    private String city;
     private String profilePicUrl;
 
     private String bio;
@@ -46,6 +52,9 @@ public class SearchedArtistOutput implements Serializable {
         this.slug = artist.getSlug();
         this.firstName = artist.getFirstName();
         this.lastName = artist.getLastName();
+        this.country = artist.getCountry();
+        this.state = artist.getState();
+        this.city = artist.getCity();
         this.profilePicUrl = artist.getProfilePicUrl();
         this.bio = artist.getBio();
         this.gender = artist.getGender();
