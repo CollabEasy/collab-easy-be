@@ -51,4 +51,9 @@ public class ArtCategory {
         }
         this.slug = Strings.replace(artName.toLowerCase(Locale.ROOT), " ", "-");
     }
+
+    @Override
+    public int hashCode() {
+        return Math.toIntExact(id);
+    }
 }

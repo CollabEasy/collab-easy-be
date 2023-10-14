@@ -1,11 +1,13 @@
 package com.collab.project.service.impl;
 
 import com.collab.project.model.art.ArtCategory;
+import com.collab.project.model.art.WordToCategory;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.model.response.SearchResponse;
 import com.collab.project.repositories.ArtCategoryRepository;
 import com.collab.project.repositories.ArtistRepository;
+import com.collab.project.repositories.WordToCategoryRepository;
 import com.collab.project.service.SearchService;
 import io.jsonwebtoken.lang.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,12 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     ArtCategoryRepository artCategoryRepository;
 
-    private void updateListWithArtCategories(Set<SearchResponse> searchResponseSet,
+    @Autowired
+    WordToCategoryRepository wordToCategoryRepository;
+
+    private void  updateListWithArtCategories(Set<SearchResponse> searchResponseSet,
                             List<SearchResponse> searchResults,
-                            List<ArtCategory> artCategories) {
+                            Set<ArtCategory> artCategories) {
         for (ArtCategory artCategory : artCategories) {
             if (!artCategory.getApproved()) {
                 continue;
@@ -64,12 +69,17 @@ public class SearchServiceImpl implements SearchService {
         String queryStrSlug = Strings.replace(queryStr, " ", "-");
         List<SearchResponse> searchResults = new ArrayList<>();
 
-        // Storing exact match art names first
-        List<ArtCategory> artCategories = artCategoryRepository.findBySlug(queryStrSlug);
-        updateListWithArtCategories(searchResponseSet, searchResults, artCategories);
+//        // Storing exact match art names first
+//        List<ArtCategory> artCategories = artCategoryRepository.findBySlug(queryStrSlug);
+//        updateListWithArtCategories(searchResponseSet, searchResults, artCategories);
 
         // Then goes prefix match art names
-        artCategories = artCategoryRepository.findBySlugStartsWith(queryStrSlug);
+        Set<ArtCategory> artCategories = new HashSet<>(artCategoryRepository.findBySlugStartsWith(queryStrSlug));
+        List<WordToCategory> wordToCategories = wordToCategoryRepository.findByWordStartsWith(queryStrSlug);
+        for (WordToCategory word : wordToCategories) {
+            Optional<ArtCategory> category = artCategoryRepository.findById(Long.valueOf(word.getCategoryId()));
+            category.ifPresent(artCategories::add);
+        }
         updateListWithArtCategories(searchResponseSet, searchResults, artCategories);
 
         // Third priority to the exact match artist names

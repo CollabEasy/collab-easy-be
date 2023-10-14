@@ -267,3 +267,10 @@ CREATE TABLE rewards_activity (
   added tinyint DEFAULT '1',
   details blob
 );
+
+CREATE TABLE `word_to_category` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `word` varchar(50) DEFAULT NULL,
+  `category_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `word_index` (`word`));
