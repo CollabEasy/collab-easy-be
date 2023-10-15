@@ -5,6 +5,7 @@ import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistCategory;
 import com.collab.project.model.contest.ContestSubmission;
+import com.collab.project.model.email.EmailEnumHistory;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.repositories.*;
 import com.collab.project.service.RewardsService;
@@ -20,6 +21,8 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -45,6 +48,10 @@ public class ScriptServiceImpl {
 
     @Autowired
     EmailService emailService;
+
+
+    @Autowired
+    EmailEnumHistoryRepository emailEnumHistoryRepository;
 
     public void updateProfileCompleteStatus() {
         List<Artist> artists = artistRepository.findAll();
@@ -111,5 +118,15 @@ public class ScriptServiceImpl {
             }
         }
 
+        if (isTest) return;
+        Optional<EmailEnumHistory> emailHistory = emailEnumHistoryRepository.findByEmailEnum("INCOMPLETE_PROFILE");
+        EmailEnumHistory history = null;
+        if (!emailHistory.isPresent()) {
+            history = new EmailEnumHistory("INCOMPLETE_PROFILE", Timestamp.from(Instant.now()));
+        } else {
+            history = emailHistory.get();
+            history.setLastSent(Timestamp.from(Instant.now()));
+        }
+        emailEnumHistoryRepository.save(history);
     }
 }

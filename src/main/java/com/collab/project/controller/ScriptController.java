@@ -2,6 +2,7 @@ package com.collab.project.controller;
 
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.repositories.ArtistRepository;
+import com.collab.project.repositories.EmailEnumHistoryRepository;
 import com.collab.project.service.AnalyticsService;
 import com.collab.project.service.impl.ScriptServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,6 +23,7 @@ public class ScriptController {
 
     @Autowired
     ScriptServiceImpl scriptService;
+
 
     @PostMapping
     @RequestMapping(value = "/backfillProfileCompletion", method = RequestMethod.POST)
@@ -45,7 +47,7 @@ public class ScriptController {
     }
 
     @PostMapping
-    @RequestMapping(value = "/emailIncompleteProfileUsers")
+    @RequestMapping(value = "/emailIncompleteProfileUsers", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> emailIncompleteProfileUsers(@RequestParam String test) throws MessagingException, GeneralSecurityException, IOException {
         scriptService.emailIncompleteProfileUsers(test.equalsIgnoreCase("true"));
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);

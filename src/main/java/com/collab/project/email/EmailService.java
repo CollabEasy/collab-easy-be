@@ -7,6 +7,7 @@ import com.collab.project.repositories.EmailEnumHistoryRepository;
 import com.collab.project.service.impl.ArtistGroupServiceImpl;
 import com.collab.project.util.EmailUtils;
 import com.collab.project.util.FileUtils;
+import com.collab.project.util.emailTemplates.CompleteProfileEmail;
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.gmail.Gmail;
