@@ -1,4 +1,4 @@
-package com.collab.project.util;
+package com.collab.project.util.emailTemplates;
 
 public class NewUserEmail {
 
