@@ -7,6 +7,7 @@ import com.collab.project.repositories.EmailEnumHistoryRepository;
 import com.collab.project.service.impl.ArtistGroupServiceImpl;
 import com.collab.project.util.EmailUtils;
 import com.collab.project.util.FileUtils;
+import com.collab.project.util.emailTemplates.CompleteProfileEmail;
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.gmail.Gmail;
@@ -75,7 +76,7 @@ public class EmailService {
         return email;
     }
 
-    public MimeMessage createEmailFromEncodedMessage(String toEmailAddress, String subject, String message) throws MessagingException, IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
+    public MimeMessage createEmailFromEncodedMessage(String toEmailAddress, String subject, String message, Boolean isEncoded) throws MessagingException, IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
 
@@ -85,7 +86,11 @@ public class EmailService {
                 new InternetAddress(toEmailAddress));
         email.setSubject(subject);
         email.setSender(new InternetAddress(sender));
-        email.setContent(emailUtils.decryptEmailContent(message), "text/html; charset=utf-8");
+        if (isEncoded) {
+            email.setContent(emailUtils.decryptEmailContent(message), "text/html; charset=utf-8");
+        } else {
+            email.setContent(message, "text/html; charset=utf-8");
+        }
         return email;
     }
 
@@ -133,11 +138,20 @@ public class EmailService {
         });
     }
 
-    @Async
     public Message sendEmailFromString(String subject,
+                                            String artistId,
+                                            String emailAddress,
+                                            String encodedMessage) throws MessagingException, IOException,
+            GeneralSecurityException {
+        return sendEmailFromStringFinal(subject, artistId, emailAddress, encodedMessage, true);
+    }
+
+    @Async
+    public Message sendEmailFromStringFinal(String subject,
                                      String artistId,
                                      String emailAddress,
-                                     String encodedMessage) throws MessagingException, IOException,
+                                     String encodedMessage,
+                                       Boolean isEncoded) throws MessagingException, IOException,
             GeneralSecurityException {
         String artistEmail = emailAddress;
         if (artistEmail == null) {
@@ -145,7 +159,7 @@ public class EmailService {
             artistEmail = artist.getEmail();
         }
 
-        MimeMessage email = createEmailFromEncodedMessage(artistEmail, subject, encodedMessage);
+        MimeMessage email = createEmailFromEncodedMessage(artistEmail, subject, encodedMessage, isEncoded);
         if (email == null) {
             throw new IllegalStateException("Email provided is null.");
         }
@@ -185,15 +199,10 @@ public class EmailService {
     @Async
     public void sendEmailToGroup(String groupEnum, String subject, String content) {
         List<String> emails;
-        switch (groupEnum) {
-            case "ADMINS":
-                emails = Arrays.asList("prashant.joshi056@gmail.com", "rahulgupta6007@gmail.com");
-                break;
-            case "INCOMPLETE_PROFILE":
-                emails = artistGroupService.getEmailListWithIncompleteProfile();
-                break;
-            default:
-                return;
+        if (groupEnum.equals("ADMINS")) {
+            emails = Arrays.asList("prashant.joshi056@gmail.com", "rahulgupta6007@gmail.com");
+        } else {
+            return;
         }
 
         emails.stream().parallel().forEach(email -> {

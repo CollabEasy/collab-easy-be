@@ -1,19 +1,28 @@
 package com.collab.project.service.impl;
 
+import com.collab.project.email.EmailService;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistCategory;
 import com.collab.project.model.contest.ContestSubmission;
+import com.collab.project.model.email.EmailEnumHistory;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.repositories.*;
 import com.collab.project.service.RewardsService;
+import com.collab.project.util.EmailUtils;
 import com.collab.project.util.Utils;
+import com.collab.project.util.emailTemplates.CompleteProfileEmail;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -36,6 +45,13 @@ public class ScriptServiceImpl {
 
     @Autowired
     RewardsService rewardsService;
+
+    @Autowired
+    EmailService emailService;
+
+
+    @Autowired
+    EmailEnumHistoryRepository emailEnumHistoryRepository;
 
     public void updateProfileCompleteStatus() {
         List<Artist> artists = artistRepository.findAll();
@@ -86,5 +102,31 @@ public class ScriptServiceImpl {
                 rewardsService.addPointsToUser(artist.getSlug(), Enums.RewardTypes.MONTHLY_CONTEST.toString(), details);
             }
         }
+    }
+
+    public void emailIncompleteProfileUsers(boolean isTest) throws MessagingException, GeneralSecurityException, IOException {
+        List<Artist> artists = new ArrayList<>();
+        if (isTest) {
+            artists.add(artistRepository.findByEmail("p.joshi2310@gmail.com"));
+        } else {
+            artists = artistRepository.findAll();
+        }
+
+        for (Artist artist : artists) {
+            if (!artist.getProfileComplete()) {
+                emailService.sendEmailFromStringFinal("Complete Your Profile for a Better Reach and Experience!", artist.getArtistId(), artist.getEmail(), CompleteProfileEmail.getContent(artist.getFirstName()), false);
+            }
+        }
+
+        if (isTest) return;
+        Optional<EmailEnumHistory> emailHistory = emailEnumHistoryRepository.findByEmailEnum("INCOMPLETE_PROFILE");
+        EmailEnumHistory history = null;
+        if (!emailHistory.isPresent()) {
+            history = new EmailEnumHistory("INCOMPLETE_PROFILE", Timestamp.from(Instant.now()));
+        } else {
+            history = emailHistory.get();
+            history.setLastSent(Timestamp.from(Instant.now()));
+        }
+        emailEnumHistoryRepository.save(history);
     }
 }

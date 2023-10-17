@@ -57,7 +57,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
 
         UploadFile uploadedFile = fileUploadHelper.checkFileTypeAndGetUploadURL();
         ArtSample artSample = new ArtSample(Constants.FALLBACK_ID, artistId, uploadedFile.getOriginalURL(),
-                uploadedFile.getThumbnailURL(), caption, Constants.IMAGE, new Timestamp(System.currentTimeMillis()));
+                uploadedFile.getThumbnailURL(), caption, fileType, new Timestamp(System.currentTimeMillis()));
 
         artistSampleRepository.save(artSample);
         Artist artist = artistRepository.findByArtistId(artistId);
@@ -94,7 +94,7 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
     @Override
     public List<ArtSample> getAllArtSamples(String slug) {
         List<Artist> artist = artistRepository.findBySlug(slug);
-        if (artist.size() > 0) {
+        if (!artist.isEmpty()) {
             return artistSampleRepository.findByArtistId(artist.get(0).getArtistId());
         }
         return new ArrayList<>();
