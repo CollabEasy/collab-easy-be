@@ -50,6 +50,7 @@ public class ArtistPreferencesImpl implements ArtistPreferencesService {
                 List<ArtistSocialProspectus> prospectuses = artistSocialProspectusService.getSocialProspectByArtistId(AuthUtils.getArtistId());
                 for (ArtistSocialProspectus prospectus : prospectuses) {
                     ArtistSocialProspectusInput input = new ArtistSocialProspectusInput();
+                    log.info("Artist prospectus: ", prospectus.getSocialPlatformId(), prefValue);
                     input.setArtistId(prospectus.getArtistId());
                     input.setSocialPlatformId(prospectus.getSocialPlatformId());
                     input.setDescription(prospectus.getDescription());
