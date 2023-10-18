@@ -95,7 +95,7 @@ public class ArtistServiceImpl implements ArtistService {
                             .city(inp.getCity())
                             .countryDial(inp.getCountryDial())
                             .countryIso(inp.getCountryIso())
-                            .bio(inp.getBio())
+                            .bio(inp.getBio() == null ? "" : inp.getBio())
                             .profilePicUrl(inp.getProfilePicUrl())
                             .timezone(inp.getTimezone())
                             .phoneNumber(inp.getPhoneNumber())
