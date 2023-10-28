@@ -188,7 +188,7 @@ public class ProposalServiceImpl implements ProposalService {
             throw new IllegalStateException("You cannot answer questions in the proposals created by someone else.");
         }
 
-        ProposalQuestion proposalQuestion = proposalQuestionsRepository.findByProposalId_QuestionId(proposalId, answerInput.getQuestionId());
+        ProposalQuestion proposalQuestion = proposalQuestionsRepository.findByProposalIdAndQuestionId(proposalId, answerInput.getQuestionId());
         if (proposalQuestion == null) {
             throw new IllegalStateException("Invalid proposal or question.");
         }
