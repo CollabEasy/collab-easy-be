@@ -6,6 +6,7 @@ import com.collab.project.model.inputs.ProposalQuestionInput;
 import com.collab.project.model.proposal.Proposal;
 import com.collab.project.model.proposal.ProposalInterest;
 import com.collab.project.model.proposal.ProposalQuestion;
+import com.collab.project.model.proposal.ProposalResponse;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface ProposalService {
 
     Proposal getProposal(String proposalId);
 
-    List<Proposal> getProposalByCategories(List<Long> categoryIds);
+    List<ProposalResponse> getProposalByCategories(List<Long> categoryIds);
 
     List<ProposalQuestion> askQuestion(String artistId, String proposalId, ProposalQuestionInput questionInput);
 

@@ -6,6 +6,7 @@ import com.collab.project.model.inputs.ProposalQuestionInput;
 import com.collab.project.model.proposal.Proposal;
 import com.collab.project.model.proposal.ProposalInterest;
 import com.collab.project.model.proposal.ProposalQuestion;
+import com.collab.project.model.proposal.ProposalResponse;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.model.rewards.ReferralCodeResponse;
 import com.collab.project.service.ProposalService;
@@ -54,7 +55,7 @@ public class ProposalController {
     @PostMapping
     @RequestMapping(value = "/get", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> getAllProposals(@RequestBody Map<String, List<Long>> categoriesMap) throws JsonProcessingException {
-        List<Proposal> proposals = proposalService.getProposalByCategories(categoriesMap.getOrDefault("categories", new ArrayList<>()));
+        List<ProposalResponse> proposals = proposalService.getProposalByCategories(categoriesMap.getOrDefault("categories", new ArrayList<>()));
         return new ResponseEntity<>(new SuccessResponse(proposals), HttpStatus.OK);
     }
 

@@ -9,10 +9,7 @@ import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.ProposalAnswerInput;
 import com.collab.project.model.inputs.ProposalInput;
 import com.collab.project.model.inputs.ProposalQuestionInput;
-import com.collab.project.model.proposal.CategoryToProposal;
-import com.collab.project.model.proposal.Proposal;
-import com.collab.project.model.proposal.ProposalInterest;
-import com.collab.project.model.proposal.ProposalQuestion;
+import com.collab.project.model.proposal.*;
 import com.collab.project.repositories.*;
 import com.collab.project.service.ProposalService;
 import com.collab.project.util.Utils;
@@ -169,7 +166,7 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
-    public List<Proposal> getProposalByCategories(List<Long> categoryIds) {
+    public List<ProposalResponse> getProposalByCategories(List<Long> categoryIds) {
         List<Proposal> proposals = new ArrayList<>();
         if (categoryIds.isEmpty()) {
             proposals = proposalRepository.findAll();
@@ -188,14 +185,14 @@ public class ProposalServiceImpl implements ProposalService {
             proposal.setCategories(getProposalCategoriesByObject(categoryToProposalRepository.findByProposalId(proposal.getProposalId())));
         }
 
+        List<ProposalResponse> responses = new ArrayList<>();
         proposals.stream().parallel().forEach(proposal -> {
             Artist artist = artistRepository.findByArtistId(proposal.getCreatedBy());
-            proposal.setCreatorFirstName(artist.getFirstName());
-            proposal.setCreatorLastName(artist.getLastName());
-            proposal.setCreatorSlug(artist.getSlug());
-        });
 
-        return proposals;
+            responses.add(new ProposalResponse(proposal, artist.getFirstName(),
+                    artist.getLastName(), artist.getSlug()));
+        });
+        return responses;
     }
 
     @Override
