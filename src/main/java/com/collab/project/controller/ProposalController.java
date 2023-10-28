@@ -37,7 +37,7 @@ public class ProposalController {
 
     @PostMapping
     @RequestMapping(value = "/{proposalId}/update", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> updateProposal(@RequestParam String proposalId, @RequestBody ProposalInput proposalInput) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse> updateProposal(@PathVariable String proposalId, @RequestBody ProposalInput proposalInput) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         Proposal proposal = proposalService.updateProposal(artistId, proposalId, proposalInput);
         return new ResponseEntity<>(new SuccessResponse(proposal), HttpStatus.OK);
@@ -45,7 +45,7 @@ public class ProposalController {
 
     @GetMapping
     @RequestMapping(value = "/{proposalId}", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getProposal(@RequestParam String proposalId) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse> getProposal(@PathVariable String proposalId) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         Proposal proposal = proposalService.getProposal(proposalId);
         return new ResponseEntity<>(new SuccessResponse(proposal), HttpStatus.OK);
@@ -69,7 +69,7 @@ public class ProposalController {
 
     @GetMapping
     @RequestMapping(value = "/{proposalId}/questions/get", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getQuestions(@RequestParam String proposalId) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse> getQuestions(@PathVariable String proposalId) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         List<ProposalQuestion> questions = proposalService.getQuestionsOnProposals(proposalId);
         return new ResponseEntity<>(new SuccessResponse(questions), HttpStatus.OK);
@@ -78,7 +78,7 @@ public class ProposalController {
 
     @PostMapping
     @RequestMapping(value = "/{proposalId}/ask", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> askQuestion(@RequestParam String proposalId, @RequestBody ProposalQuestionInput proposalQuestion) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse> askQuestion(@PathVariable String proposalId, @RequestBody ProposalQuestionInput proposalQuestion) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         List<ProposalQuestion> questions = proposalService.askQuestion(artistId, proposalId, proposalQuestion);
         return new ResponseEntity<>(new SuccessResponse(questions), HttpStatus.OK);
@@ -86,7 +86,7 @@ public class ProposalController {
 
     @PostMapping
     @RequestMapping(value = "/{proposalId}/answer", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> answerQuestion(@RequestParam String proposalId, @RequestBody ProposalAnswerInput proposalQuestion) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse> answerQuestion(@PathVariable String proposalId, @RequestBody ProposalAnswerInput proposalQuestion) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         List<ProposalQuestion> questions = proposalService.answerQuestion(artistId, proposalId, proposalQuestion);
         return new ResponseEntity<>(new SuccessResponse(questions), HttpStatus.OK);
@@ -94,7 +94,7 @@ public class ProposalController {
 
     @GetMapping
     @RequestMapping(value = "/{proposalId}/interests/get", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getAllInterests(@RequestParam String proposalId) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse> getAllInterests(@PathVariable String proposalId) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         List<ProposalInterest> interests = proposalService.getAllInterests(proposalId);
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
@@ -102,7 +102,7 @@ public class ProposalController {
 
     @PostMapping
     @RequestMapping(value = "/{proposalId}/show_interest", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> showInterest(@RequestParam String proposalId, Map<String, String> message) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse> showInterest(@PathVariable String proposalId, Map<String, String> message) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         ProposalInterest interests = proposalService.updateInterest(artistId, proposalId, true, message.get("message"));
         return new ResponseEntity<>(new SuccessResponse(interests), HttpStatus.OK);
@@ -110,7 +110,7 @@ public class ProposalController {
 
     @PostMapping
     @RequestMapping(value = "/{proposalId}/remove_interest", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> removeInterest(@RequestParam String proposalId) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse> removeInterest(@PathVariable String proposalId) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         ProposalInterest interests = proposalService.updateInterest(artistId, proposalId, false, null);
         return new ResponseEntity<>(new SuccessResponse(interests), HttpStatus.OK);
@@ -118,7 +118,7 @@ public class ProposalController {
 
     @PostMapping
     @RequestMapping(value = "/{proposalId}/accept", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> acceptInterest(@RequestParam String proposalId, Map<String, String> user) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse> acceptInterest(@PathVariable String proposalId, Map<String, String> user) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         List<ProposalInterest> interests = proposalService.acceptInterest(artistId, proposalId, new ArrayList<>(user.values()));
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
