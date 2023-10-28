@@ -12,6 +12,6 @@ import java.util.List;
 public interface ProposalQuestionsRepository extends JpaRepository<ProposalQuestion, Long> {
     List<ProposalQuestion> findByProposalId(String proposalId);
 
-    @Query(value = "SELECT * FROM proposal_questions where proposalId = (?1) AND questionId = (?2) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM proposal_questions where proposal_id = (?1) AND question_id = (?2) ", nativeQuery = true)
     public ProposalQuestion findByProposalIdAndQuestionId(String proposalId, String questionId);
 }
