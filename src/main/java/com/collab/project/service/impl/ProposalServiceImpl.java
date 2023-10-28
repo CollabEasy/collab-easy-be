@@ -208,7 +208,7 @@ public class ProposalServiceImpl implements ProposalService {
 
         if (!interested) {
             // If removing interest, the entry should be present
-            ProposalInterest interest = proposalInterestRepository.findByProposalId_UserId(proposalId, artistId);
+            ProposalInterest interest = proposalInterestRepository.findByProposalIdAndArtistId(proposalId, artistId);
             if (interest != null) {
                 proposalInterestRepository.delete(interest);
             }
@@ -222,7 +222,7 @@ public class ProposalServiceImpl implements ProposalService {
         proposalInterest.setMessage(message == null ? "" : message);
         proposalInterest.setAccepted(false);
         proposalInterest.setCreatedAt(Timestamp.from(Instant.now()));
-        return proposalInterestRepository.findByProposalId_UserId(proposalId, artistId);
+        return proposalInterestRepository.findByProposalIdAndArtistId(proposalId, artistId);
     }
 
     @Override
@@ -233,7 +233,7 @@ public class ProposalServiceImpl implements ProposalService {
         }
 
         for (String acceptedArtistId : acceptedArtistIds) {
-            ProposalInterest interest = proposalInterestRepository.findByProposalId_UserId(proposalId, acceptedArtistId);
+            ProposalInterest interest = proposalInterestRepository.findByProposalIdAndArtistId(proposalId, acceptedArtistId);
             if (interest == null) continue;
 
             interest.setAccepted(true);

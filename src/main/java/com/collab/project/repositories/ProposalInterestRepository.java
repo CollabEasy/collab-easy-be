@@ -13,6 +13,6 @@ public interface ProposalInterestRepository extends JpaRepository<ProposalIntere
     List<ProposalInterest> findByProposalId(String proposalId);
 
     @Query(value = "SELECT * FROM proposal_interests where proposal_id = (?1) AND user_id = (?2) ", nativeQuery = true)
-    public ProposalQuestion findByProposalIdAndArtistId(String proposalId, String artistId);
+    public ProposalInterest findByProposalIdAndArtistId(String proposalId, String artistId);
 
 }
