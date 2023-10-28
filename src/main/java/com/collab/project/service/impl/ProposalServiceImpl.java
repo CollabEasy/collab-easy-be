@@ -236,6 +236,7 @@ public class ProposalServiceImpl implements ProposalService {
         }
 
         for (String acceptedArtistId : acceptedArtistIds) {
+            System.out.println("artist id : " + acceptedArtistId);
             ProposalInterest interest = proposalInterestRepository.findByProposalIdAndArtistId(proposalId, acceptedArtistId);
             if (interest == null) continue;
 
