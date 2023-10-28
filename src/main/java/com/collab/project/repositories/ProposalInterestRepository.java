@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProposalInterestRepository extends JpaRepository<ProposalInterest, String> {
+public interface ProposalInterestRepository extends JpaRepository<ProposalInterest, Long> {
     List<ProposalInterest> findByProposalId(String proposalId);
 
     ProposalInterest findByProposalId_UserId(String proposalId, String artistId);

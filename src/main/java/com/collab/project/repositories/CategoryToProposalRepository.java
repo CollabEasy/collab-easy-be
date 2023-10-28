@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CategoryToProposalRepository extends JpaRepository<CategoryToProposal, String> {
+public interface CategoryToProposalRepository extends JpaRepository<CategoryToProposal, Long> {
     List<CategoryToProposal> findByProposalId(String proposalId);
 
     List<CategoryToProposal> findByCategoryIdIn(List<Long> categoryIds);
