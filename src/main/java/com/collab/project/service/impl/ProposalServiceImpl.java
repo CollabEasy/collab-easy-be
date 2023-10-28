@@ -173,6 +173,7 @@ public class ProposalServiceImpl implements ProposalService {
 
         ProposalQuestion proposalQuestion = new ProposalQuestion();
         proposalQuestion.setId(Constants.FALLBACK_ID);
+        proposalQuestion.setProposalId(proposal.getProposalId());
         proposalQuestion.setQuestionId(Utils.getSHA256(UUID.randomUUID().toString()).substring(0, 5));
         proposalQuestion.setQuestion(questionInput.getQuestion());
         proposalQuestion.setAskedBy(artistId);
