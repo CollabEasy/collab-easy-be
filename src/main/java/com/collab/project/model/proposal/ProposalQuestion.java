@@ -16,6 +16,13 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProposalQuestion {
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
     @NotNull
     @Column(name = "proposal_id")
     private String proposalId;
