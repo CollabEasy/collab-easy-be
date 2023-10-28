@@ -4,6 +4,7 @@ import com.amazonaws.services.mq.model.BadRequestException;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.art.ArtCategory;
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.contest.ContestSubmissionResponse;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.ProposalAnswerInput;
 import com.collab.project.model.inputs.ProposalInput;
@@ -186,6 +187,14 @@ public class ProposalServiceImpl implements ProposalService {
         for (Proposal proposal : proposals) {
             proposal.setCategories(getProposalCategoriesByObject(categoryToProposalRepository.findByProposalId(proposal.getProposalId())));
         }
+
+        proposals.stream().parallel().forEach(proposal -> {
+            Artist artist = artistRepository.findByArtistId(proposal.getCreatedBy());
+            proposal.setCreatorFirstName(artist.getFirstName());
+            proposal.setCreatorLastName(artist.getLastName());
+            proposal.setCreatorSlug(artist.getSlug());
+        });
+
         return proposals;
     }
 

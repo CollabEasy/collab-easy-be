@@ -50,6 +50,12 @@ public class Proposal {
     @Column(name = "proposal_status")
     private Enums.ProposalStatus proposalStatus;
 
+    private String creatorFirstName;
+
+    private String creatorLastName;
+
+    private String creatorSlug;
+
     @Transient
     @JsonProperty
     Map<Long, String> categories;
