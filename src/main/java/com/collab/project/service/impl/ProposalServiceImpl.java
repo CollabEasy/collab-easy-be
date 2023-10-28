@@ -122,7 +122,11 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Override
     public List<Proposal> getArtistProposals(String artistSlug) {
-        Artist artist = artistRepository.findByArtistHandle(artistSlug);
+        List<Artist> artistList = artistRepository.findBySlug(artistSlug);
+        if (artistList.isEmpty()) {
+            return new ArrayList<>();
+        }
+        Artist artist = artistList.get(0);
         String artistId = artist.getArtistId();
         List<Proposal> proposals = proposalRepository.findByCreatedBy(artistId);
         if (proposals == null) {
@@ -239,7 +243,6 @@ public class ProposalServiceImpl implements ProposalService {
         }
 
         for (String acceptedArtistId : acceptedArtistIds) {
-            System.out.println("artist id : " + acceptedArtistId);
             ProposalInterest interest = proposalInterestRepository.findByProposalIdAndArtistId(proposalId, acceptedArtistId);
             if (interest == null) continue;
 
