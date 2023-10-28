@@ -240,6 +240,7 @@ public class ProposalServiceImpl implements ProposalService {
             if (interest == null) continue;
 
             interest.setAccepted(true);
+            proposalInterestRepository.save(interest);
         }
         return proposalInterestRepository.findByProposalId(proposalId);
     }

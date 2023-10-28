@@ -121,6 +121,6 @@ public class ProposalController {
     public ResponseEntity<SuccessResponse> acceptInterest(@PathVariable String proposalId, Map<String, String> user) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
         List<ProposalInterest> interests = proposalService.acceptInterest(artistId, proposalId, new ArrayList<>(user.values()));
-        return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessResponse(interests), HttpStatus.OK);
     }
 }
