@@ -54,7 +54,6 @@ public class ProposalController {
     @PostMapping
     @RequestMapping(value = "/get", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> getAllProposals(@RequestBody Map<String, List<Long>> categoriesMap) throws JsonProcessingException {
-        String artistId = AuthUtils.getArtistId();
         List<Proposal> proposals = proposalService.getProposalByCategories(categoriesMap.getOrDefault("categories", new ArrayList<>()));
         return new ResponseEntity<>(new SuccessResponse(proposals), HttpStatus.OK);
     }
