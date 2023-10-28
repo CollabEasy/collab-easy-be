@@ -15,12 +15,14 @@ import com.collab.project.service.ProposalService;
 import com.collab.project.util.Utils;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class ProposalServiceImpl implements ProposalService {
 
     @Autowired
