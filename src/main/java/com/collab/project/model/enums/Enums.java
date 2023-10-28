@@ -21,4 +21,16 @@ public class Enums {
         SUCCESSFUL_COLLAB,
         MONTHLY_CONTEST,
     }
+
+    public enum CollabTypes {
+        IN_PERSON,
+        VIRTUAL
+    }
+
+    public enum ProposalStatus {
+        ACTIVE,
+        DRAFT,
+        DISABLED,
+        CLOSED,
+    }
 }

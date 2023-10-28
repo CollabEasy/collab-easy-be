@@ -20,4 +20,6 @@ public interface ArtCategoryRepository extends JpaRepository<ArtCategory, Long> 
 
     @Query(value = "SELECT * FROM art_categories where art_name like ?1%", nativeQuery = true)
     public List<ArtCategory> findBySlugStartsWith(String query);
+
+    public List<ArtCategory> findByIdIn(List<Long> ids);
 }
