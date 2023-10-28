@@ -2,6 +2,7 @@ package com.collab.project.service.impl;
 
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.art.ArtCategory;
+import com.collab.project.model.artist.Artist;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.ProposalAnswerInput;
 import com.collab.project.model.inputs.ProposalInput;
@@ -120,7 +121,9 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
-    public List<Proposal> getArtistProposals(String artistId) {
+    public List<Proposal> getArtistProposals(String artistSlug) {
+        Artist artist = artistRepository.findByArtistHandle(artistSlug);
+        String artistId = artist.getArtistId();
         List<Proposal> proposals = proposalRepository.findByCreatedBy(artistId);
         if (proposals == null) {
             return new ArrayList<>();

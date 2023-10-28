@@ -60,10 +60,9 @@ public class ProposalController {
     }
 
     @GetMapping
-    @RequestMapping(value = "/my/get", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getMyProposals() throws JsonProcessingException {
-        String artistId = AuthUtils.getArtistId();
-        List<Proposal> proposals = proposalService.getArtistProposals(artistId);
+    @RequestMapping(value = "/{artistSlug}/get", method = RequestMethod.GET)
+    public ResponseEntity<SuccessResponse> getMyProposals(@PathVariable String artistSlug) throws JsonProcessingException {
+        List<Proposal> proposals = proposalService.getArtistProposals(artistSlug);
         return new ResponseEntity<>(new SuccessResponse(proposals), HttpStatus.OK);
     }
 
