@@ -23,8 +23,9 @@ public class Enums {
     }
 
     public enum CollabTypes {
-        IN_PERSON,
-        VIRTUAL
+        INPERSON,
+        VIRTUAL,
+        ANY,
     }
 
     public enum ProposalStatus {

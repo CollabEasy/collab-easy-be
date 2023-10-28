@@ -1,5 +1,6 @@
 package com.collab.project.service.impl;
 
+import com.amazonaws.services.mq.model.BadRequestException;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.art.ArtCategory;
 import com.collab.project.model.artist.Artist;
@@ -91,7 +92,25 @@ public class ProposalServiceImpl implements ProposalService {
         return proposalInterestRepository.findByProposalId(proposalId);
     }
 
+    private void validateProposal(ProposalInput input) {
+        try {
+            Enums.CollabTypes collabType = Enums.CollabTypes.valueOf(input.getCollabType());
+        } catch (Exception e) {
+            throw new BadRequestException("Collab type is not valid");
+        }
+
+        try {
+            Enums.ProposalStatus proposalStatus = Enums.ProposalStatus.valueOf(input.getProposalStatus());
+        } catch (Exception e) {
+            throw new BadRequestException("Proposal status is not valid");
+        }
+        if (input.getCategoryIds().isEmpty()) {
+            throw new BadRequestException("Category IDs cannot be empty");
+        }
+
+    }
     private Proposal updateProposal(Proposal proposal, ProposalInput proposalInput) {
+        validateProposal(proposalInput);
         proposal.setTitle(proposalInput.getProposalTitle());
         proposal.setDescription(proposalInput.getProposalDescription());
         proposal.setCategories(updateCategories(proposal.getProposalId(), proposalInput.getCategoryIds()));
