@@ -75,7 +75,7 @@ public class ProposalServiceImpl implements ProposalService {
         }
 
         for (Long category: newCategories) {
-            categoryToProposalRepository.save(new CategoryToProposal(category, proposalId));
+            categoryToProposalRepository.save(new CategoryToProposal(Constants.FALLBACK_ID, category, proposalId));
         }
         return this.getProposalCategoriesByIds(categoryIds);
     }
