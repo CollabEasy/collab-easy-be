@@ -118,9 +118,9 @@ public class ProposalController {
 
     @PostMapping
     @RequestMapping(value = "/{proposalId}/accept", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> acceptInterest(@PathVariable String proposalId, Map<String, String> user) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse> acceptInterest(@PathVariable String proposalId, Map<String, List<String>> user) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
-        List<ProposalInterest> interests = proposalService.acceptInterest(artistId, proposalId, new ArrayList<>(user.values()));
+        List<ProposalInterest> interests = proposalService.acceptInterest(artistId, proposalId, user.getOrDefault("user", new ArrayList<String>()));
         return new ResponseEntity<>(new SuccessResponse(interests), HttpStatus.OK);
     }
 }
