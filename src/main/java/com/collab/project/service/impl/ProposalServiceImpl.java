@@ -177,6 +177,7 @@ public class ProposalServiceImpl implements ProposalService {
         proposalQuestion.setQuestion(questionInput.getQuestion());
         proposalQuestion.setAskedBy(artistId);
         proposalQuestion.setCreatedAt(Timestamp.from(Instant.now()));
+        proposalQuestion.setUpdatedAt(Timestamp.from(Instant.now()));
         proposalQuestionsRepository.save(proposalQuestion);
         return proposalQuestionsRepository.findByProposalId(proposalId);
     }
