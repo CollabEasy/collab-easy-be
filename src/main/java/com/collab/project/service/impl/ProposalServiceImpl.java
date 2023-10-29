@@ -144,7 +144,7 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
-    public List<Proposal> getArtistProposals(String artistSlug) {
+    public List<ProposalResponse> getArtistProposals(String artistSlug) {
         List<Artist> artistList = artistRepository.findBySlug(artistSlug);
         if (artistList.isEmpty()) {
             return new ArrayList<>();
@@ -155,10 +155,18 @@ public class ProposalServiceImpl implements ProposalService {
         if (proposals == null) {
             return new ArrayList<>();
         }
+        List<ProposalResponse> responses = new ArrayList<>();
         for (Proposal proposal : proposals) {
             proposal.setCategories(getProposalCategoriesByObject(categoryToProposalRepository.findByProposalId(proposal.getProposalId())));
+            ProposalResponse response = new ProposalResponse();
+            response.setProposal(proposal);
+            response.setCreatorLastName(artist.getLastName());
+            response.setCreatorFirstName(artist.getFirstName());
+            response.setCreatorProfilePicUrl(artist.getProfilePicUrl());
+            response.setCreatorSlug(artistSlug);
+            responses.add(response);
         }
-        return proposals;
+        return responses;
     }
 
     @Override
@@ -294,6 +302,14 @@ public class ProposalServiceImpl implements ProposalService {
         if (questions == null) {
             return new ArrayList<>();
         }
+        for (ProposalQuestion question : questions) {
+            String askedBy = question.getAskedBy();
+            Artist artist = artistRepository.getOne(askedBy);
+            question.setAskedByFirstName(artist.getFirstName());
+            question.setAskedByLastName(artist.getLastName());
+            question.setAskedBySlug(artist.getSlug());
+            question.setAskedByProfilePic(artist.getProfilePicUrl());
+        }
         return questions;
     }
 
@@ -307,6 +323,14 @@ public class ProposalServiceImpl implements ProposalService {
         List<ProposalInterest> interests = proposalInterestRepository.findByProposalId(proposalId);
         if (interests == null) {
             return new ArrayList<>();
+        }
+        for (ProposalInterest interest : interests) {
+            String interestedUser = interest.getUserId();
+            Artist artist = artistRepository.getOne(interestedUser);
+            interest.setAskedByFirstName(artist.getFirstName());
+            interest.setAskedByLastName(artist.getLastName());
+            interest.setAskedBySlug(artist.getSlug());
+            interest.setAskedByProfilePic(artist.getProfilePicUrl());
         }
         return interests;
     }

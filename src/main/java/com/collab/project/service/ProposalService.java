@@ -15,7 +15,7 @@ public interface ProposalService {
 
     Proposal updateProposal(String artistId, String proposalId, ProposalInput proposalInput);
 
-    List<Proposal> getArtistProposals(String artistId);
+    List<ProposalResponse> getArtistProposals(String artistId);
 
     ProposalResponse getProposal(String proposalId);
 

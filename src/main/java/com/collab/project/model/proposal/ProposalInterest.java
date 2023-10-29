@@ -1,5 +1,6 @@
 package com.collab.project.model.proposal;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,5 +40,21 @@ public class ProposalInterest {
 
     @Column(name = "created_at")
     private Timestamp createdAt;
+
+    @Transient
+    @JsonProperty
+    private String askedByFirstName;
+
+    @Transient
+    @JsonProperty
+    private String askedByLastName;
+
+    @Transient
+    @JsonProperty
+    private String askedByProfilePic;
+
+    @Transient
+    @JsonProperty
+    private String askedBySlug;
 
 }

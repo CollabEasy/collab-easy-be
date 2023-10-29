@@ -61,7 +61,7 @@ public class ProposalController {
     @GetMapping
     @RequestMapping(value = "/{artistSlug}/get", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getMyProposals(@PathVariable String artistSlug) throws JsonProcessingException {
-        List<Proposal> proposals = proposalService.getArtistProposals(artistSlug);
+        List<ProposalResponse> proposals = proposalService.getArtistProposals(artistSlug);
         return new ResponseEntity<>(new SuccessResponse(proposals), HttpStatus.OK);
     }
 
