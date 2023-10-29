@@ -27,4 +27,6 @@ public class ProposalResponse {
     private String creatorLastName;
 
     private String creatorSlug;
+
+    private String creatorProfilePicUrl;
 }

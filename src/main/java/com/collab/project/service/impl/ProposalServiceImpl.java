@@ -190,7 +190,7 @@ public class ProposalServiceImpl implements ProposalService {
             Artist artist = artistRepository.findByArtistId(proposal.getCreatedBy());
 
             responses.add(new ProposalResponse(proposal, artist.getFirstName(),
-                    artist.getLastName(), artist.getSlug()));
+                    artist.getLastName(), artist.getSlug(), artist.getProfilePicUrl()));
         });
         return responses;
     }
