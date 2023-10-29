@@ -200,17 +200,18 @@ public class ProposalServiceImpl implements ProposalService {
         if (proposals == null) {
             return new ArrayList<>();
         }
-        for (Proposal proposal : proposals) {
+
+        proposals.stream().parallel().forEach(proposal -> {
             proposal.setCategories(getProposalCategoriesByObject(categoryToProposalRepository.findByProposalId(proposal.getProposalId())));
-        }
+        });
 
         List<ProposalResponse> responses = new ArrayList<>();
-        proposals.stream().parallel().forEach(proposal -> {
+        for (Proposal proposal : proposals) {
             Artist artist = artistRepository.findByArtistId(proposal.getCreatedBy());
 
             responses.add(new ProposalResponse(proposal, artist.getFirstName(),
                     artist.getLastName(), artist.getSlug(), artist.getProfilePicUrl()));
-        });
+        }
         return responses;
     }
 
@@ -302,14 +303,14 @@ public class ProposalServiceImpl implements ProposalService {
         if (questions == null) {
             return new ArrayList<>();
         }
-        for (ProposalQuestion question : questions) {
+        questions.stream().parallel().forEach(question -> {
             String askedBy = question.getAskedBy();
             Artist artist = artistRepository.getOne(askedBy);
             question.setAskedByFirstName(artist.getFirstName());
             question.setAskedByLastName(artist.getLastName());
             question.setAskedBySlug(artist.getSlug());
             question.setAskedByProfilePic(artist.getProfilePicUrl());
-        }
+        });
         return questions;
     }
 
@@ -324,14 +325,14 @@ public class ProposalServiceImpl implements ProposalService {
         if (interests == null) {
             return new ArrayList<>();
         }
-        for (ProposalInterest interest : interests) {
+        interests.stream().parallel().forEach(interest -> {
             String interestedUser = interest.getUserId();
             Artist artist = artistRepository.getOne(interestedUser);
             interest.setAskedByFirstName(artist.getFirstName());
             interest.setAskedByLastName(artist.getLastName());
             interest.setAskedBySlug(artist.getSlug());
             interest.setAskedByProfilePic(artist.getProfilePicUrl());
-        }
+        });
         return interests;
     }
 }
