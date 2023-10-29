@@ -47,7 +47,6 @@ public class ProposalController {
     @GetMapping
     @RequestMapping(value = "/{proposalId}", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getProposal(@PathVariable String proposalId) throws JsonProcessingException {
-        String artistId = AuthUtils.getArtistId();
         ProposalResponse proposal = proposalService.getProposal(proposalId);
         return new ResponseEntity<>(new SuccessResponse(proposal), HttpStatus.OK);
     }
@@ -69,7 +68,6 @@ public class ProposalController {
     @GetMapping
     @RequestMapping(value = "/{proposalId}/questions/get", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getQuestions(@PathVariable String proposalId) throws JsonProcessingException {
-        String artistId = AuthUtils.getArtistId();
         List<ProposalQuestion> questions = proposalService.getQuestionsOnProposals(proposalId);
         return new ResponseEntity<>(new SuccessResponse(questions), HttpStatus.OK);
     }
@@ -95,7 +93,7 @@ public class ProposalController {
     @RequestMapping(value = "/{proposalId}/interests/get", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getAllInterests(@PathVariable String proposalId) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
-        List<ProposalInterest> interests = proposalService.getAllInterests(proposalId);
+        List<ProposalInterest> interests = proposalService.getAllInterests(artistId, proposalId);
         return new ResponseEntity<>(new SuccessResponse(interests), HttpStatus.OK);
     }
 
