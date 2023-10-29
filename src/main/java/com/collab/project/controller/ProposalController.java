@@ -32,7 +32,7 @@ public class ProposalController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> createProposal(@RequestBody ProposalInput proposalInput) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
-        Proposal proposal = proposalService.createProposal(artistId, proposalInput);
+        ProposalResponse proposal = proposalService.createProposal(artistId, proposalInput);
         return new ResponseEntity<>(new SuccessResponse(proposal), HttpStatus.OK);
     }
 
@@ -48,7 +48,7 @@ public class ProposalController {
     @RequestMapping(value = "/{proposalId}", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getProposal(@PathVariable String proposalId) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
-        Proposal proposal = proposalService.getProposal(proposalId);
+        ProposalResponse proposal = proposalService.getProposal(proposalId);
         return new ResponseEntity<>(new SuccessResponse(proposal), HttpStatus.OK);
     }
 

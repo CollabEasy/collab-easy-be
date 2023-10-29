@@ -119,13 +119,19 @@ public class ProposalServiceImpl implements ProposalService {
     }
     @Override
     @SneakyThrows
-    public Proposal createProposal(String artistId, ProposalInput proposalInput) {
+    public ProposalResponse createProposal(String artistId, ProposalInput proposalInput) {
         Proposal proposal = new Proposal();
         proposal.setId(Constants.FALLBACK_ID);
         proposal.setProposalId(Utils.getSHA256(UUID.randomUUID().toString()).substring(0, 6));
         proposal.setCreatedBy(artistId);
         proposal.setCreatedAt(Timestamp.from(Instant.now()));
-        return updateProposal(proposal, proposalInput);
+        Proposal updatedProposal  = updateProposal(proposal, proposalInput);
+
+        Artist artist = artistRepository.findByArtistId(proposal.getCreatedBy());
+
+        ProposalResponse response = new ProposalResponse(proposal, artist.getFirstName(),
+                artist.getLastName(), artist.getSlug(), artist.getProfilePicUrl());
+        return response;
     }
 
     @Override
@@ -156,13 +162,18 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
-    public Proposal getProposal(String proposalId) {
+    public ProposalResponse getProposal(String proposalId) {
         Proposal proposal = proposalRepository.findByProposalId(proposalId);
         if (proposal == null) {
             return null;
         }
         proposal.setCategories(getProposalCategoriesByObject(categoryToProposalRepository.findByProposalId(proposal.getProposalId())));
-        return proposal;
+
+        Artist artist = artistRepository.findByArtistId(proposal.getCreatedBy());
+        ProposalResponse response =  new ProposalResponse(proposal, artist.getFirstName(),
+                    artist.getLastName(), artist.getSlug(), artist.getProfilePicUrl());
+
+        return response;
     }
 
     @Override

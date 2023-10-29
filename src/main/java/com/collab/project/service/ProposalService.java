@@ -11,13 +11,13 @@ import com.collab.project.model.proposal.ProposalResponse;
 import java.util.List;
 
 public interface ProposalService {
-    Proposal createProposal(String artistId, ProposalInput proposalInput);
+    ProposalResponse createProposal(String artistId, ProposalInput proposalInput);
 
     Proposal updateProposal(String artistId, String proposalId, ProposalInput proposalInput);
 
     List<Proposal> getArtistProposals(String artistId);
 
-    Proposal getProposal(String proposalId);
+    ProposalResponse getProposal(String proposalId);
 
     List<ProposalResponse> getProposalByCategories(List<Long> categoryIds);
 
