@@ -305,7 +305,7 @@ public class ProposalServiceImpl implements ProposalService {
         }
         questions.stream().parallel().forEach(question -> {
             String askedBy = question.getAskedBy();
-            Artist artist = artistRepository.getOne(askedBy);
+            Artist artist = artistRepository.findByArtistId(askedBy);
             question.setAskedByFirstName(artist.getFirstName());
             question.setAskedByLastName(artist.getLastName());
             question.setAskedBySlug(artist.getSlug());
@@ -327,7 +327,7 @@ public class ProposalServiceImpl implements ProposalService {
         }
         interests.stream().parallel().forEach(interest -> {
             String interestedUser = interest.getUserId();
-            Artist artist = artistRepository.getOne(interestedUser);
+            Artist artist = artistRepository.findByArtistId(interestedUser);
             interest.setAskedByFirstName(artist.getFirstName());
             interest.setAskedByLastName(artist.getLastName());
             interest.setAskedBySlug(artist.getSlug());
