@@ -316,11 +316,8 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Override
     @SneakyThrows
-    public List<ProposalInterest> getAllInterests(String artistId, String proposalId) {
+    public List<ProposalInterest> getAllInterests(String proposalId) {
         Proposal proposal = proposalRepository.findByProposalId(proposalId);
-        if (!proposal.getCreatedBy().equals(artistId)) {
-            throw new IllegalStateException("You cannot see interests for proposals created by someone else.");
-        }
         List<ProposalInterest> interests = proposalInterestRepository.findByProposalId(proposalId);
         if (interests == null) {
             return new ArrayList<>();

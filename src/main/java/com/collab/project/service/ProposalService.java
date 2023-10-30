@@ -31,5 +31,5 @@ public interface ProposalService {
 
     List<ProposalQuestion> getQuestionsOnProposals(String proposalId);
 
-    List<ProposalInterest> getAllInterests(String artistId, String proposalId);
+    List<ProposalInterest> getAllInterests(String proposalId);
 }
