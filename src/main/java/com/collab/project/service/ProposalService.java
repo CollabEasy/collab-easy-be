@@ -3,10 +3,7 @@ package com.collab.project.service;
 import com.collab.project.model.inputs.ProposalAnswerInput;
 import com.collab.project.model.inputs.ProposalInput;
 import com.collab.project.model.inputs.ProposalQuestionInput;
-import com.collab.project.model.proposal.Proposal;
-import com.collab.project.model.proposal.ProposalInterest;
-import com.collab.project.model.proposal.ProposalQuestion;
-import com.collab.project.model.proposal.ProposalResponse;
+import com.collab.project.model.proposal.*;
 
 import java.util.List;
 
@@ -15,7 +12,7 @@ public interface ProposalService {
 
     Proposal updateProposal(String artistId, String proposalId, ProposalInput proposalInput);
 
-    List<ProposalResponse> getArtistProposals(String artistId);
+    ArtistProposals getArtistProposals(String artistId);
 
     ProposalResponse getProposal(String proposalId);
 
