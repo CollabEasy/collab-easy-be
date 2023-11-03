@@ -275,6 +275,7 @@ public class ProposalServiceImpl implements ProposalService {
         proposalInterest.setUserId(artistId);
         proposalInterest.setMessage(message == null ? "" : message);
         proposalInterest.setAccepted(false);
+        proposalInterest.setRejected(false);
         proposalInterest.setCreatedAt(Timestamp.from(Instant.now()));
         proposalInterestRepository.save(proposalInterest);
         return proposalInterestRepository.findByProposalIdAndArtistId(proposalId, artistId);
@@ -308,7 +309,7 @@ public class ProposalServiceImpl implements ProposalService {
             ProposalInterest interest = proposalInterestRepository.findByProposalIdAndArtistId(proposalId, rejectedArtistId);
             if (interest == null) continue;
 
-            interest.setAccepted(false);
+            interest.setRejected(true);
             proposalInterestRepository.save(interest);
         }
         return proposalInterestRepository.findByProposalId(proposalId);

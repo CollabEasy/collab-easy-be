@@ -35,6 +35,9 @@ public class ProposalInterest {
     @Column(name = "accepted")
     private boolean accepted;
 
+    @Column(name = "rejected")
+    private boolean rejected;
+
     @Column(name = "message")
     private String message;
 
