@@ -298,6 +298,23 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
+    public List<ProposalInterest> rejectInterest(String artistId, String proposalId, List<String> rejectedArtistIds) {
+        Proposal proposal = proposalRepository.findByProposalId(proposalId);
+        if (!proposal.getCreatedBy().equals(artistId)) {
+            throw  new IllegalStateException("You cannot reject interests for proposals created by someone else.");
+        }
+
+        for (String rejectedArtistId : rejectedArtistIds) {
+            ProposalInterest interest = proposalInterestRepository.findByProposalIdAndArtistId(proposalId, rejectedArtistId);
+            if (interest == null) continue;
+
+            interest.setAccepted(false);
+            proposalInterestRepository.save(interest);
+        }
+        return proposalInterestRepository.findByProposalId(proposalId);
+    }
+
+    @Override
     public List<ProposalQuestion> getQuestionsOnProposals(String proposalId) {
         List<ProposalQuestion> questions = proposalQuestionsRepository.findByProposalId(proposalId);
         if (questions == null) {

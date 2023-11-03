@@ -29,6 +29,8 @@ public interface ProposalService {
 
     List<ProposalInterest> acceptInterest(String artistId, String proposalId, List<String> acceptedArtistId);
 
+    List<ProposalInterest> rejectInterest(String artistId, String proposalId, List<String> rejectedArtistId);
+
     List<ProposalQuestion> getQuestionsOnProposals(String proposalId);
 
     List<ProposalInterest> getAllInterests(String proposalId);
