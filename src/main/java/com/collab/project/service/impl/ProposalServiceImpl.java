@@ -167,6 +167,7 @@ public class ProposalServiceImpl implements ProposalService {
             response.setCreatorSlug(artistSlug);
             createdProposals.add(response);
         }
+        responses.setCreated(createdProposals);
         // Add logic for returning interested proposals later.
         return responses;
     }
