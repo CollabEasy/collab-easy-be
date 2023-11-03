@@ -144,18 +144,19 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
-    public List<ProposalResponse> getArtistProposals(String artistSlug) {
+    public ArtistProposals getArtistProposals(String artistSlug) {
         List<Artist> artistList = artistRepository.findBySlug(artistSlug);
         if (artistList.isEmpty()) {
-            return new ArrayList<>();
+            return new ArtistProposals();
         }
         Artist artist = artistList.get(0);
         String artistId = artist.getArtistId();
         List<Proposal> proposals = proposalRepository.findByCreatedBy(artistId);
         if (proposals == null) {
-            return new ArrayList<>();
+            return new ArtistProposals();
         }
-        List<ProposalResponse> responses = new ArrayList<>();
+        ArtistProposals responses = new ArtistProposals();
+        List<ProposalResponse> createdProposals = new ArrayList<>();
         for (Proposal proposal : proposals) {
             proposal.setCategories(getProposalCategoriesByObject(categoryToProposalRepository.findByProposalId(proposal.getProposalId())));
             ProposalResponse response = new ProposalResponse();
@@ -164,8 +165,21 @@ public class ProposalServiceImpl implements ProposalService {
             response.setCreatorFirstName(artist.getFirstName());
             response.setCreatorProfilePicUrl(artist.getProfilePicUrl());
             response.setCreatorSlug(artistSlug);
-            responses.add(response);
+            createdProposals.add(response);
         }
+        responses.setCreated(createdProposals);
+
+        List<ProposalResponse> interestedProposals = new ArrayList<>();
+        List<ProposalInterest> interested = proposalInterestRepository.findByArtistId(artistId);
+        for (ProposalInterest proposalInterest : interested) {
+            Proposal proposal = proposalRepository.findByProposalId(proposalInterest.getProposalId());
+            ProposalResponse response = new ProposalResponse();
+            response.setProposal(proposal);
+            interestedProposals.add(response);
+            // Think about how to populate logic for populating
+            // proposal creator detail.
+        }
+        responses.setInterested(interestedProposals);
         return responses;
     }
 

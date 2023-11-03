@@ -3,10 +3,7 @@ package com.collab.project.controller;
 import com.collab.project.model.inputs.ProposalAnswerInput;
 import com.collab.project.model.inputs.ProposalInput;
 import com.collab.project.model.inputs.ProposalQuestionInput;
-import com.collab.project.model.proposal.Proposal;
-import com.collab.project.model.proposal.ProposalInterest;
-import com.collab.project.model.proposal.ProposalQuestion;
-import com.collab.project.model.proposal.ProposalResponse;
+import com.collab.project.model.proposal.*;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.model.rewards.ReferralCodeResponse;
 import com.collab.project.service.ProposalService;
@@ -61,7 +58,7 @@ public class ProposalController {
     @GetMapping
     @RequestMapping(value = "/{artistSlug}/get", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getMyProposals(@PathVariable String artistSlug) throws JsonProcessingException {
-        List<ProposalResponse> proposals = proposalService.getArtistProposals(artistSlug);
+        ArtistProposals proposals = proposalService.getArtistProposals(artistSlug);
         return new ResponseEntity<>(new SuccessResponse(proposals), HttpStatus.OK);
     }
 
