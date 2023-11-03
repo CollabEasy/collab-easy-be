@@ -168,7 +168,18 @@ public class ProposalServiceImpl implements ProposalService {
             createdProposals.add(response);
         }
         responses.setCreated(createdProposals);
-        // Add logic for returning interested proposals later.
+
+        List<ProposalResponse> interestedProposals = new ArrayList<>();
+        List<ProposalInterest> interested = proposalInterestRepository.findByArtistId(artistId);
+        for (ProposalInterest proposalInterest : interested) {
+            Proposal proposal = proposalRepository.findByProposalId(proposalInterest.getProposalId());
+            ProposalResponse response = new ProposalResponse();
+            response.setProposal(proposal);
+            interestedProposals.add(response);
+            // Think about how to populate logic for populating
+            // proposal creator detail.
+        }
+        responses.setInterested(interestedProposals);
         return responses;
     }
 
