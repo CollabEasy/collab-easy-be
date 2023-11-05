@@ -44,8 +44,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ArtCategory getCategoryBySlug(String slug) {
-        List<ArtCategory> arts = artCategoryRepository.findBySlug(slug);
-        return arts.get(0);
+        ArtCategory arts = artCategoryRepository.findBySlug(slug);
+        return arts;
     }
 
     @Override
