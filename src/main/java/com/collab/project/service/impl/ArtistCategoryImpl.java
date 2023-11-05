@@ -107,10 +107,12 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
 
         List<SearchedArtistOutput> artists = new ArrayList<SearchedArtistOutput>();
         // Since category slug is unique, there should be only one category associated with the slug.
-        List<ArtCategory> artCategory = artCategoryRepository.findBySlug(categorySlug);
+        ArtCategory artCategory = artCategoryRepository.findBySlug(categorySlug);
         // Since there is one category associated with slug, we can safely fetch first element if it exists.
-        if (!artCategory.isEmpty()) {
-            List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtId(artCategory.get(0).getId());
+        if (artCategory != null) {
+            System.out.print(artCategory.getSlug() + " " + artCategory.getId());
+            List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtId(artCategory.getId());
+            System.out.print(artistCategories.size());
             for (ArtistCategory artistCategory : artistCategories) {
                 Artist artist = artistRepository.findByArtistId(artistCategory.getArtistId());
                 if (artist.getTestUser().equals(true)) {

@@ -14,7 +14,7 @@ public interface ArtCategoryRepository extends JpaRepository<ArtCategory, Long> 
 
     public ArtCategory findByArtName(String artName);
 
-    public List<ArtCategory> findBySlug(String slug);
+    public ArtCategory findBySlug(String slug);
 
     public Optional<ArtCategory> findById(Long id);
 
