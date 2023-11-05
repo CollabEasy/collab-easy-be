@@ -112,6 +112,7 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
         if (artCategory != null) {
             System.out.print(artCategory.getSlug() + " " + artCategory.getId());
             List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtId(artCategory.getId());
+            System.out.print(artistCategories.size());
             for (ArtistCategory artistCategory : artistCategories) {
                 Artist artist = artistRepository.findByArtistId(artistCategory.getArtistId());
                 if (artist.getTestUser().equals(true)) {
