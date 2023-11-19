@@ -1,6 +1,7 @@
 package com.collab.project.service.impl;
 
 import com.amazonaws.services.mq.model.BadRequestException;
+import com.collab.project.email.EmailService;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.art.ArtCategory;
 import com.collab.project.model.artist.Artist;
@@ -13,6 +14,8 @@ import com.collab.project.model.proposal.*;
 import com.collab.project.repositories.*;
 import com.collab.project.service.ProposalService;
 import com.collab.project.util.Utils;
+import com.collab.project.util.emailTemplates.CompleteProfileEmail;
+import com.collab.project.util.emailTemplates.InterestShownEmail;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,9 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Autowired
     ArtistRepository artistRepository;
+
+    @Autowired
+    EmailService emailService;
 
     @Autowired
     ProposalRepository proposalRepository;
@@ -277,6 +283,7 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
+    @SneakyThrows
     public ProposalInterest updateInterest(String artistId, String proposalId, boolean interested, String message) {
         Proposal proposal = proposalRepository.findByProposalId(proposalId);
         if (proposal.getCreatedBy().equals(artistId)) {
@@ -301,6 +308,9 @@ public class ProposalServiceImpl implements ProposalService {
         proposalInterest.setRejected(false);
         proposalInterest.setCreatedAt(Timestamp.from(Instant.now()));
         proposalInterestRepository.save(proposalInterest);
+        Artist creator = artistRepository.findByArtistId(proposal.getCreatedBy());
+        Artist interstedUser = artistRepository.findByArtistId(artistId);
+        emailService.sendEmailFromStringFinal("Your proposal has caught someone's attention. Kindly take a moment to evaluate it.", interstedUser.getArtistId(), interstedUser.getEmail(), InterestShownEmail.getContent(creator.getFirstName(), interstedUser.getFirstName(), proposal.getProposalId()), false);
         return proposalInterestRepository.findByProposalIdAndArtistId(proposalId, artistId);
     }
 
