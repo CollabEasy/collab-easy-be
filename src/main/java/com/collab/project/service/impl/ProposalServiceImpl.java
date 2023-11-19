@@ -237,6 +237,7 @@ public class ProposalServiceImpl implements ProposalService {
             throw  new IllegalStateException("You cannot ask questions in your own proposals.");
         }
 
+        Artist artist = artistRepository.findByArtistId(artistId);
         ProposalQuestion proposalQuestion = new ProposalQuestion();
         proposalQuestion.setId(Constants.FALLBACK_ID);
         proposalQuestion.setProposalId(proposal.getProposalId());
@@ -245,6 +246,10 @@ public class ProposalServiceImpl implements ProposalService {
         proposalQuestion.setAskedBy(artistId);
         proposalQuestion.setCreatedAt(Timestamp.from(Instant.now()));
         proposalQuestion.setUpdatedAt(Timestamp.from(Instant.now()));
+        proposalQuestion.setAskedByFirstName(artist.getFirstName());
+        proposalQuestion.setAskedBySlug(artist.getSlug());
+        proposalQuestion.setAskedByLastName(artist.getLastName());
+        proposalQuestion.setAskedByProfilePic(artist.getProfilePicUrl());
         proposalQuestionsRepository.save(proposalQuestion);
         return proposalQuestionsRepository.findByProposalId(proposalId);
     }
