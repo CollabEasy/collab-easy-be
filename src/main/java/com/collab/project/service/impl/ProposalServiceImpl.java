@@ -316,17 +316,21 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
+    @SneakyThrows
     public List<ProposalInterest> acceptInterest(String artistId, String proposalId, List<String> acceptedArtistIds) {
         Proposal proposal = proposalRepository.findByProposalId(proposalId);
         if (!proposal.getCreatedBy().equals(artistId)) {
             throw  new IllegalStateException("You cannot accept interests for proposals created by someone else.");
         }
 
+        Artist artist = artistRepository.findByArtistId(artistId);
         for (String acceptedArtistId : acceptedArtistIds) {
             ProposalInterest interest = proposalInterestRepository.findByProposalIdAndArtistId(proposalId, acceptedArtistId);
             if (interest == null) continue;
 
             interest.setAccepted(true);
+            Artist acceptedArtist = artistRepository.findByArtistId(artistId);
+            emailService.sendEmailFromStringFinal("A creative update regarding your interest in a proposal", acceptedArtist.getFirstName(), acceptedArtist.getEmail(), InterestReject.getContent(acceptedArtist.getFirstName(), proposal.getTitle(), artist.getFirstName()), false);
             proposalInterestRepository.save(interest);
         }
         return proposalInterestRepository.findByProposalId(proposalId);
