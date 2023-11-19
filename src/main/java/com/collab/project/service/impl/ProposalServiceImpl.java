@@ -15,6 +15,7 @@ import com.collab.project.repositories.*;
 import com.collab.project.service.ProposalService;
 import com.collab.project.util.Utils;
 import com.collab.project.util.emailTemplates.CompleteProfileEmail;
+import com.collab.project.util.emailTemplates.InterestReject;
 import com.collab.project.util.emailTemplates.InterestShownEmail;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -332,18 +333,23 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
+    @SneakyThrows
     public List<ProposalInterest> rejectInterest(String artistId, String proposalId, List<String> rejectedArtistIds) {
         Proposal proposal = proposalRepository.findByProposalId(proposalId);
         if (!proposal.getCreatedBy().equals(artistId)) {
             throw  new IllegalStateException("You cannot reject interests for proposals created by someone else.");
         }
 
+        Artist artist = artistRepository.findByArtistId(artistId);
         for (String rejectedArtistId : rejectedArtistIds) {
             ProposalInterest interest = proposalInterestRepository.findByProposalIdAndArtistId(proposalId, rejectedArtistId);
             if (interest == null) continue;
 
             interest.setRejected(true);
             proposalInterestRepository.save(interest);
+            Artist rejectedArtist = artistRepository.findByArtistId(rejectedArtistId);
+            emailService.sendEmailFromStringFinal("A creative update regarding your interest in a proposal", rejectedArtist.getFirstName(), rejectedArtist.getEmail(), InterestReject.getContent(rejectedArtist.getFirstName(), proposal.getTitle(), artist.getFirstName()), false);
+
         }
         return proposalInterestRepository.findByProposalId(proposalId);
     }
