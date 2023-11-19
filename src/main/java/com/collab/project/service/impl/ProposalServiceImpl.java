@@ -310,7 +310,7 @@ public class ProposalServiceImpl implements ProposalService {
         proposalInterestRepository.save(proposalInterest);
         Artist creator = artistRepository.findByArtistId(proposal.getCreatedBy());
         Artist interstedUser = artistRepository.findByArtistId(artistId);
-        emailService.sendEmailFromStringFinal("Your proposal has caught someone's attention. Kindly take a moment to evaluate it.", interstedUser.getArtistId(), interstedUser.getEmail(), InterestShownEmail.getContent(creator.getFirstName(), proposal.getTitle(), interstedUser.getFirstName(), proposal.getProposalId()), false);
+        emailService.sendEmailFromStringFinal("Your proposal has caught someone's attention. Kindly take a moment to evaluate it.", interstedUser.getArtistId(), creator.getEmail(), InterestShownEmail.getContent(creator.getFirstName(), proposal.getTitle(), interstedUser.getFirstName(), proposal.getProposalId()), false);
         return proposalInterestRepository.findByProposalIdAndArtistId(proposalId, artistId);
     }
 
