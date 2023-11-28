@@ -26,4 +26,6 @@ public interface CollabService {
 
     public CollabRequestOutput collabRequestsSearch(String artistId, CollabRequestSearch collabRequestSearch);
 
+    public boolean canCreateNewCollabRequest(String user1, String user2);
+
 }

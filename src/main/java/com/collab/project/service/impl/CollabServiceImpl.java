@@ -282,6 +282,12 @@ public class CollabServiceImpl implements CollabService {
         return createOutput(collabRequests, loggedInArtistId, loggedInArtist);
     }
 
+    @Override
+    public boolean canCreateNewCollabRequest(String user1, String user2) {
+        List<CollabRequest> requests = collabRequestRepository.findBySenderIdAndReceiverIdAndStatus(user1, user2, Enums.CollabStatus.ACTIVE.toString());
+        return requests == null || requests.size() < 5;
+    }
+
     private void updateCollabRequestStatus(List<CollabRequest> collabRequests) {
         for (CollabRequest request : collabRequests) {
             if (request.getCollabDate().before(Timestamp.from(Instant.now())) &&

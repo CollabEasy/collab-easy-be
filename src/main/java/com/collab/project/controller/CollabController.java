@@ -3,6 +3,7 @@ package com.collab.project.controller;
 import com.collab.project.model.collab.CollabRequest;
 import com.collab.project.model.collab.CollabRequestOutput;
 import com.collab.project.model.collab.CollabRequestResponse;
+import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
 import com.collab.project.model.response.SuccessResponse;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -77,5 +80,14 @@ public class CollabController {
        return new ResponseEntity<>(new SuccessResponse(collabRequestOutput), HttpStatus.OK);
     }
 
-
+    @PostMapping(value = "/create/eligible")
+    public ResponseEntity<SuccessResponse> canCreateCollabRequest(@RequestBody Map<String, String> userMap) {
+        String user1 = userMap.getOrDefault("user", null);
+        String user2 = AuthUtils.getArtistId();
+        boolean canCreate = collabService.canCreateNewCollabRequest(user1, user2);
+        Map<String, String> response = new HashMap<>();
+        response.put("can_create", String.valueOf(canCreate));
+        response.put("err_msg", "You already have 5 active collab requests with the user. Please delete some of the existing ones or contact admin@wondor.art for help");
+        return new ResponseEntity<>(new SuccessResponse(response), HttpStatus.OK);
+    }
 }
