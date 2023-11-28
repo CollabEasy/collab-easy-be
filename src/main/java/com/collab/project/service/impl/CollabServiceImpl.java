@@ -49,20 +49,20 @@ public class CollabServiceImpl implements CollabService {
         // Add validation on receiver id and handle idempotency on requestId
         // If there is any active collab request present, there should not be a new request.
         List<String> status =  Arrays.asList(Enums.CollabStatus.PENDING.toString(),
-                Enums.CollabStatus.ACTIVE.toString(), Enums.CollabStatus.REJECTED.toString());
+                Enums.CollabStatus.ACTIVE.toString());
 
-        List<CollabRequest> collabRequestBySender = collabRequestRepository.findBySenderIdAndReceiverIdAndStatus(
+        List<CollabRequest> collabRequestBySender = collabRequestRepository.findBySenderIdAndReceiverIdAndStatusIn(
                 artistId,
                 collabRequestInput.getReceiverId(),
-                String.valueOf(Enums.CollabStatus.PENDING)
+                status
         );
         List<CollabRequest> collabRequestByReceiver = collabRequestRepository.findBySenderIdAndReceiverIdAndStatus(
                 collabRequestInput.getReceiverId(),
                 artistId,
                 String.valueOf(Enums.CollabStatus.PENDING)
         );
-        if(!collabRequestBySender.isEmpty() || !collabRequestByReceiver.isEmpty()) {
-            throw new CollabRequestException("Collab Request already exists");
+        if(collabRequestBySender.size() + collabRequestByReceiver.size() > 5) {
+            throw new CollabRequestException("You can have 5 collab requests per artist in PENDING or ACTIVE state. Please complete existing collaboration. Contact admin@wondor.art for more details");
         }
 
         Artist sender = artistRepository.getOne(artistId);
@@ -284,8 +284,14 @@ public class CollabServiceImpl implements CollabService {
 
     @Override
     public boolean canCreateNewCollabRequest(String user1, String user2) {
-        List<CollabRequest> requests = collabRequestRepository.findBySenderIdAndReceiverIdAndStatus(user1, user2, Enums.CollabStatus.ACTIVE.toString());
-        return requests == null || requests.size() < 5;
+        List<String> status =  Arrays.asList(Enums.CollabStatus.PENDING.toString(),
+                Enums.CollabStatus.ACTIVE.toString());
+        List<CollabRequest> requests1 = collabRequestRepository.findBySenderIdAndReceiverIdAndStatusIn(user1, user2, status);
+        List<CollabRequest> requests2 = collabRequestRepository.findBySenderIdAndReceiverIdAndStatusIn(user2, user1, status);
+        List<CollabRequest> requests = new ArrayList<>();
+        requests.addAll(requests1);
+        requests.addAll(requests2);
+        return requests.size() <= 5;
     }
 
     private void updateCollabRequestStatus(List<CollabRequest> collabRequests) {
