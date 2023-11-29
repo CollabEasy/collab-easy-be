@@ -145,7 +145,7 @@ public class ArtistController {
         return new ResponseEntity<>(new SuccessResponse(hashMap), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/basic/{slug}", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @RequestMapping(value = "/basic/{slug}", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getBasicArtistDetails(@PathVariable String slug) throws IOException, NoSuchAlgorithmException {
         BasicArtist artist = artistService.getBasicArtist(slug);
         return new ResponseEntity<>(new SuccessResponse(artist), HttpStatus.OK);
