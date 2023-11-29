@@ -2,6 +2,7 @@ package com.collab.project.service;
 
 
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.artist.BasicArtist;
 import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.util.AuthUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,4 +26,6 @@ public interface ArtistService {
     Artist updateProfilePicture(String artistId, MultipartFile filename) throws NoSuchAlgorithmException, IOException;
 
     Boolean isProfileComplete(String artistId);
+
+    BasicArtist getBasicArtist(String slug);
 }

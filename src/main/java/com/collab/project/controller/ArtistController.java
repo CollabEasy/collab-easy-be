@@ -4,6 +4,7 @@ package com.collab.project.controller;
 import com.collab.project.exception.RecordNotFoundException;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.artist.ArtistPreference;
+import com.collab.project.model.artist.BasicArtist;
 import com.collab.project.model.artist.SearchedArtistOutput;
 import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.model.response.ErrorResponse;
@@ -140,6 +141,13 @@ public class ArtistController {
     @RequestMapping(value = "/avatar/update", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<SuccessResponse> uploadProfilePicture(@RequestPart MultipartFile filename) throws IOException, NoSuchAlgorithmException {
         Artist artist = artistService.updateProfilePicture(AuthUtils.getArtistId(), filename);
+        Map<String, Object> hashMap = mapper.convertValue(artist, Map.class);
+        return new ResponseEntity<>(new SuccessResponse(hashMap), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/basic/{slug}", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<SuccessResponse> getBasicArtistDetails(@PathVariable String slug) throws IOException, NoSuchAlgorithmException {
+        BasicArtist artist = artistService.getBasicArtist(slug);
         Map<String, Object> hashMap = mapper.convertValue(artist, Map.class);
         return new ResponseEntity<>(new SuccessResponse(hashMap), HttpStatus.OK);
     }

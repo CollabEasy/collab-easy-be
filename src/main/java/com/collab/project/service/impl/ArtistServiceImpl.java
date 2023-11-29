@@ -3,6 +3,7 @@ package com.collab.project.service.impl;
 import com.collab.project.email.EmailService;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.artist.BasicArtist;
 import com.collab.project.model.artwork.UploadFile;
 import com.collab.project.model.inputs.ArtistInput;
 import com.collab.project.repositories.ArtistRepository;
@@ -206,5 +207,11 @@ public class ArtistServiceImpl implements ArtistService {
     public Boolean isProfileComplete(String artistId) {
         Artist artist = artistRepository.findByArtistId(artistId);
         return artist.getProfileComplete();
+    }
+
+    @Override
+    public BasicArtist getBasicArtist(String slug) {
+        List<Artist> artist = artistRepository.findBySlug(slug);
+        return artist.isEmpty() ? new BasicArtist() : new BasicArtist(artist.get(0));
     }
 }
