@@ -3,11 +3,15 @@ package com.collab.project.service.impl;
 import com.collab.project.email.EmailService;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.artist.ArtistCategory;
 import com.collab.project.model.artist.BasicArtist;
 import com.collab.project.model.artwork.UploadFile;
 import com.collab.project.model.inputs.ArtistInput;
+import com.collab.project.model.socialprospectus.ArtistSocialProspectus;
 import com.collab.project.repositories.ArtistRepository;
+import com.collab.project.service.ArtistCategoryService;
 import com.collab.project.service.ArtistService;
+import com.collab.project.service.ArtistSocialProspectusService;
 import com.collab.project.util.*;
 import com.collab.project.util.emailTemplates.NewUserEmail;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,6 +40,12 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Autowired
     ArtistRepository artistRepository;
+
+    @Autowired
+    ArtistCategoryService artistCategoryService;
+
+    @Autowired
+    ArtistSocialProspectusService artistSocialProspectusService;
 
     @Autowired
     S3Utils s3Utils;
@@ -211,7 +221,12 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public BasicArtist getBasicArtist(String slug) {
-        List<Artist> artist = artistRepository.findBySlug(slug);
-        return artist.isEmpty() ? new BasicArtist() : new BasicArtist(artist.get(0));
+        List<Artist> artists = artistRepository.findBySlug(slug);
+        if (artists.isEmpty()) {
+            return new BasicArtist();
+        }
+        Artist artist = artists.get(0);
+        List<String> category = artistCategoryService.getArtistCategories(artist.getArtistId());
+        return new BasicArtist(artist, category);
     }
 }
