@@ -31,6 +31,7 @@ public class CollabRequest {
     @NonNull
     @Column(name = "sender_id", nullable = false, unique = true)
     private String senderId;
+
     @NonNull
     @Column(name = "receiver_id", nullable = false, unique = true)
     private String receiverId;

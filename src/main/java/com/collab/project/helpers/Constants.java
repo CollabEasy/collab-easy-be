@@ -9,6 +9,8 @@ import java.util.Set;
 
 public class Constants {
     public static final long FALLBACK_ID = (long)0;
+
+    public static final int ALLOWED_COLLAB_REQUEST_PER_USER = 3;
     public static final Integer THUMBNAIL_WIDTH = 600;
     public static final Integer THUMBNAIL_HEIGHT = 750;
     public static final Set<String> ALLOWED_IMAGE_FORMAT = new HashSet<String>() {{

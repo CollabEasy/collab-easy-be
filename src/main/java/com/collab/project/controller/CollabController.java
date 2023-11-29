@@ -1,5 +1,6 @@
 package com.collab.project.controller;
 
+import com.collab.project.model.collab.CollabEligibilityOutput;
 import com.collab.project.model.collab.CollabRequest;
 import com.collab.project.model.collab.CollabRequestOutput;
 import com.collab.project.model.collab.CollabRequestResponse;
@@ -82,12 +83,9 @@ public class CollabController {
 
     @PostMapping(value = "/create/eligible")
     public ResponseEntity<SuccessResponse> canCreateCollabRequest(@RequestBody Map<String, String> userMap) {
-        String user1 = userMap.getOrDefault("user", null);
+        String user1Slug = userMap.getOrDefault("user", null);
         String user2 = AuthUtils.getArtistId();
-        boolean canCreate = collabService.canCreateNewCollabRequest(user1, user2);
-        Map<String, String> response = new HashMap<>();
-        response.put("can_create", String.valueOf(canCreate));
-        response.put("err_msg", "You already have 5 active collab requests with the user. Please delete some of the existing ones or contact admin@wondor.art for help");
-        return new ResponseEntity<>(new SuccessResponse(response), HttpStatus.OK);
+        CollabEligibilityOutput output = collabService.canCreateNewCollabRequest(user2, user1Slug);
+        return new ResponseEntity<>(new SuccessResponse(output), HttpStatus.OK);
     }
 }

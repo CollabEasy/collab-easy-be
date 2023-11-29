@@ -2,13 +2,13 @@ package com.collab.project.service.impl;
 
 import com.amazonaws.services.mq.model.UnauthorizedException;
 import com.collab.project.exception.CollabRequestException;
+import com.collab.project.exception.CollabRequestLimitReachedException;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.artist.Artist;
 import com.collab.project.model.collab.*;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
-import com.collab.project.model.notification.Notification;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.CollabConversationReadStatusRepository;
 import com.collab.project.repositories.CollabRequestRepository;
@@ -48,21 +48,8 @@ public class CollabServiceImpl implements CollabService {
     public CollabRequestResponse sendRequest(String artistId, CollabRequestInput collabRequestInput) throws JsonProcessingException {
         // Add validation on receiver id and handle idempotency on requestId
         // If there is any active collab request present, there should not be a new request.
-        List<String> status =  Arrays.asList(Enums.CollabStatus.PENDING.toString(),
-                Enums.CollabStatus.ACTIVE.toString());
-
-        List<CollabRequest> collabRequestBySender = collabRequestRepository.findBySenderIdAndReceiverIdAndStatusIn(
-                artistId,
-                collabRequestInput.getReceiverId(),
-                status
-        );
-        List<CollabRequest> collabRequestByReceiver = collabRequestRepository.findBySenderIdAndReceiverIdAndStatus(
-                collabRequestInput.getReceiverId(),
-                artistId,
-                String.valueOf(Enums.CollabStatus.PENDING)
-        );
-        if(collabRequestBySender.size() + collabRequestByReceiver.size() > 5) {
-            throw new CollabRequestException("You can have 5 collab requests per artist in PENDING or ACTIVE state. Please complete existing collaboration. Contact admin@wondor.art for more details");
+        if (getCollabRequestsBetweenUsers(artistId, collabRequestInput.getReceiverId()).size() == Constants.ALLOWED_COLLAB_REQUEST_PER_USER) {
+            throw new CollabRequestLimitReachedException();
         }
 
         Artist sender = artistRepository.getOne(artistId);
@@ -282,8 +269,7 @@ public class CollabServiceImpl implements CollabService {
         return createOutput(collabRequests, loggedInArtistId, loggedInArtist);
     }
 
-    @Override
-    public boolean canCreateNewCollabRequest(String user1, String user2) {
+    private List<CollabRequest> getCollabRequestsBetweenUsers(String user1, String user2) {
         List<String> status =  Arrays.asList(Enums.CollabStatus.PENDING.toString(),
                 Enums.CollabStatus.ACTIVE.toString());
         List<CollabRequest> requests1 = collabRequestRepository.findBySenderIdAndReceiverIdAndStatusIn(user1, user2, status);
@@ -291,7 +277,21 @@ public class CollabServiceImpl implements CollabService {
         List<CollabRequest> requests = new ArrayList<>();
         requests.addAll(requests1);
         requests.addAll(requests2);
-        return requests.size() <= 5;
+        return requests;
+    }
+    @Override
+    public CollabEligibilityOutput canCreateNewCollabRequest(String user1, String user2slug) {
+        Artist artist1 = artistRepository.findByArtistId(user1);
+        List<Artist> artistSlugResult = artistRepository.findBySlug(user2slug);
+        Artist artist2 = artistSlugResult.get(0);
+        List<CollabRequest> requests = getCollabRequestsBetweenUsers(user1, artist2.getArtistId());
+        List<CollabRequestResponse> result = new ArrayList<>();
+        requests.forEach(request -> {
+            Artist sender = request.getSenderId().equals(artist1.getArtistId()) ? artist1 : artist2;
+            Artist receiver = request.getSenderId().equals(artist1.getArtistId()) ? artist2 : artist1;
+            result.add(new CollabRequestResponse(request, sender, receiver));
+        });
+        return new CollabEligibilityOutput(result, result.size() < Constants.ALLOWED_COLLAB_REQUEST_PER_USER, Constants.ALLOWED_COLLAB_REQUEST_PER_USER);
     }
 
     private void updateCollabRequestStatus(List<CollabRequest> collabRequests) {

@@ -1,6 +1,7 @@
 package com.collab.project.service;
 
 
+import com.collab.project.model.collab.CollabEligibilityOutput;
 import com.collab.project.model.collab.CollabRequest;
 import com.collab.project.model.collab.CollabRequestOutput;
 import com.collab.project.model.collab.CollabRequestResponse;
@@ -26,6 +27,6 @@ public interface CollabService {
 
     public CollabRequestOutput collabRequestsSearch(String artistId, CollabRequestSearch collabRequestSearch);
 
-    public boolean canCreateNewCollabRequest(String user1, String user2);
+    public CollabEligibilityOutput canCreateNewCollabRequest(String user1, String user2slug);
 
 }
