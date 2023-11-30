@@ -60,9 +60,9 @@ public class ArtistSampleServiceImpl implements ArtistSampleService {
                 uploadedFile.getThumbnailURL(), caption, fileType, new Timestamp(System.currentTimeMillis()));
 
         artistSampleRepository.save(artSample);
-        Artist artist = artistRepository.findByArtistId(artistId);
-        boolean isIncomplete = artist.getProfileComplete() == false;
-        rewardUtils.addPointsIfProfileComplete(artist, sampleKey);
+//        Artist artist = artistRepository.findByArtistId(artistId);
+//        boolean isIncomplete = artist.getProfileComplete() == false;
+//        rewardUtils.addPointsIfProfileComplete(artist, sampleKey);
 
         return new ArtInfo(artSample.getCaption(), artSample.getFileType(), artSample.getOriginalUrl(),
                 artSample.getThumbnailUrl(), artSample.getCreatedAt());
