@@ -291,7 +291,7 @@ public class CollabServiceImpl implements CollabService {
             Artist receiver = request.getSenderId().equals(artist1.getArtistId()) ? artist2 : artist1;
             result.add(new CollabRequestResponse(request, sender, receiver));
         });
-        return new CollabEligibilityOutput(result, result.size() < Constants.ALLOWED_COLLAB_REQUEST_PER_USER, Constants.ALLOWED_COLLAB_REQUEST_PER_USER);
+        return new CollabEligibilityOutput(result, artist2.getArtistId(), result.size() < Constants.ALLOWED_COLLAB_REQUEST_PER_USER, Constants.ALLOWED_COLLAB_REQUEST_PER_USER);
     }
 
     private void updateCollabRequestStatus(List<CollabRequest> collabRequests) {

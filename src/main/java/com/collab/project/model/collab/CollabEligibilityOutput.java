@@ -18,6 +18,8 @@ public class CollabEligibilityOutput {
 
     List<CollabRequestResponse> activeCollabRequests;
 
+    String otherUserId;
+
     boolean eligible;
 
     int allowedRequests;
