@@ -77,6 +77,7 @@ public class CollabServiceImpl implements CollabService {
                 .requestData(collabRequestInput.getRequestData())
                 .createdAt(Timestamp.from(Instant.now()))
                 .updatedAt(Timestamp.from(Instant.now()))
+                .proposalId(collabRequestInput.getProposalId())
                 .build();
 
         collabRequestRepository.save(saveCollabRequest);
@@ -115,7 +116,6 @@ public class CollabServiceImpl implements CollabService {
         Optional<CollabRequest> collabRequest = collabRequestRepository.findById(requestId);
 
         if (collabRequest.isPresent()) {
-
             CollabRequest request = collabRequest.get();
             if (request.getProposalId() != null && !request.getProposalId().equals("")) {
                 proposalService.removeCollabIdFromProposal(request.getProposalId(), request.getReceiverId());
