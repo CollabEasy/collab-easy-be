@@ -41,6 +41,8 @@ public class CollabRequestResponse {
 
     private boolean newComment;
 
+    private String proposalId;
+
     public CollabRequestResponse(CollabRequest request, Artist sender, Artist receiver) {
         this.id = request.getId();
         this.collabDate = request.getCollabDate();
@@ -57,5 +59,6 @@ public class CollabRequestResponse {
         this.receiverSlug = receiver.getSlug();
         this.senderProfilePicUrl = sender.getProfilePicUrl();
         this.receiverProfilePicUrl = receiver.getProfilePicUrl();
+        this.proposalId = request.getProposalId();
     }
 }
