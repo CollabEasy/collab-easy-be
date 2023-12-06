@@ -5,13 +5,16 @@ import com.collab.project.email.EmailService;
 import com.collab.project.helpers.Constants;
 import com.collab.project.model.art.ArtCategory;
 import com.collab.project.model.artist.Artist;
+import com.collab.project.model.collab.CollabRequestResponse;
 import com.collab.project.model.contest.ContestSubmissionResponse;
 import com.collab.project.model.enums.Enums;
+import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.ProposalAnswerInput;
 import com.collab.project.model.inputs.ProposalInput;
 import com.collab.project.model.inputs.ProposalQuestionInput;
 import com.collab.project.model.proposal.*;
 import com.collab.project.repositories.*;
+import com.collab.project.service.CollabService;
 import com.collab.project.service.ProposalService;
 import com.collab.project.util.Utils;
 import com.collab.project.util.emailTemplates.CompleteProfileEmail;
@@ -37,6 +40,9 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Autowired
     ProposalRepository proposalRepository;
+
+    @Autowired
+    CollabService collabService;
 
     @Autowired
     ProposalQuestionsRepository proposalQuestionsRepository;
@@ -317,23 +323,25 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Override
     @SneakyThrows
-    public List<ProposalInterest> acceptInterest(String artistId, String proposalId, List<String> acceptedArtistIds) {
+    public CollabRequestResponse acceptInterest(String artistId, String proposalId, String acceptedArtistId, CollabRequestInput requestInput) {
         Proposal proposal = proposalRepository.findByProposalId(proposalId);
         if (!proposal.getCreatedBy().equals(artistId)) {
             throw  new IllegalStateException("You cannot accept interests for proposals created by someone else.");
         }
-
-        Artist artist = artistRepository.findByArtistId(artistId);
-        for (String acceptedArtistId : acceptedArtistIds) {
-            ProposalInterest interest = proposalInterestRepository.findByProposalIdAndArtistId(proposalId, acceptedArtistId);
-            if (interest == null) continue;
-
-            interest.setAccepted(true);
-            Artist acceptedArtist = artistRepository.findByArtistId(artistId);
-            emailService.sendEmailFromStringFinal("A creative update regarding your interest in a proposal", acceptedArtist.getFirstName(), acceptedArtist.getEmail(), InterestReject.getContent(acceptedArtist.getFirstName(), proposal.getTitle(), artist.getFirstName()), false);
-            proposalInterestRepository.save(interest);
+        ProposalInterest interest = proposalInterestRepository.findByProposalIdAndArtistId(proposalId, acceptedArtistId);
+        if (interest == null) {
+            throw new IllegalStateException("You cannot accept as there is no interest shown by the artist for this proposal.");
         }
-        return proposalInterestRepository.findByProposalId(proposalId);
+
+        CollabRequestResponse response = collabService.sendCollabRequest(artistId, requestInput);
+        Artist artist = artistRepository.findByArtistId(artistId);
+        Artist acceptedArtist = artistRepository.findByArtistId(artistId);
+        interest.setAccepted(true);
+        interest.setCollabId(response.getId());
+
+        proposalInterestRepository.save(interest);
+        emailService.sendEmailFromStringFinal("A creative update regarding your interest in a proposal", acceptedArtist.getFirstName(), acceptedArtist.getEmail(), InterestReject.getContent(acceptedArtist.getFirstName(), proposal.getTitle(), artist.getFirstName()), false);
+        return response;
     }
 
     @Override

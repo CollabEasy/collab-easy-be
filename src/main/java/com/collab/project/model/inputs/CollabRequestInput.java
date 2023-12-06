@@ -20,4 +20,5 @@ public class CollabRequestInput  {
     private LocalDateTime collabDate;
     @Valid
     private RequestData requestData;
+    private String proposalId;
 }

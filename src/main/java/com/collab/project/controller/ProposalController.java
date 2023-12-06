@@ -1,11 +1,14 @@
 package com.collab.project.controller;
 
+import com.collab.project.model.collab.CollabRequestResponse;
+import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.ProposalAnswerInput;
 import com.collab.project.model.inputs.ProposalInput;
 import com.collab.project.model.inputs.ProposalQuestionInput;
 import com.collab.project.model.proposal.*;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.model.rewards.ReferralCodeResponse;
+import com.collab.project.service.CollabService;
 import com.collab.project.service.ProposalService;
 import com.collab.project.util.AuthUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,6 +27,9 @@ public class ProposalController {
 
     @Autowired
     ProposalService proposalService;
+
+    @Autowired
+    CollabService collabService;
 
     @PostMapping
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -111,10 +117,12 @@ public class ProposalController {
 
     @PostMapping
     @RequestMapping(value = "/{proposalId}/accept", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> acceptInterest(@PathVariable String proposalId, @RequestBody Map<String, String> user) throws JsonProcessingException {
+    public ResponseEntity<SuccessResponse> acceptInterest(@PathVariable String proposalId, @RequestBody AcceptProposalInput acceptProposalInput) throws JsonProcessingException {
         String artistId = AuthUtils.getArtistId();
-        List<ProposalInterest> interests = proposalService.acceptInterest(artistId, proposalId, new ArrayList<>(user.values()));
-        return new ResponseEntity<>(new SuccessResponse(interests), HttpStatus.OK);
+        String acceptedArtistId = acceptProposalInput.getArtistId();
+        CollabRequestInput input = acceptProposalInput.getCollabRequestInput();
+        CollabRequestResponse response = collabService.sendRequest(artistId, input);
+        return new ResponseEntity<>(new SuccessResponse(response), HttpStatus.OK);
     }
 
     @PostMapping

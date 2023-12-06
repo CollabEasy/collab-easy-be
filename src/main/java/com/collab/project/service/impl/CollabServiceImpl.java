@@ -9,6 +9,7 @@ import com.collab.project.model.collab.*;
 import com.collab.project.model.enums.Enums;
 import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.CollabRequestSearch;
+import com.collab.project.model.proposal.ProposalInterest;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.CollabConversationReadStatusRepository;
 import com.collab.project.repositories.CollabRequestRepository;
@@ -16,6 +17,7 @@ import com.collab.project.search.SpecificationBuilder;
 import com.collab.project.service.ArtistPreferencesService;
 import com.collab.project.service.CollabService;
 import com.collab.project.service.NotificationService;
+import com.collab.project.service.ProposalService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +46,20 @@ public class CollabServiceImpl implements CollabService {
     @Autowired
     private CollabConversationReadStatusRepository collabConversationReadStatusRepository;
 
+    @Autowired
+    private ProposalService proposalService;
+
     @Override
     public CollabRequestResponse sendRequest(String artistId, CollabRequestInput collabRequestInput) throws JsonProcessingException {
         // Add validation on receiver id and handle idempotency on requestId
         // If there is any active collab request present, there should not be a new request.
+        if (collabRequestInput.getProposalId() != null && !collabRequestInput.getProposalId().equals("")) {
+            return proposalService.acceptInterest(artistId, collabRequestInput.getProposalId(), collabRequestInput.getReceiverId(), collabRequestInput);
+        }
+        return sendCollabRequest(artistId, collabRequestInput);
+    }
+
+    public CollabRequestResponse sendCollabRequest(String artistId, CollabRequestInput collabRequestInput) throws JsonProcessingException {
         if (getCollabRequestsBetweenUsers(artistId, collabRequestInput.getReceiverId()).size() == Constants.ALLOWED_COLLAB_REQUEST_PER_USER) {
             throw new CollabRequestLimitReachedException();
         }

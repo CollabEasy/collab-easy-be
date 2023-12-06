@@ -44,6 +44,9 @@ public class ProposalInterest {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+    @Column(name="collab_id")
+    private String collabId;
+
     @Transient
     @JsonProperty
     private String askedByFirstName;

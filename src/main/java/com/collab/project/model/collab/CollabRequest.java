@@ -51,6 +51,9 @@ public class CollabRequest {
     @Column(name = "updated_At")
     private Timestamp updatedAt;
 
+    @Column(name="proposal_id")
+    String proposalId;
+
     @Slf4j
     static
     class RequestDataConvertor implements AttributeConverter<RequestData, String> {

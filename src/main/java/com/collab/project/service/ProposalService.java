@@ -1,5 +1,7 @@
 package com.collab.project.service;
 
+import com.collab.project.model.collab.CollabRequestResponse;
+import com.collab.project.model.inputs.CollabRequestInput;
 import com.collab.project.model.inputs.ProposalAnswerInput;
 import com.collab.project.model.inputs.ProposalInput;
 import com.collab.project.model.inputs.ProposalQuestionInput;
@@ -24,7 +26,7 @@ public interface ProposalService {
 
     ProposalInterest updateInterest(String artistId, String proposalId, boolean interested, String message);
 
-    List<ProposalInterest> acceptInterest(String artistId, String proposalId, List<String> acceptedArtistId);
+    CollabRequestResponse acceptInterest(String artistId, String proposalId, String acceptedArtistId, CollabRequestInput input);
 
     List<ProposalInterest> rejectInterest(String artistId, String proposalId, List<String> rejectedArtistId);
 

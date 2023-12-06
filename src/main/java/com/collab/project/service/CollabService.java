@@ -15,6 +15,8 @@ public interface CollabService {
 
     public CollabRequestResponse sendRequest(String artistId, CollabRequestInput collabRequestInput) throws JsonProcessingException;
 
+    public CollabRequestResponse sendCollabRequest(String artistId, CollabRequestInput collabRequestInput) throws JsonProcessingException;
+
     public CollabRequestResponse updateRequest(String artistId, CollabRequest collabRequestInput);
 
     public CollabRequestResponse rejectRequest(String artistId, String rejectRequestId);
