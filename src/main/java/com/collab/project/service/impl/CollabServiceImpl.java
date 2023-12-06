@@ -20,6 +20,7 @@ import com.collab.project.service.NotificationService;
 import com.collab.project.service.ProposalService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -242,6 +243,7 @@ public class CollabServiceImpl implements CollabService {
     }
 
     @Override
+    @SneakyThrows
     public CollabRequestOutput collabRequestsSearch(String loggedInArtistId, CollabRequestSearch collabRequestSearch) {
         SpecificationBuilder<CollabRequest> builder =
                 new SpecificationBuilder();
@@ -255,6 +257,8 @@ public class CollabServiceImpl implements CollabService {
                     result.add(collabRequest);
                     return createOutput(result, loggedInArtistId, loggedInArtist);
                 }
+            } else {
+                throw new IllegalStateException("Invalid collaboration request id.");
             }
         }
 
