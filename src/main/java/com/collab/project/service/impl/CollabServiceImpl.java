@@ -112,8 +112,13 @@ public class CollabServiceImpl implements CollabService {
     @Override
     public void cancelRequest(String artistId, String requestId) {
         Optional<CollabRequest> collabRequest = collabRequestRepository.findById(requestId);
+
         if (collabRequest.isPresent()) {
+
             CollabRequest request = collabRequest.get();
+            if (request.getProposalId() != null && !request.getProposalId().equals("")) {
+                proposalService.removeCollabIdFromProposal(request.getProposalId(), request.getReceiverId());
+            }
             if (request.getSenderId().equalsIgnoreCase(artistId)) {
                 collabRequestRepository.delete(collabRequest.get());
             } else {

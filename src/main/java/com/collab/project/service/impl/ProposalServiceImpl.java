@@ -401,4 +401,16 @@ public class ProposalServiceImpl implements ProposalService {
         });
         return interests;
     }
+
+    @Override
+    public void removeCollabIdFromProposal(String proposalId, String interestedArtist) {
+        Proposal proposal = proposalRepository.findByProposalId(proposalId);
+        List<ProposalInterest> interests = proposalInterestRepository.findByProposalId(proposalId);
+        for (ProposalInterest interest : interests) {
+            if (interest.getUserId().equalsIgnoreCase(interestedArtist)) {
+                interest.setCollabId(null);
+                return;
+            }
+        }
+    }
 }

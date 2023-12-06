@@ -33,4 +33,6 @@ public interface ProposalService {
     List<ProposalQuestion> getQuestionsOnProposals(String proposalId);
 
     List<ProposalInterest> getAllInterests(String proposalId);
+
+    void removeCollabIdFromProposal(String proposalId, String interestedUser);
 }
