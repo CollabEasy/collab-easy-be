@@ -18,6 +18,7 @@ import com.collab.project.service.CollabService;
 import com.collab.project.service.ProposalService;
 import com.collab.project.util.Utils;
 import com.collab.project.util.emailTemplates.CompleteProfileEmail;
+import com.collab.project.util.emailTemplates.InterestAccepted;
 import com.collab.project.util.emailTemplates.InterestReject;
 import com.collab.project.util.emailTemplates.InterestShownEmail;
 import lombok.SneakyThrows;
@@ -340,7 +341,7 @@ public class ProposalServiceImpl implements ProposalService {
         interest.setCollabId(response.getId());
 
         proposalInterestRepository.save(interest);
-        emailService.sendEmailFromStringFinal("A creative update regarding your interest in a proposal", acceptedArtist.getFirstName(), acceptedArtist.getEmail(), InterestReject.getContent(acceptedArtist.getFirstName(), proposal.getTitle(), artist.getFirstName()), false);
+        emailService.sendEmailFromStringFinal("A creative update regarding your interest in a proposal", acceptedArtist.getFirstName(), acceptedArtist.getEmail(), InterestAccepted.getContent(acceptedArtist.getFirstName(), proposal.getTitle(), artist.getFirstName()), false);
         return response;
     }
 
