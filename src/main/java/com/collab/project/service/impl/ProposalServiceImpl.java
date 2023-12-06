@@ -410,6 +410,7 @@ public class ProposalServiceImpl implements ProposalService {
             if (interest.getUserId().equalsIgnoreCase(interestedArtist)) {
                 interest.setCollabId(null);
                 interest.setAccepted(false);
+                proposalInterestRepository.save(interest)
                 return;
             }
         }
