@@ -315,6 +315,7 @@ public class ProposalServiceImpl implements ProposalService {
         proposalInterest.setAccepted(false);
         proposalInterest.setRejected(false);
         proposalInterest.setCreatedAt(Timestamp.from(Instant.now()));
+        proposalInterest.setCollabId(null);
         proposalInterestRepository.save(proposalInterest);
         Artist creator = artistRepository.findByArtistId(proposal.getCreatedBy());
         Artist interstedUser = artistRepository.findByArtistId(artistId);
