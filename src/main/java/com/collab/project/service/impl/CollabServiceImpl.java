@@ -26,8 +26,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CollabServiceImpl implements CollabService {
@@ -313,6 +316,42 @@ public class CollabServiceImpl implements CollabService {
             result.add(new CollabRequestResponse(request, sender, receiver));
         });
         return new CollabEligibilityOutput(result, artist2.getArtistId(), result.size() < Constants.ALLOWED_COLLAB_REQUEST_PER_USER, Constants.ALLOWED_COLLAB_REQUEST_PER_USER);
+    }
+
+    @Override
+    public Map<String, List<CollabRequestResponse>> fetchCollabsByDate(String artistId, boolean fetchAll) {
+        List<String> allStatus =  Stream.of(Enums.CollabStatus.values())
+                .map(Enums.CollabStatus::name)
+                .collect(Collectors.toList());
+        List<String> activeStatus = new ArrayList<String>(
+                Arrays.asList(Enums.CollabStatus.PENDING.toString(),
+                        Enums.CollabStatus.ACTIVE.toString()));
+
+        List<String> statusToFetch = fetchAll ? allStatus : activeStatus;
+        List<CollabRequest> requests = collabRequestRepository.findBySenderIdAndStatusIn(
+                artistId,
+                statusToFetch);
+
+        requests.addAll(collabRequestRepository.findByReceiverIdAndStatusIn(artistId, statusToFetch));
+        return breakCollabByData(artistId, requests);
+    }
+
+    @SneakyThrows
+    private Map<String, List<CollabRequestResponse>> breakCollabByData(String artistId, List<CollabRequest> requests) {
+        TreeMap<String, List<CollabRequestResponse>> requestsByDate = new TreeMap<>();
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM YYY");
+        Artist artist = artistRepository.findByArtistId(artistId);
+        for (CollabRequest request : requests) {
+            String dateString = format.format(request.getCollabDate());
+            String receiverId = request.getSenderId().equals(artistId) ? request.getReceiverId() : request.getSenderId();
+            Artist receiver = artistRepository.findByArtistId(receiverId);
+            requestsByDate.getOrDefault(dateString, new ArrayList<>()).add(
+                    new CollabRequestResponse(request,
+                            request.getSenderId().equals(artistId) ? artist : receiver,
+                            request.getReceiverId().equals(artistId) ? receiver : artist)
+            );
+        }
+        return requestsByDate;
     }
 
     private void updateCollabRequestStatus(List<CollabRequest> collabRequests) {

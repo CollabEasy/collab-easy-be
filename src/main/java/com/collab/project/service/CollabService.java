@@ -10,6 +10,7 @@ import com.collab.project.model.inputs.CollabRequestSearch;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CollabService {
 
@@ -31,4 +32,5 @@ public interface CollabService {
 
     public CollabEligibilityOutput canCreateNewCollabRequest(String user1, String user2slug);
 
+    Map<String, List<CollabRequestResponse>> fetchCollabsByDate(String artistId, boolean fetchAll);
 }

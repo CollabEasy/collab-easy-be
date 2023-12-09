@@ -15,5 +15,13 @@ public interface CollabRequestRepository extends PagingAndSortingRepository<Coll
   public List<CollabRequest> findBySenderIdAndReceiverIdAndStatus(String senderId, String receiverId, String status);
   public List<CollabRequest> findBySenderIdAndReceiverIdAndStatusIn(String senderId, String receiverId, List<String> status);
 
+  public List<CollabRequest> findBySenderIdAndStatusIn(String senderId, List<String> status);
+
+  public List<CollabRequest> findByReceiverIdAndStatusIn(String senderId, List<String> status);
+
+  public List<CollabRequest> findBySenderId(String senderId);
+
+  public List<CollabRequest> findByReceiverId(String senderId);
+
 
 }
