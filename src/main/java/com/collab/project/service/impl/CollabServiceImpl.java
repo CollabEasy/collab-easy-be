@@ -347,6 +347,9 @@ public class CollabServiceImpl implements CollabService {
             String dateString = format.format(request.getCollabDate());
             String receiverId = request.getSenderId().equals(artistId) ? request.getReceiverId() : request.getSenderId();
             Artist receiver = artistRepository.findByArtistId(receiverId);
+            if (!requestsByDate.containsKey(dateString)) {
+                requestsByDate.put(dateString, new ArrayList<>());
+            }
             requestsByDate.getOrDefault(dateString, new ArrayList<>()).add(
                     new CollabRequestResponse(request,
                             request.getSenderId().equals(artistId) ? artist : receiver,
