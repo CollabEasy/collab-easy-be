@@ -25,8 +25,6 @@ public class Utils {
     }
 
     public static String getSortDate(String s) {
-        System.out.println("ini : " + s);
-        String[] split = s.split(" ");
         switch (split[1].toLowerCase()) {
             case "jan":
                 split[1] = "01";
@@ -65,7 +63,6 @@ public class Utils {
                 split[1] = "12";
                 break;
         }
-        System.out.println("splits : " + split[0] + " " + split[1] + " " + split[2]);
-        return split[0] + split[1] + split[2];
+        return split[2] + split[1] + split[0];
     }
 }

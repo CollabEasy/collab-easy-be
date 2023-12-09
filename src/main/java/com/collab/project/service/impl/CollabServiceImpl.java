@@ -342,8 +342,8 @@ public class CollabServiceImpl implements CollabService {
     static class SortDescendingDate implements Comparator<String> {
         @Override
         public int compare(String s1, String s2) {
-            s1 = getSortDate(new StringBuilder(s1).reverse().toString());
-            s2 = getSortDate(new StringBuilder(s2).reverse().toString());
+            s1 = getSortDate(s1);
+            s2 = getSortDate(s2);
             return s2.compareTo(s1);
         }
     }
