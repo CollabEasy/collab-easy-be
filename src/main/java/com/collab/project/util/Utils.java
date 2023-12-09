@@ -64,6 +64,6 @@ public class Utils {
                 split[1] = "12";
                 break;
         }
-        return Strings.join(split, " ");
+        return split[0] + split[1] + split[2];
     }
 }
