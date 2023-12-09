@@ -356,7 +356,7 @@ public class CollabServiceImpl implements CollabService {
                             request.getReceiverId().equals(artistId) ? receiver : artist)
             );
         }
-        return requestsByDate;
+        return requestsByDate.descendingMap();
     }
 
     private void updateCollabRequestStatus(List<CollabRequest> collabRequests) {
