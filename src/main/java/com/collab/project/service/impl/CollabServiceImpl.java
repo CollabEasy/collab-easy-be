@@ -338,9 +338,18 @@ public class CollabServiceImpl implements CollabService {
         return breakCollabByData(artistId, requests);
     }
 
+    static class SortDescendingDate implements Comparator<String> {
+        @Override
+        public int compare(String s1, String s2) {
+            s1 = new StringBuilder(s1).reverse().toString();
+            s2 = new StringBuilder(s2).reverse().toString();
+            return s2.compareTo(s1);
+        }
+    }
+
     @SneakyThrows
     private Map<String, List<CollabRequestResponse>> breakCollabByData(String artistId, List<CollabRequest> requests) {
-        TreeMap<String, List<CollabRequestResponse>> requestsByDate = new TreeMap<>();
+        TreeMap<String, List<CollabRequestResponse>> requestsByDate = new TreeMap<>(new SortDescendingDate());
         SimpleDateFormat format = new SimpleDateFormat("dd MMM YYY");
         Artist artist = artistRepository.findByArtistId(artistId);
         for (CollabRequest request : requests) {
