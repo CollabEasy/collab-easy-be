@@ -331,8 +331,10 @@ public class CollabServiceImpl implements CollabService {
         List<CollabRequest> requests = collabRequestRepository.findBySenderIdAndStatusIn(
                 artistId,
                 statusToFetch);
+        System.out.println("fetched collab list : " + requests.size());
 
         requests.addAll(collabRequestRepository.findByReceiverIdAndStatusIn(artistId, statusToFetch));
+        System.out.println("fetched collab list : " + requests.size());
         return breakCollabByData(artistId, requests);
     }
 

@@ -84,7 +84,7 @@ public class CollabController {
         return new ResponseEntity<>(new SuccessResponse(output), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getByData")
+    @GetMapping(value = "/getByDate")
     public ResponseEntity<SuccessResponse> getCollabsByDate(@RequestParam String all) {
         String artistId = AuthUtils.getArtistId();
         boolean fetchAll = (all != null && all.equalsIgnoreCase("true"));
