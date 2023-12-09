@@ -25,6 +25,7 @@ public class Utils {
     }
 
     public static String getSortDate(String s) {
+        String[] split = s.split(" ");
         switch (split[1].toLowerCase()) {
             case "jan":
                 split[1] = "01";
