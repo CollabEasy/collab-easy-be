@@ -32,6 +32,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.collab.project.util.Utils.getSortDate;
+
 @Service
 public class CollabServiceImpl implements CollabService {
 
@@ -340,8 +342,8 @@ public class CollabServiceImpl implements CollabService {
     static class SortDescendingDate implements Comparator<String> {
         @Override
         public int compare(String s1, String s2) {
-            s1 = new StringBuilder(s1).reverse().toString();
-            s2 = new StringBuilder(s2).reverse().toString();
+            s1 = getSortDate(new StringBuilder(s1).reverse().toString());
+            s2 = getSortDate(new StringBuilder(s2).reverse().toString());
             return s2.compareTo(s1);
         }
     }
