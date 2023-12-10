@@ -9,6 +9,7 @@ import com.collab.project.service.impl.ScriptServiceImpl;
 import com.collab.project.util.EmailUtils;
 import com.collab.project.util.FileUtils;
 import com.collab.project.util.emailTemplates.CompleteProfileEmail;
+import com.collab.project.util.emailTemplates.GenericEmailTemplate;
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.gmail.Gmail;
@@ -66,20 +67,6 @@ public class EmailService {
         this.emailEnumHistoryRepository = emailEnumHistoryRepository;
     }
 
-    public MimeMessage createEmailFromFile(String toEmailAddress, String subject, String filename) throws MessagingException,
-            IOException {
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
-
-        MimeMessage email = new MimeMessage(session);
-        email.setFrom(new InternetAddress(sender));
-        email.addRecipient(javax.mail.Message.RecipientType.TO,
-                new InternetAddress(toEmailAddress));
-        email.setSubject(subject);
-        email.setSender(new InternetAddress(sender));
-        email.setContent(FileUtils.getHTMLContentFromFile(filename), "text/html; charset=utf-8");
-        return email;
-    }
 
     public MimeMessage createEmailFromEncodedMessage(String toEmailAddress, String subject, String message, Boolean isEncoded) throws MessagingException, IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
         Properties props = new Properties();
@@ -100,59 +87,50 @@ public class EmailService {
     }
 
     @Async
-    public Message sendEmailFromFile(String subject,
-                                    String toEmailAddress,
-                                    String filename) throws MessagingException, IOException, GeneralSecurityException {
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
-        MimeMessage email = createEmailFromFile(toEmailAddress, subject, filename);
-
-        // Encode and wrap the MIME message into a gmail message
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        email.writeTo(buffer);
-        byte[] rawMessageBytes = buffer.toByteArray();
-        String encodedEmail = Base64.encodeBase64URLSafeString(rawMessageBytes);
-        Message message = new Message();
-        message.setRaw(encodedEmail);
-
-        try {
-            // Create send message
-            message = gmailService.users().messages().send("me", message).execute();
-            return message;
-        } catch (GoogleJsonResponseException e) {
-            // TODO(developer) - handle error appropriately
-            GoogleJsonError error = e.getDetails();
-            if (error.getCode() == 403) {
-                System.err.println("Unable to send message: " + e.getDetails());
-            } else {
-                throw e;
-            }
-        }
-        return null;
-    }
-
-    @Async
     public void sendEmailToAllUsersFromString(String subject, String encodedMessage) {
         List<Artist> artists = artistRepository.findAll();
-        artists.stream().parallel().forEach(artist -> {
-            try {
-                sendEmailFromString(subject, artist.getArtistId(), artist.getEmail(), encodedMessage);
-            } catch (Exception ex) {
-                System.out.println("Unable to send email : " + ex.getMessage());
-            }
-        });
+        new Thread(() -> {
+            artists.stream().parallel().forEach(artist -> {
+                try {
+                    sendEmailToArtist(artist, subject, encodedMessage);
+                    Thread.sleep(5000);
+                } catch (Exception ex) {
+                    System.out.println("Unable to send email : " + ex.getMessage());
+                }
+            });
+        }).start();
+
     }
 
-    public Message sendEmailFromString(String subject,
+    @SneakyThrows
+    private void sendEmailToArtist(
+            Artist artist,
+            String subject,
+            String encodedMessage
+    ) {
+        String message = emailUtils.decryptEmailContent(encodedMessage);
+        String content = GenericEmailTemplate.getContent(artist.getFirstName(), message);
+        sendEmailFromStringFinal(subject, artist.getArtistId(), artist.getEmail(), content, false);
+    }
+
+    public void sendEmailFromString(String subject,
                                             String artistId,
                                             String emailAddress,
                                             String encodedMessage) throws MessagingException, IOException,
             GeneralSecurityException {
-        return sendEmailFromStringFinal(subject, artistId, emailAddress, encodedMessage, true);
+        Artist artist;
+        if (artistId != null) {
+            artist = artistRepository.findByArtistId(artistId);
+        } else if (emailAddress != null) {
+            artist = artistRepository.findByEmail(emailAddress);
+        } else {
+            return;
+        }
+        sendEmailToArtist(artist, subject, encodedMessage);
     }
 
     @Async
-    public Message sendEmailFromStringFinal(String subject,
+    public void sendEmailFromStringFinal(String subject,
                                      String artistId,
                                      String emailAddress,
                                      String encodedMessage,
@@ -178,8 +156,8 @@ public class EmailService {
 
         try {
             // Create send message
-            message = gmailService.users().messages().send("me", message).execute();
-            return message;
+           gmailService.users().messages().send("me", message).execute();
+
         } catch (GoogleJsonResponseException e) {
             // TODO(developer) - handle error appropriately
             GoogleJsonError error = e.getDetails();
@@ -189,7 +167,7 @@ public class EmailService {
                 throw e;
             }
         }
-        return null;
+        return;
     }
 
     public void sendEmailFromStringToSlug(String slug, String subject, String content) throws MessagingException,
@@ -198,15 +176,16 @@ public class EmailService {
         if (artists.size() != 1) {
             return;
         }
-        sendEmailFromString(subject, null, artists.get(0).getEmail(), content);
+        sendEmailToArtist(artists.get(0), subject, content);
     }
 
     @Async
     @SneakyThrows
     public void sendEmailToGroup(String groupEnum, String subject, String content) {
-        List<String> emails;
+        List<Artist> artists = new ArrayList<>();
         if (groupEnum.equals("ADMINS")) {
-            emails = Arrays.asList("prashant.joshi056@gmail.com", "rahulgupta6007@gmail.com");
+            artists.add(artistRepository.findByEmail("prashant.joshi056@gmail.com"));
+            artists.add(artistRepository.findByEmail("rahulgupta6007@gmail.com"));
         } else if (groupEnum.equals("INCOMPLETE_PROFILE")) {
             scriptService.emailIncompleteProfileUsers(false);
             return;
@@ -214,13 +193,17 @@ public class EmailService {
             return;
         }
 
-        emails.stream().parallel().forEach(email -> {
-            try {
-                sendEmailFromString(subject, null, email, content);
-            } catch (Exception ex) {
-                System.out.println("Unable to send email : " + ex.getMessage());
-            }
-        });
+        new Thread(() -> {
+            artists.stream().parallel().forEach(artist -> {
+                try {
+                    sendEmailToArtist(artist, subject, content);
+                    Thread.sleep(5000);
+                } catch (Exception ex) {
+                    System.out.println("Unable to send email : " + ex.getMessage());
+                }
+            });
+        }).start();
+
 
         Optional<EmailEnumHistory> history = emailEnumHistoryRepository.findByEmailEnum(groupEnum);
         EmailEnumHistory enumHistory = history.orElseGet(() -> new EmailEnumHistory(groupEnum,
