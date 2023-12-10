@@ -45,8 +45,6 @@ public class EmailService {
 
     final EmailUtils emailUtils;
 
-    final ArtistGroupServiceImpl artistGroupService;
-
     final EmailEnumHistoryRepository emailEnumHistoryRepository;
 
     @Autowired
@@ -60,7 +58,6 @@ public class EmailService {
                         @Autowired EmailEnumHistoryRepository emailEnumHistoryRepository) {
         this.gmailService = gmailService;
         this.emailUtils = emailUtils;
-        this.artistGroupService = artistGroupService;
         this.emailEnumHistoryRepository = emailEnumHistoryRepository;
     }
 
