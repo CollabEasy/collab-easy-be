@@ -47,9 +47,6 @@ public class EmailService {
 
     final EmailEnumHistoryRepository emailEnumHistoryRepository;
 
-    @Autowired
-    ScriptServiceImpl scriptService;
-
     String sender = "Wondor <noreply@wondor.art>";
 
     public EmailService(@Autowired Gmail gmailService, @Autowired EmailUtils emailUtils,
@@ -108,9 +105,9 @@ public class EmailService {
 
     @Async
     public void sendEmailFromStringFinal(String subject,
-                                     String emailAddress,
-                                     String encodedMessage,
-                                       Boolean isEncoded) throws MessagingException, IOException,
+                                         String emailAddress,
+                                         String encodedMessage,
+                                         Boolean isEncoded) throws MessagingException, IOException,
             GeneralSecurityException {
         if (emailAddress == null) {
             return;
@@ -129,7 +126,7 @@ public class EmailService {
 
         try {
             // Create send message
-           gmailService.users().messages().send("me", message).execute();
+            gmailService.users().messages().send("me", message).execute();
 
         } catch (GoogleJsonResponseException e) {
             // TODO(developer) - handle error appropriately
@@ -156,22 +153,5 @@ public class EmailService {
                 }
             }
         }).start();
-    }
-
-    @Async
-    @SneakyThrows
-    public void sendEmailToGroup(String groupEnum, String subject, String content) {
-        if (groupEnum.equals("INCOMPLETE_PROFILE")) {
-            scriptService.emailIncompleteProfileUsers(false);
-        } else {
-            return;
-        }
-
-        Optional<EmailEnumHistory> history = emailEnumHistoryRepository.findByEmailEnum(groupEnum);
-        EmailEnumHistory enumHistory = history.orElseGet(() -> new EmailEnumHistory(groupEnum,
-                Timestamp.from(Instant.now())));
-
-        enumHistory.setLastSent(Timestamp.from(Instant.now()));
-        emailEnumHistoryRepository.save(enumHistory);
     }
 }

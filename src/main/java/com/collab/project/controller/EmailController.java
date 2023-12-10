@@ -8,6 +8,7 @@ import com.collab.project.model.email.EmailNotifyInputSlug;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.EmailHistoryService;
+import com.collab.project.service.impl.ScriptServiceImpl;
 import com.collab.project.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,9 @@ public class EmailController {
 
     @Autowired
     ArtistRepository artistRepository;
+
+    @Autowired
+    ScriptServiceImpl scriptService;
 
     @PostMapping
     @RequestMapping(value = "/notify/all", method = RequestMethod.POST)
@@ -71,7 +75,7 @@ public class EmailController {
             artists.add(artistRepository.findByEmail("rahulgupta6007@gmail.com"));
             emailService.sendEmailFromStringToList(artists, input.getSubject(), input.getContent());
         } else if (Constants.EmailGroups.contains(group_enum)) {
-            emailService.sendEmailToGroup(group_enum, input.getSubject(), input.getContent());
+            scriptService.emailIncompleteProfileUsers(false);
         }
         return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
     }
