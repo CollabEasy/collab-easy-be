@@ -319,7 +319,7 @@ public class ProposalServiceImpl implements ProposalService {
         proposalInterestRepository.save(proposalInterest);
         Artist creator = artistRepository.findByArtistId(proposal.getCreatedBy());
         Artist interstedUser = artistRepository.findByArtistId(artistId);
-        emailService.sendEmailFromStringFinal("Your proposal has caught someone's attention. Kindly take a moment to evaluate it.", interstedUser.getArtistId(), creator.getEmail(), InterestShownEmail.getContent(creator.getFirstName(), proposal.getTitle(), interstedUser.getFirstName(), proposal.getProposalId()), false);
+        emailService.sendEmailFromStringFinal("Your proposal has caught someone's attention. Kindly take a moment to evaluate it.", creator.getEmail(), InterestShownEmail.getContent(creator.getFirstName(), proposal.getTitle(), interstedUser.getFirstName(), proposal.getProposalId()), false);
         return proposalInterestRepository.findByProposalIdAndArtistId(proposalId, artistId);
     }
 
@@ -342,7 +342,7 @@ public class ProposalServiceImpl implements ProposalService {
         interest.setCollabId(response.getId());
 
         proposalInterestRepository.save(interest);
-        emailService.sendEmailFromStringFinal("A creative update regarding your interest in a proposal", acceptedArtist.getFirstName(), acceptedArtist.getEmail(), InterestAccepted.getContent(acceptedArtist.getFirstName(), proposal.getTitle(), artist.getFirstName()), false);
+        emailService.sendEmailFromStringFinal("A creative update regarding your interest in a proposal", acceptedArtist.getEmail(), InterestAccepted.getContent(acceptedArtist.getFirstName(), proposal.getTitle(), artist.getFirstName()), false);
         return response;
     }
 
@@ -362,7 +362,7 @@ public class ProposalServiceImpl implements ProposalService {
             interest.setRejected(true);
             proposalInterestRepository.save(interest);
             Artist rejectedArtist = artistRepository.findByArtistId(rejectedArtistId);
-            emailService.sendEmailFromStringFinal("A creative update regarding your interest in a proposal", rejectedArtist.getFirstName(), rejectedArtist.getEmail(), InterestReject.getContent(rejectedArtist.getFirstName(), proposal.getTitle(), artist.getFirstName()), false);
+            emailService.sendEmailFromStringFinal("A creative update regarding your interest in a proposal", rejectedArtist.getEmail(), InterestReject.getContent(rejectedArtist.getFirstName(), proposal.getTitle(), artist.getFirstName()), false);
 
         }
         return proposalInterestRepository.findByProposalId(proposalId);

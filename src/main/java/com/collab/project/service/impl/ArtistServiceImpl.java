@@ -122,7 +122,6 @@ public class ArtistServiceImpl implements ArtistService {
             try {
                 emailService.sendEmailFromStringFinal(
                         "Welcome to Wondor",
-                        artist.getArtistId(),
                         artist.getEmail(),
                         NewUserEmail.getContent(artist.getFirstName()),
                         false

@@ -119,7 +119,7 @@ public class ScriptServiceImpl {
             try {
                 for (Artist artist : artists) {
                     if (!artist.getProfileComplete()) {
-                        emailService.sendEmailFromStringFinal("Complete Your Profile for a Better Reach and Experience!", artist.getArtistId(), artist.getEmail(), CompleteProfileEmail.getContent(artist.getFirstName()), false);
+                        emailService.sendEmailFromStringFinal("Complete Your Profile for a Better Reach and Experience!", artist.getEmail(), CompleteProfileEmail.getContent(artist.getFirstName()), false);
                         Thread.sleep(5000);
                     }
                 }

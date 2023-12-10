@@ -45,8 +45,6 @@ public class EmailService {
 
     final EmailUtils emailUtils;
 
-    final ArtistRepository artistRepository;
-
     final ArtistGroupServiceImpl artistGroupService;
 
     final EmailEnumHistoryRepository emailEnumHistoryRepository;
@@ -62,7 +60,6 @@ public class EmailService {
                         @Autowired EmailEnumHistoryRepository emailEnumHistoryRepository) {
         this.gmailService = gmailService;
         this.emailUtils = emailUtils;
-        this.artistRepository = artistRepository;
         this.artistGroupService = artistGroupService;
         this.emailEnumHistoryRepository = emailEnumHistoryRepository;
     }
@@ -87,8 +84,7 @@ public class EmailService {
     }
 
     @Async
-    public void sendEmailToAllUsersFromString(String subject, String encodedMessage) {
-        List<Artist> artists = artistRepository.findAll();
+    public void sendEmailToAllUsersFromString(List<Artist> artists, String subject, String encodedMessage) {
         new Thread(() -> {
             artists.stream().parallel().forEach(artist -> {
                 try {
@@ -103,46 +99,26 @@ public class EmailService {
     }
 
     @SneakyThrows
-    private void sendEmailToArtist(
+    public void sendEmailToArtist(
             Artist artist,
             String subject,
             String encodedMessage
     ) {
         String message = emailUtils.decryptEmailContent(encodedMessage);
         String content = GenericEmailTemplate.getContent(artist.getFirstName(), message);
-        sendEmailFromStringFinal(subject, artist.getArtistId(), artist.getEmail(), content, false);
-    }
-
-    public void sendEmailFromString(String subject,
-                                            String artistId,
-                                            String emailAddress,
-                                            String encodedMessage) throws MessagingException, IOException,
-            GeneralSecurityException {
-        Artist artist;
-        if (artistId != null) {
-            artist = artistRepository.findByArtistId(artistId);
-        } else if (emailAddress != null) {
-            artist = artistRepository.findByEmail(emailAddress);
-        } else {
-            return;
-        }
-        sendEmailToArtist(artist, subject, encodedMessage);
+        sendEmailFromStringFinal(subject, artist.getEmail(), content, false);
     }
 
     @Async
     public void sendEmailFromStringFinal(String subject,
-                                     String artistId,
                                      String emailAddress,
                                      String encodedMessage,
                                        Boolean isEncoded) throws MessagingException, IOException,
             GeneralSecurityException {
-        String artistEmail = emailAddress;
-        if (artistEmail == null) {
-            Artist artist = artistRepository.findByArtistId(artistId);
-            artistEmail = artist.getEmail();
+        if (emailAddress == null) {
+            return;
         }
-
-        MimeMessage email = createEmailFromEncodedMessage(artistEmail, subject, encodedMessage, isEncoded);
+        MimeMessage email = createEmailFromEncodedMessage(emailAddress, subject, encodedMessage, isEncoded);
         if (email == null) {
             throw new IllegalStateException("Email provided is null.");
         }
@@ -170,40 +146,29 @@ public class EmailService {
         return;
     }
 
-    public void sendEmailFromStringToSlug(String slug, String subject, String content) throws MessagingException,
+    @SneakyThrows
+    public void sendEmailFromStringToList(List<Artist> artists, String subject, String content) throws MessagingException,
             GeneralSecurityException, IOException {
-        List<Artist> artists = artistRepository.findBySlug(slug);
-        if (artists.size() != 1) {
-            return;
-        }
-        sendEmailToArtist(artists.get(0), subject, content);
+        new Thread(() -> {
+            for (Artist artist : artists) {
+                try {
+                    sendEmailToArtist(artist, subject, content);
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
     }
 
     @Async
     @SneakyThrows
     public void sendEmailToGroup(String groupEnum, String subject, String content) {
-        List<Artist> artists = new ArrayList<>();
-        if (groupEnum.equals("ADMINS")) {
-            artists.add(artistRepository.findByEmail("prashant.joshi056@gmail.com"));
-            artists.add(artistRepository.findByEmail("rahulgupta6007@gmail.com"));
-        } else if (groupEnum.equals("INCOMPLETE_PROFILE")) {
+        if (groupEnum.equals("INCOMPLETE_PROFILE")) {
             scriptService.emailIncompleteProfileUsers(false);
-            return;
         } else {
             return;
         }
-
-        new Thread(() -> {
-            artists.stream().parallel().forEach(artist -> {
-                try {
-                    sendEmailToArtist(artist, subject, content);
-                    Thread.sleep(5000);
-                } catch (Exception ex) {
-                    System.out.println("Unable to send email : " + ex.getMessage());
-                }
-            });
-        }).start();
-
 
         Optional<EmailEnumHistory> history = emailEnumHistoryRepository.findByEmailEnum(groupEnum);
         EmailEnumHistory enumHistory = history.orElseGet(() -> new EmailEnumHistory(groupEnum,
