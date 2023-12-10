@@ -5,12 +5,14 @@ import com.collab.project.model.email.EmailEnumHistory;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.repositories.EmailEnumHistoryRepository;
 import com.collab.project.service.impl.ArtistGroupServiceImpl;
+import com.collab.project.service.impl.ScriptServiceImpl;
 import com.collab.project.util.EmailUtils;
 import com.collab.project.util.FileUtils;
 import com.collab.project.util.emailTemplates.CompleteProfileEmail;
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.gmail.Gmail;
+import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Base64;
 
 import com.google.api.services.gmail.model.Message;
@@ -47,6 +49,9 @@ public class EmailService {
     final ArtistGroupServiceImpl artistGroupService;
 
     final EmailEnumHistoryRepository emailEnumHistoryRepository;
+
+    @Autowired
+    ScriptServiceImpl scriptService;
 
     String sender = "Wondor <noreply@wondor.art>";
 
@@ -197,10 +202,14 @@ public class EmailService {
     }
 
     @Async
+    @SneakyThrows
     public void sendEmailToGroup(String groupEnum, String subject, String content) {
         List<String> emails;
         if (groupEnum.equals("ADMINS")) {
             emails = Arrays.asList("prashant.joshi056@gmail.com", "rahulgupta6007@gmail.com");
+        } else if (groupEnum.equals("INCOMPLETE_PROFILE")) {
+            scriptService.emailIncompleteProfileUsers(false);
+            return;
         } else {
             return;
         }

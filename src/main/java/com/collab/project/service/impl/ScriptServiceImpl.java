@@ -13,6 +13,7 @@ import com.collab.project.util.EmailUtils;
 import com.collab.project.util.Utils;
 import com.collab.project.util.emailTemplates.CompleteProfileEmail;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -104,19 +105,28 @@ public class ScriptServiceImpl {
         }
     }
 
+    @SneakyThrows
     public void emailIncompleteProfileUsers(boolean isTest) throws MessagingException, GeneralSecurityException, IOException {
-        List<Artist> artists = new ArrayList<>();
+        List<Artist> artists;
         if (isTest) {
+            artists = new ArrayList<>();
             artists.add(artistRepository.findByEmail("p.joshi2310@gmail.com"));
         } else {
             artists = artistRepository.findAll();
         }
 
-        for (Artist artist : artists) {
-            if (!artist.getProfileComplete()) {
-                emailService.sendEmailFromStringFinal("Complete Your Profile for a Better Reach and Experience!", artist.getArtistId(), artist.getEmail(), CompleteProfileEmail.getContent(artist.getFirstName()), false);
+        new Thread(() -> {
+            try {
+                for (Artist artist : artists) {
+                    if (!artist.getProfileComplete()) {
+                        emailService.sendEmailFromStringFinal("Complete Your Profile for a Better Reach and Experience!", artist.getArtistId(), artist.getEmail(), CompleteProfileEmail.getContent(artist.getFirstName()), false);
+                        Thread.sleep(5000);
+                    }
+                }
+            } catch (Exception ignored) {
+
             }
-        }
+        }).start();
 
         if (isTest) return;
         Optional<EmailEnumHistory> emailHistory = emailEnumHistoryRepository.findByEmailEnum("INCOMPLETE_PROFILE");
