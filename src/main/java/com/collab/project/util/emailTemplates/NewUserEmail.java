@@ -6,24 +6,24 @@ public class NewUserEmail {
 "<html>"+
 "   <head>"+
 "      <META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"+
-"      <style>*{box-sizing:border-box}body{margin:0;padding:0}#m_MessageViewBody a{color:inherit;text-decoration:none}p{line-height:inherit}.m_desktop_hide,.m_desktop_hide table{display:none;max-height:0;overflow:hidden}.m_image_block img+div{display:none}@media (max-width:610px){.m_mobile_hide{display:none}.m_row-content{width:100%!important}.m_stack .m_column{width:100%;display:block}.m_mobile_hide{min-height:0;max-height:0;max-width:0;overflow:hidden;font-size:0}.m_desktop_hide,.m_desktop_hide table{display:table!important;max-height:none!important}}</style>"+
+"      <style>*{box-sizing:border-box}body{margin:0;padding:0}#m_MessageViewBody a{color:inherit;text-decoration:none}p{line-height:inherit}.m_desktop_hide,.m_desktop_hide table{display:none;max-height:0;overflow:hidden}.m_image_block img+div{display:none}@media (max-width:610px){.m_mobile_hide{display:none}.m_row-content{width:100%%!important}.m_stack .m_column{width:100%%;display:block}.m_mobile_hide{min-height:0;max-height:0;max-width:0;overflow:hidden;font-size:0}.m_desktop_hide,.m_desktop_hide table{display:table!important;max-height:none!important}}</style>"+
 "   </head>"+
 "   <body>"+
 "      <u></u>"+
 "      <div style=\"background-color:#f9f9f9;margin:0;padding:0\">"+
-"         <table class=\"m_nl-container\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"background-color:#f9f9f9\">"+
+"         <table class=\"m_nl-container\" width=\"100%%%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"background-color:#f9f9f9\">"+
 "            <tbody>"+
 "               <tr>"+
 "                  <td>"+
-"                     <table class=\"m_row m_row-1\" align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                     <table class=\"m_row m_row-1\" align=\"center\" width=\"100%%%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                        <tbody>"+
 "                           <tr>"+
 "                              <td>"+
 "                                 <table class=\"m_row-content m_stack\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"color:#000;width:590px;margin:0 auto\" width=\"590\">"+
 "                                    <tbody>"+
 "                                       <tr>"+
-"                                          <td class=\"m_column m_column-1\" width=\"100%\" style=\"font-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
-"                                             <table class=\"m_empty_block m_block-1\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                                          <td class=\"m_column m_column-1\" width=\"100%%%%\" style=\"font-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
+"                                             <table class=\"m_empty_block m_block-1\" width=\"100%%%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                                                <tr>"+
 "                                                   <td class=\"m_pad\">"+
 "                                                      <div></div>"+
@@ -38,15 +38,15 @@ public class NewUserEmail {
 "                           </tr>"+
 "                        </tbody>"+
 "                     </table>"+
-"                     <table class=\"m_row m_row-2\" align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                     <table class=\"m_row m_row-2\" align=\"center\" width=\"100%%%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                        <tbody>"+
 "                           <tr>"+
 "                              <td>"+
 "                                 <table class=\"m_row-content m_stack\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"background-color:#fff;color:#000;width:590px;margin:0 auto\" width=\"590\">"+
 "                                    <tbody>"+
 "                                       <tr>"+
-"                                          <td class=\"m_column m_column-1\" width=\"100%\" style=\"font-weight:400;text-align:left;padding-bottom:5px;padding-left:55px;padding-right:55px;padding-top:40px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
-"                                             <table class=\"m_empty_block m_block-1\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                                          <td class=\"m_column m_column-1\" width=\"100%%%%\" style=\"font-weight:400;text-align:left;padding-bottom:5px;padding-left:55px;padding-right:55px;padding-top:40px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
+"                                             <table class=\"m_empty_block m_block-1\" width=\"100%%%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                                                <tr>"+
 "                                                   <td class=\"m_pad\">"+
 "                                                      <div></div>"+
@@ -61,18 +61,18 @@ public class NewUserEmail {
 "                           </tr>"+
 "                        </tbody>"+
 "                     </table>"+
-"                     <table class=\"m_row m_row-2\" align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                     <table class=\"m_row m_row-2\" align=\"center\" width=\"100%%%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                        <tbody>"+
 "                           <tr>"+
 "                              <td>"+
 "                                 <table class=\"m_row-content m_stack\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"background-color:#fff;color:#000;width:590px\" width=\"590\">"+
 "                                    <tbody>"+
 "                                       <tr>"+
-"                                          <td class=\"m_column m_column-1\" width=\"100%\" style=\"font-weight:400;text-align:left;padding-bottom:5px;padding-left:55px;padding-right:55px;padding-top:40px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
-"                                             <table class=\"m_image_block m_block-1\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                                          <td class=\"m_column m_column-1\" width=\"100%%\" style=\"font-weight:400;text-align:left;padding-bottom:5px;padding-left:55px;padding-right:55px;padding-top:40px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
+"                                             <table class=\"m_image_block m_block-1\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                                                <tr>"+
-"                                                   <td class=\"m_pad\" style=\"width:100%;padding-right:0;padding-left:0\">"+
-"                                                      <div class=\"m_alignment\" align=\"left\" style=\"line-height:10px\"><img src=\"https://ci4.googleusercontent.com/proxy/IjoI4kafxrxwdlFFM6Pk1E90gmQIiik93hDjohhN05WckhOK8XmU6SgI5UkIBJjb6IXsovPZ53Vf4rZXFVnJtP5sGbMhngd3hso3FKgNOnmzWakYzZk3-Q=s0-d-e1-ft#https://cdn-us.icons8.com/_k_capJRbUyqgGdB-hyXSA/KVSqk1x-kEuZo9pMZLBaGw/Group.svg\" style=\"display:block;height:auto;border:0;width:144px;max-width:100%\" width=\"144\"></div>"+
+"                                                   <td class=\"m_pad\" style=\"width:100%%;padding-right:0;padding-left:0\">"+
+"                                                      <div class=\"m_alignment\" align=\"left\" style=\"line-height:10px\"><img src=\"https://ci4.googleusercontent.com/proxy/IjoI4kafxrxwdlFFM6Pk1E90gmQIiik93hDjohhN05WckhOK8XmU6SgI5UkIBJjb6IXsovPZ53Vf4rZXFVnJtP5sGbMhngd3hso3FKgNOnmzWakYzZk3-Q=s0-d-e1-ft#https://cdn-us.icons8.com/_k_capJRbUyqgGdB-hyXSA/KVSqk1x-kEuZo9pMZLBaGw/Group.svg\" style=\"display:block;height:auto;border:0;width:144px;max-width:100%%\" width=\"144\"></div>"+
 "                                                   </td>"+
 "                                                </tr>"+
 "                                             </table>"+
@@ -84,15 +84,15 @@ public class NewUserEmail {
 "                           </tr>"+
 "                        </tbody>"+
 "                     </table>"+
-"                     <table class=\"m_row m_row-3\" align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                     <table class=\"m_row m_row-3\" align=\"center\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                        <tbody>"+
 "                           <tr>"+
 "                              <td>"+
 "                                 <table class=\"m_row-content m_stack\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"background-color:#fff;color:#000;width:590px;margin:0 auto\" width=\"590\">"+
 "                                    <tbody>"+
 "                                       <tr>"+
-"                                          <td class=\"m_column m_column-1\" width=\"100%\" style=\"font-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
-"                                             <table class=\"m_text_block m_block-1\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
+"                                          <td class=\"m_column m_column-1\" width=\"100%%\" style=\"font-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
+"                                             <table class=\"m_text_block m_block-1\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
 "                                                <tr>"+
 "                                                   <td class=\"m_pad\" style=\"padding-bottom:10px;padding-left:55px;padding-right:55px;padding-top:10px\">"+
 "                                                      <div style=\"font-family:sans-serif\">"+
@@ -111,15 +111,15 @@ public class NewUserEmail {
 "                           </tr>"+
 "                        </tbody>"+
 "                     </table>"+
-"                     <table class=\"m_row m_row-5\" align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                     <table class=\"m_row m_row-5\" align=\"center\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                        <tbody>"+
 "                           <tr>"+
 "                              <td>"+
 "                                 <table class=\"m_row-content m_stack\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"background-color:#fff;color:#000;width:590px;margin:0 auto\" width=\"590\">"+
 "                                    <tbody>"+
 "                                       <tr>"+
-"                                          <td class=\"m_column m_column-1\" width=\"100%\" style=\"font-weight:400;text-align:left;padding-bottom:30px;padding-top:15px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
-"                                             <table class=\"m_text_block m_block-1\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
+"                                          <td class=\"m_column m_column-1\" width=\"100%%\" style=\"font-weight:400;text-align:left;padding-bottom:30px;padding-top:15px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
+"                                             <table class=\"m_text_block m_block-1\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
 "                                                <tr>"+
 "                                                   <td class=\"m_pad\" style=\"padding-bottom:10px;padding-left:55px;padding-right:55px;padding-top:10px\">"+
 "                                                      <div style=\"font-family:sans-serif\">"+
@@ -130,7 +130,7 @@ public class NewUserEmail {
 "                                                   </td>"+
 "                                                </tr>"+
 "                                             </table>"+
-"                                             <table class=\"m_text_block m_block-2\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
+"                                             <table class=\"m_text_block m_block-2\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
 "                                                <tr>"+
 "                                                   <td class=\"m_pad\" style=\"padding-bottom:10px;padding-left:55px;padding-right:55px;padding-top:10px\">"+
 "                                                      <div style=\"font-family:sans-serif\">"+
@@ -145,11 +145,11 @@ public class NewUserEmail {
 "                                                   </td>"+
 "                                                </tr>"+
 "                                             </table>"+
-"                                             <table class=\"m_list_block m_block-3\" id=\"m_list-r4c0m2\" width=\"100%\" border=\"0\" cellpadding=\"10\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
+"                                             <table class=\"m_list_block m_block-3\" id=\"m_list-r4c0m2\" width=\"100%%\" border=\"0\" cellpadding=\"10\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
 "                                                <tr>"+
 "                                                   <td class=\"m_pad\">"+
 "                                                      <div class=\"m_levelTwo\" style=\"margin-left:40px\">"+
-"                                                         <ul class=\"m_leftList\" start=\"1\" style=\"margin-top:0;margin-bottom:0;padding:0;list-style-position:inside;padding-left:0;font-weight:400;text-align:left;color:#000;direction:ltr;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;font-size:14px;letter-spacing:0;line-height:120%;list-style-type:circle\">"+
+"                                                         <ul class=\"m_leftList\" start=\"1\" style=\"margin-top:0;margin-bottom:0;padding:0;list-style-position:inside;padding-left:0;font-weight:400;text-align:left;color:#000;direction:ltr;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;font-size:14px;letter-spacing:0;line-height:120%%;list-style-type:circle\">"+
 "                                                            <li style=\"margin-bottom:0;text-align:left\">"+
 "                                                               Collaboration <a href=\"https://www.google.com/url?q=https://www.wondor.art/collab-proposals-for-artists&source=gmail-html&ust=1702357196536000&usg=AOvVaw15GCyVW5jjCNef_IOBggvF\" style=\"text-decoration:underline;color:#0068a5\" rel=\"noopener noreferrer\" target=\"_blank\">Proposals</a> from artists"+
 "                                                            </li>"+
@@ -163,16 +163,16 @@ public class NewUserEmail {
 "                                                   </td>"+
 "                                                </tr>"+
 "                                             </table>"+
-"                                             <table class=\"m_paragraph_block m_block-4\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
+"                                             <table class=\"m_paragraph_block m_block-4\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
 "                                                <tr>"+
 "                                                   <td class=\"m_pad\" style=\"padding-bottom:5px;padding-left:55px;padding-right:55px;padding-top:5px\">"+
-"                                                      <div style=\"color:#000;direction:ltr;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;font-size:14px;font-weight:400;letter-spacing:0;line-height:120%;text-align:left\">"+
+"                                                      <div style=\"color:#000;direction:ltr;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;font-size:14px;font-weight:400;letter-spacing:0;line-height:120%%;text-align:left\">"+
 "                                                         <p style=\"margin:0\">Ask us anything, seek advice, or simply connect with fellow artists. We're here to support your artistic aspirations.</p>"+
 "                                                      </div>"+
 "                                                   </td>"+
 "                                                </tr>"+
 "                                             </table>"+
-"                                             <table class=\"m_button_block m_block-5\" width=\"100%\" border=\"0\" cellpadding=\"10\" cellspacing=\"0\" role=\"presentation\">"+
+"                                             <table class=\"m_button_block m_block-5\" width=\"100%%\" border=\"0\" cellpadding=\"10\" cellspacing=\"0\" role=\"presentation\">"+
 "                                                <tr>"+
 "                                                   <td class=\"m_pad\">"+
 "                                                      <div class=\"m_alignment\" align=\"center\">"+
@@ -181,10 +181,10 @@ public class NewUserEmail {
 "                                                   </td>"+
 "                                                </tr>"+
 "                                             </table>"+
-"                                             <table class=\"m_paragraph_block m_block-6\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
+"                                             <table class=\"m_paragraph_block m_block-6\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"word-break:break-word\">"+
 "                                                <tr>"+
 "                                                   <td class=\"m_pad\" style=\"padding-bottom:5px;padding-left:55px;padding-right:55px;padding-top:5px\">"+
-"                                                      <div style=\"color:#000;direction:ltr;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;font-size:14px;font-weight:400;letter-spacing:0;line-height:120%;text-align:left\">"+
+"                                                      <div style=\"color:#000;direction:ltr;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;font-size:14px;font-weight:400;letter-spacing:0;line-height:120%%;text-align:left\">"+
 "                                                         <p style=\"margin:0;margin-bottom:16px\">Wishing you endless creativity and joy on your artistic journey with Wondor!</p>"+
 "                                                         <p style=\"margin:0;margin-bottom:16px\">Best Regards,</p>"+
 "                                                         <p style=\"margin:0\">Rahul and Prashant<br>Founder, Wondor</p>"+
@@ -200,15 +200,15 @@ public class NewUserEmail {
 "                           </tr>"+
 "                        </tbody>"+
 "                     </table>"+
-"                     <table class=\"m_row m_row-6\" align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                     <table class=\"m_row m_row-6\" align=\"center\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                        <tbody>"+
 "                           <tr>"+
 "                              <td>"+
 "                                 <table class=\"m_row-content m_stack\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"color:#000;width:590px;margin:0 auto\" width=\"590\">"+
 "                                    <tbody>"+
 "                                       <tr>"+
-"                                          <td class=\"m_column m_column-1\" width=\"100%\" style=\"font-weight:400;text-align:left;padding-bottom:5px;padding-top:20px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
-"                                             <table class=\"m_empty_block m_block-1\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                                          <td class=\"m_column m_column-1\" width=\"100%%\" style=\"font-weight:400;text-align:left;padding-bottom:5px;padding-top:20px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
+"                                             <table class=\"m_empty_block m_block-1\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                                                <tr>"+
 "                                                   <td class=\"m_pad\">"+
 "                                                      <div></div>"+
@@ -223,15 +223,15 @@ public class NewUserEmail {
 "                           </tr>"+
 "                        </tbody>"+
 "                     </table>"+
-"                     <table class=\"m_row m_row-7\" align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                     <table class=\"m_row m_row-7\" align=\"center\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                        <tbody>"+
 "                           <tr>"+
 "                              <td>"+
 "                                 <table class=\"m_row-content m_stack\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"color:#000;width:590px;margin:0 auto\" width=\"590\">"+
 "                                    <tbody>"+
 "                                       <tr>"+
-"                                          <td class=\"m_column m_column-1\" width=\"100%\" style=\"font-weight:400;text-align:left;padding-bottom:25px;padding-top:25px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
-"                                             <table class=\"m_empty_block m_block-1\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
+"                                          <td class=\"m_column m_column-1\" width=\"100%%\" style=\"font-weight:400;text-align:left;padding-bottom:25px;padding-top:25px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
+"                                             <table class=\"m_empty_block m_block-1\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
 "                                                <tr>"+
 "                                                   <td class=\"m_pad\">"+
 "                                                      <div></div>"+
