@@ -1,6 +1,7 @@
 package com.collab.project.model.contest;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
 import org.hibernate.annotations.TypeDef;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.TypeDef;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @Entity
@@ -43,11 +45,19 @@ public class Contest {
     @Column(name = "end_date")
     private Timestamp endDate;
 
+    @Column(name = "winner_artist_id")
+    private String winnerArtistId;
+
     @Column(name="created_at", updatable = false, insertable = false, nullable = false)
     private Timestamp createdAt;
 
     @Column(name="updated_at", updatable = false, insertable = false, nullable = false)
     private Timestamp updatedAt;
+
+    @Transient
+    @JsonProperty
+    private Winner winner;
+
 
     public Contest(Long id, String contestSlug, String title, String description, Timestamp startDate, Timestamp endtDate) {
         this.id = id;
@@ -56,5 +66,9 @@ public class Contest {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endtDate;
+        this.winnerArtistId = null;
     }
+
+
 }
+
