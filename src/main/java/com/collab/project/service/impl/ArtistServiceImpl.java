@@ -176,7 +176,7 @@ public class ArtistServiceImpl implements ArtistService {
         // Save state and city as is.
         artist.setState(inp.getState());
         artist.setCity(inp.getCity());
-        sendRewardIfBasicInfoComplete(artist);
+        artist.setBasicInfoComplete(sendRewardIfBasicInfoComplete(artist));
 
         artistRepository.save(artist);
         log.info("Update Artist Details with Id {}", artist.getArtistId());
@@ -184,13 +184,15 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @SneakyThrows
-    private void sendRewardIfBasicInfoComplete(Artist artist) {
-        if (artist.getCity() == null
+    private boolean sendRewardIfBasicInfoComplete(Artist artist) {
+        if (artist.getCountry() == null
                 || artist.getBio() == null
                 || artist.getBio().isEmpty()) {
-            return;
+            return false;
         }
+
         rewardUtils.addPointsIfProfileComplete(artist, bioKey);
+        return true;
     }
 
     @Override

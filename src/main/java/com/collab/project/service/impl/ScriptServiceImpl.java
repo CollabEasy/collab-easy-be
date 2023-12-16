@@ -61,6 +61,7 @@ public class ScriptServiceImpl {
             int profileBits = 0;
             if (artist.getBio() != null && !artist.getBio().isEmpty() && artist.getCity() != null && !artist.getCity().isEmpty()) {
                 profileBits = profileBits | (1 << Constants.profileBits.get("BASIC_INFO"));
+                artist.setBasicInfoComplete(true);
             }
 
 //            if (!artistSampleRepository.findByArtistId(artist.getArtistId()).isEmpty()) {
@@ -74,6 +75,7 @@ public class ScriptServiceImpl {
             List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtistId(artist.getArtistId());
             if (!artistCategories.isEmpty()) {
                 profileBits = profileBits | (1 << Constants.profileBits.get("ART_CATEGORY_INFO"));
+                artist.setNewUser(false);
             }
             artist.setProfileBits(profileBits);
             artist.setProfileComplete(profileBits == Constants.ALL_PROFILE_BIT_SET);
