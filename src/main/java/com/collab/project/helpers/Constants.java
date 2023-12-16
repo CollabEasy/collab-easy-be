@@ -63,9 +63,9 @@ public class Constants {
     }};
 
     public static final Map<String, Integer> profileBits = new HashMap<String, Integer>() {{
-        put("BIO", 0);
-//        put("SAMPLES", 1);
-        put("SOCIAL", 1);
+        put("BASIC_INFO", 0);
+        put("ART_CATEGORY_INFO", 1);
+        put("SOCIAL", 2);
     }};
 
     public static final int ALL_PROFILE_BIT_SET = (int)(Math.pow(2, profileBits.size()) - 1);

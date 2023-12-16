@@ -9,6 +9,8 @@ import com.collab.project.repositories.ArtistPreferenceRepository;
 import com.collab.project.repositories.ArtistRepository;
 import com.collab.project.service.ArtistCategoryService;
 import com.collab.project.util.AuthUtils;
+import com.collab.project.util.RewardUtils;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,10 +35,14 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
     @Autowired
     ArtistPreferenceRepository artistPreferenceRepository;
 
+    @Autowired
+    RewardUtils rewardUtils;
+
     @Value("${basic.art.categories:DANCING,PAINTING,CRAFT,MUSIC,VIDEO EDITING}")
     private List<String> BASIC_ART_CATEGORIES;
 
     @Override
+    @SneakyThrows
     public List<ArtistCategory> addCategory(String artistId, ArtistCategoryInput artistCategoryInput) {
         List<ArtistCategory> savedResults = new ArrayList<>();
         List<ArtistCategory> existingArts = artistCategoryRepository.findByArtistId(artistId);
@@ -57,6 +63,7 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
         for (String artName : toAdd) {
             ArtCategory artCategory = artCategoryRepository.findByArtName(artName);
             if (artCategory == null) {
+                artCategoryRepository.save(new ArtCategory(FALLBACK_ID, artName, artName, false));
                 continue;
             }
             ArtistCategory category = new ArtistCategory(FALLBACK_ID, artistId, artCategory.getId());
@@ -70,10 +77,7 @@ public class ArtistCategoryImpl implements ArtistCategoryService {
             saveArtist = true;
         }
 
-        if (!artist.getProfileComplete() && !artist.getBio().isEmpty() && !savedResults.isEmpty()) {
-            artist.setProfileComplete(true);
-            saveArtist = true;
-        }
+        rewardUtils.addPointsIfProfileComplete(artist, "ART_CATEGORY_INFO");
 
         if (saveArtist) artistRepository.save(artist);
 

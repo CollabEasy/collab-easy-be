@@ -59,18 +59,22 @@ public class ScriptServiceImpl {
 
         for (Artist artist : artists) {
             int profileBits = 0;
-            if (artist.getBio() != null && !StringUtils.isEmpty(artist.getBio())) {
-                profileBits = profileBits | (1 << Constants.profileBits.get("BIO"));
+            if (artist.getBio() != null && !artist.getBio().isEmpty() && artist.getCity() != null && !artist.getCity().isEmpty()) {
+                profileBits = profileBits | (1 << Constants.profileBits.get("BASIC_INFO"));
             }
 
-            if (!artistSampleRepository.findByArtistId(artist.getArtistId()).isEmpty()) {
-                profileBits = profileBits | (1 << Constants.profileBits.get("SAMPLES"));
-            }
+//            if (!artistSampleRepository.findByArtistId(artist.getArtistId()).isEmpty()) {
+//                profileBits = profileBits | (1 << Constants.profileBits.get("SAMPLES"));
+//            }
 
             if (!artistSocialProspectusRepository.findByArtistId(artist.getArtistId()).isEmpty()) {
                 profileBits = profileBits | (1 << Constants.profileBits.get("SOCIAL"));
             }
 
+            List<ArtistCategory> artistCategories = artistCategoryRepository.findByArtistId(artist.getArtistId());
+            if (!artistCategories.isEmpty()) {
+                profileBits = profileBits | (1 << Constants.profileBits.get("ART_CATEGORY_INFO"));
+            }
             artist.setProfileBits(profileBits);
             artist.setProfileComplete(profileBits == Constants.ALL_PROFILE_BIT_SET);
             artistRepository.save(artist);

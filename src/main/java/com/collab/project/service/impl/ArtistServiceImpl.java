@@ -16,6 +16,7 @@ import com.collab.project.util.*;
 import com.collab.project.util.emailTemplates.NewUserEmail;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.lang.Strings;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     String bucketName = "wondor-profile-pictures";
 
-    String bioKey = "BIO";
+    String bioKey = "BASIC_INFO";
 
     @Autowired
     ArtistRepository artistRepository;
@@ -164,7 +165,6 @@ public class ArtistServiceImpl implements ArtistService {
         }
         if (!StringUtils.isEmpty(inp.getBio())) {
             artist.setBio(inp.getBio());
-            rewardUtils.addPointsIfProfileComplete(artist, bioKey);
         }
         if (!StringUtils.isEmpty(inp.getGender())) {
             artist.setGender(inp.getGender());
@@ -176,10 +176,21 @@ public class ArtistServiceImpl implements ArtistService {
         // Save state and city as is.
         artist.setState(inp.getState());
         artist.setCity(inp.getCity());
+        sendRewardIfBasicInfoComplete(artist);
 
         artistRepository.save(artist);
         log.info("Update Artist Details with Id {}", artist.getArtistId());
         return true;
+    }
+
+    @SneakyThrows
+    private void sendRewardIfBasicInfoComplete(Artist artist) {
+        if (artist.getCity() == null
+                || artist.getBio() == null
+                || artist.getBio().isEmpty()) {
+            return;
+        }
+        rewardUtils.addPointsIfProfileComplete(artist, bioKey);
     }
 
     @Override
