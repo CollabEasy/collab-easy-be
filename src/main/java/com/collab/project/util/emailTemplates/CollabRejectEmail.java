@@ -65,7 +65,7 @@ public class CollabRejectEmail {
             "                                                   <td class=\"m_pad\">"+
             "                                                      <div style=\"font-family:Arial,sans-serif\">"+
             "                                                         <div style=\"font-size:12px;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#333;line-height:1.8\">"+
-            "                                                            <p style=\"margin:0;font-size:12px\"><span style=\"font-size:14px\">Hi %s,</span><br><br><span style=\"font-size:14px\">Sadly, Your collaboration request has been rejected by %%s. Do not let this stop you from bringing your vision to life. Send collaboration requests to other other artists and let the magic happen!</span></p>"+
+            "                                                            <p style=\"margin:0;font-size:12px\"><span style=\"font-size:14px\">Hi %s,</span><br><br><span style=\"font-size:14px\">Sadly, Your collaboration request has been rejected by %s. Do not let this stop you from bringing your vision to life. Send collaboration requests to other other artists and let the magic happen!</span></p>"+
             "                                                         </div>"+
             "                                                      </div>"+
             "                                                   </td>"+

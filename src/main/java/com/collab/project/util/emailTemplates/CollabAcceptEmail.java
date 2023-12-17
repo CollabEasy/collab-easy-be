@@ -65,7 +65,7 @@ public class CollabAcceptEmail {
             "                                                   <td class=\"m_pad\">"+
             "                                                      <div style=\"font-family:Arial,sans-serif\">"+
             "                                                         <div style=\"font-size:12px;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#333;line-height:1.8\">"+
-            "                                                            <p style=\"margin:0;font-size:12px\"><span style=\"font-size:14px\">Hi %s,</span><br><br><span style=\"font-size:14px\">Exciting news! Your collaboration request has been accepted by %%s. Get ready to embark on a creative journey together. Start sharing ideas and making magic happen!</span></p>"+
+            "                                                            <p style=\"margin:0;font-size:12px\"><span style=\"font-size:14px\">Hi %s,</span><br><br><span style=\"font-size:14px\">Exciting news! Your collaboration request has been accepted by %s. Get ready to embark on a creative journey together. Start sharing ideas and making magic happen!</span></p>"+
             "                                                         </div>"+
             "                                                      </div>"+
             "                                                   </td>"+
