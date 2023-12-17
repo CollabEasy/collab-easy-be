@@ -99,7 +99,7 @@ public class CollabServiceImpl implements CollabService {
 
         collabRequestRepository.save(saveCollabRequest);
 
-        emailService.sendEmailFromStringFinal("You have received a new collaboration request on Wondor", sender.getEmail(), CollabSentEmail.getContent(sender.getFirstName(), receiver.getFirstName()), false);
+        emailService.sendEmailFromStringFinal("You have received a new collaboration request on Wondor", receiver.getEmail(), CollabSentEmail.getContent(receiver.getFirstName(), sender.getFirstName()), false);
 
         artistPreferencesService.updateArtistPreferences(artistId, new HashMap<String, Object>() {{
             put("upForCollaboration", true);
