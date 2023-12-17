@@ -14,44 +14,6 @@ public class CollabAcceptEmail {
             "            <tbody>"+
             "               <tr>"+
             "                  <td>"+
-            "                     <table class=\"m_row m_row-1\" align=\"center\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
-            "                        <tbody>"+
-            "                           <tr>"+
-            "                              <td>"+
-            "                                 <table class=\"m_row-content m_stack\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"color:#000;width:600px;margin:0 auto\" width=\"600\">"+
-            "                                    <tbody>"+
-            "                                       <tr>"+
-            "                                          <td class=\"m_column m_column-1\" width=\"100%%\" style=\"font-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0\">"+
-            "                                             <table class=\"m_image_block m_block-1\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
-            "                                                <tr>"+
-            "                                                   <td class=\"m_pad\" style=\"padding-bottom:10px;padding-top:10px;width:100%%\">"+
-            "                                                      <div class=\"m_alignment\" align=\"center\" style=\"line-height:10px\">"+
-            "                                                         <div style=\"max-width:244px\"><img style=\"display:block;height:auto;border:0;width:100%%\" width=\"244\" alt=\"Alternate text\" title=\"Alternate text\"></div>"+
-            "                                                      </div>"+
-            "                                                   </td>"+
-            "                                                </tr>"+
-            "                                             </table>"+
-            "                                             <table class=\"m_divider_block m_block-2\" width=\"100%%\" border=\"0\" cellpadding=\"10\" cellspacing=\"0\" role=\"presentation\">"+
-            "                                                <tr>"+
-            "                                                   <td class=\"m_pad\">"+
-            "                                                      <div class=\"m_alignment\" align=\"center\">"+
-            "                                                         <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" width=\"100%%\">"+
-            "                                                            <tr>"+
-            "                                                               <td class=\"m_divider_inner\" style=\"font-size:1px;line-height:1px;border-top:1px solid #dedede\"><span>â€Š</span></td>"+
-            "                                                            </tr>"+
-            "                                                         </table>"+
-            "                                                      </div>"+
-            "                                                   </td>"+
-            "                                                </tr>"+
-            "                                             </table>"+
-            "                                          </td>"+
-            "                                       </tr>"+
-            "                                    </tbody>"+
-            "                                 </table>"+
-            "                              </td>"+
-            "                           </tr>"+
-            "                        </tbody>"+
-            "                     </table>"+
             "                     <table class=\"m_row m_row-2\" align=\"center\" width=\"100%%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">"+
             "                        <tbody>"+
             "                           <tr>"+
