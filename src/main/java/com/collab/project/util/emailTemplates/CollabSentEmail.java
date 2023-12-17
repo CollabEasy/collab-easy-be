@@ -1,6 +1,6 @@
 package com.collab.project.util.emailTemplates;
 
-public class CollabAcceptEmail {
+public class CollabSentEmail {
     static String content = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">"+
             "<html>"+
             "   <head>"+
@@ -65,7 +65,7 @@ public class CollabAcceptEmail {
             "                                                   <td class=\"m_pad\">"+
             "                                                      <div style=\"font-family:Arial,sans-serif\">"+
             "                                                         <div style=\"font-size:12px;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#333;line-height:1.8\">"+
-            "                                                            <p style=\"margin:0;font-size:12px\"><span style=\"font-size:14px\">Hi %s,</span><br><br><span style=\"font-size:14px\">Exciting news! Your collaboration request has been accepted by %%s. Get ready to embark on a creative journey together. Start sharing ideas and making magic happen!</span></p>"+
+            "                                                            <p style=\"margin:0;font-size:12px\"><span style=\"font-size:14px\">Hi %s,</span><br><br><span style=\"font-size:14px\">Exciting news! You have received a collaboration request from %%s. Get ready to embark on a creative journey together. Accept the request and start sharing ideas and making magic happen!</span></p>"+
             "                                                         </div>"+
             "                                                      </div>"+
             "                                                   </td>"+

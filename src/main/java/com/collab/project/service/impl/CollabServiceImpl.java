@@ -20,6 +20,8 @@ import com.collab.project.service.CollabService;
 import com.collab.project.service.NotificationService;
 import com.collab.project.service.ProposalService;
 import com.collab.project.util.emailTemplates.CollabAcceptEmail;
+import com.collab.project.util.emailTemplates.CollabRejectEmail;
+import com.collab.project.util.emailTemplates.CollabSentEmail;
 import com.collab.project.util.emailTemplates.InterestAccepted;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
@@ -74,6 +76,7 @@ public class CollabServiceImpl implements CollabService {
         return sendCollabRequest(artistId, collabRequestInput);
     }
 
+    @SneakyThrows
     public CollabRequestResponse sendCollabRequest(String artistId, CollabRequestInput collabRequestInput) throws JsonProcessingException {
         if (getCollabRequestsBetweenUsers(artistId, collabRequestInput.getReceiverId()).size() == Constants.ALLOWED_COLLAB_REQUEST_PER_USER) {
             throw new CollabRequestLimitReachedException();
@@ -95,6 +98,9 @@ public class CollabServiceImpl implements CollabService {
                 .build();
 
         collabRequestRepository.save(saveCollabRequest);
+
+        emailService.sendEmailFromStringFinal("You have received a new collaboration request on Wondor", sender.getEmail(), CollabSentEmail.getContent(sender.getFirstName(), receiver.getFirstName()), false);
+
         artistPreferencesService.updateArtistPreferences(artistId, new HashMap<String, Object>() {{
             put("upForCollaboration", true);
         }});
@@ -178,7 +184,7 @@ public class CollabServiceImpl implements CollabService {
                 collabRequest.setStatus(Enums.CollabStatus.REJECTED.toString());
                 collabRequest = collabRequestRepository.save(collabRequest);
 
-                emailService.sendEmailFromStringFinal("An update on your collaboration request on Wondor", sender.getEmail(), CollabAcceptEmail.getContent(sender.getFirstName(), receiver.getFirstName(), collabRequest.getId()), false);
+                emailService.sendEmailFromStringFinal("An update on your collaboration request on Wondor", sender.getEmail(), CollabRejectEmail.getContent(sender.getFirstName(), receiver.getFirstName()), false);
                 return new CollabRequestResponse(collabRequest, sender, receiver);
             } else {
                 if(!collabRequest.getReceiverId().equals(artistId)) {
@@ -206,7 +212,7 @@ public class CollabServiceImpl implements CollabService {
                 collabRequest.setStatus(Enums.CollabStatus.ACTIVE.toString());
                 collabRequest = collabRequestRepository.save(collabRequest);
 
-                emailService.sendEmailFromStringFinal("An update on your collaboration request on Wondor", sender.getEmail(), CollabAcceptEmail.getContent(sender.getFirstName(), receiver.getFirstName(), collabRequest.getId()), false);
+                emailService.sendEmailFromStringFinal("An update on your collaboration request on Wondor", sender.getEmail(), CollabAcceptEmail.getContent(sender.getFirstName(), receiver.getFirstName()), false);
                 return new CollabRequestResponse(collabRequest, sender, receiver);
             } else {
                 if(!collabRequest.getReceiverId().equals(artistId)) {

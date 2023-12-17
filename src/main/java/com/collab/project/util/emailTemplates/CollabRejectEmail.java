@@ -65,7 +65,7 @@ public class CollabRejectEmail {
             "                                                   <td class=\"m_pad\">"+
             "                                                      <div style=\"font-family:Arial,sans-serif\">"+
             "                                                         <div style=\"font-size:12px;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#333;line-height:1.8\">"+
-            "                                                            <p style=\"margin:0;font-size:12px\"><span style=\"font-size:14px\">Hi %%s,</span><br><br><span style=\"font-size:14px\">Sadly, Your collaboration request has been rejected by %%s. Do not let this stop you from bringing your vision to life. Send collaboration requests to other other artists and let the magic happen!</span></p>"+
+            "                                                            <p style=\"margin:0;font-size:12px\"><span style=\"font-size:14px\">Hi %s,</span><br><br><span style=\"font-size:14px\">Sadly, Your collaboration request has been rejected by %%s. Do not let this stop you from bringing your vision to life. Send collaboration requests to other other artists and let the magic happen!</span></p>"+
             "                                                         </div>"+
             "                                                      </div>"+
             "                                                   </td>"+
@@ -75,7 +75,7 @@ public class CollabRejectEmail {
             "                                                <tr>"+
             "                                                   <td class=\"m_pad\">"+
             "                                                      <div class=\"m_alignment\" align=\"center\">"+
-            "                                                         <a href=\"https://www.google.com/url?q=https://www.wondor.art/collab/details/%%25s&source=gmail-html&ust=1702883080338000&usg=AOvVaw2x4XMVMFllrZkb_cTGrKqm\" style=\"text-decoration:none;display:inline-block;color:#ffffff;background-color:#000000;border-radius:3px;width:auto;border-top:0px solid transparent;font-weight:undefined;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;text-align:center;word-break:keep-all\" target=\"_blank\" rel=\"noreferrer\"><span style=\"padding-left:30px;padding-right:30px;font-size:16px;display:inline-block;letter-spacing:normal\"><span style=\"word-break:break-word;line-height:32px\">Collab Request</span></span></a>"+
+            "                                                         <a href=\"https://www.google.com/url?q=https://www.wondor.art/portal/collab-request&source=gmail-html&ust=1702883080338000&usg=AOvVaw2x4XMVMFllrZkb_cTGrKqm\" style=\"text-decoration:none;display:inline-block;color:#ffffff;background-color:#000000;border-radius:3px;width:auto;border-top:0px solid transparent;font-weight:undefined;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;text-align:center;word-break:keep-all\" target=\"_blank\" rel=\"noreferrer\"><span style=\"padding-left:30px;padding-right:30px;font-size:16px;display:inline-block;letter-spacing:normal\"><span style=\"word-break:break-word;line-height:32px\">Collab Request</span></span></a>"+
             "                                                      </div>"+
             "                                                   </td>"+
             "                                                </tr>"+
@@ -119,7 +119,7 @@ public class CollabRejectEmail {
 
 
 
-    public static String getContent(String senderUserName, String receiverUserName, String collabId) {
-        return String.format(content, senderUserName, receiverUserName, collabId);
+    public static String getContent(String senderUserName, String receiverUserName) {
+        return String.format(content, senderUserName, receiverUserName);
     }
 }
