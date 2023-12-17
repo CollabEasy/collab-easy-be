@@ -1,6 +1,7 @@
 package com.collab.project.service.impl;
 
 import com.amazonaws.services.mq.model.UnauthorizedException;
+import com.collab.project.email.EmailService;
 import com.collab.project.exception.CollabRequestException;
 import com.collab.project.exception.CollabRequestLimitReachedException;
 import com.collab.project.helpers.Constants;
@@ -18,6 +19,8 @@ import com.collab.project.service.ArtistPreferencesService;
 import com.collab.project.service.CollabService;
 import com.collab.project.service.NotificationService;
 import com.collab.project.service.ProposalService;
+import com.collab.project.util.emailTemplates.CollabAcceptEmail;
+import com.collab.project.util.emailTemplates.InterestAccepted;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import lombok.SneakyThrows;
@@ -25,6 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -36,6 +42,9 @@ import static com.collab.project.util.Utils.getSortDate;
 
 @Service
 public class CollabServiceImpl implements CollabService {
+
+    @Autowired
+    EmailService emailService;
 
     @Autowired
     private ArtistPreferencesService artistPreferencesService;
@@ -157,6 +166,7 @@ public class CollabServiceImpl implements CollabService {
             throw new CollabRequestException(String.format("collab request id is not present"));
         }
     }
+    @SneakyThrows
     @Override
     public CollabRequestResponse rejectRequest(String artistId, String rejectRequestId) {
         Optional<CollabRequest> collabRejectedByReceiver = collabRequestRepository.findById(rejectRequestId);
@@ -167,6 +177,8 @@ public class CollabServiceImpl implements CollabService {
             if( collabRequest.getReceiverId().equals(artistId) && collabRequest.getStatus().equals(Enums.CollabStatus.PENDING.toString())) {
                 collabRequest.setStatus(Enums.CollabStatus.REJECTED.toString());
                 collabRequest = collabRequestRepository.save(collabRequest);
+
+                emailService.sendEmailFromStringFinal("An update on your collaboration request on Wondor", sender.getEmail(), CollabAcceptEmail.getContent(sender.getFirstName(), receiver.getFirstName(), collabRequest.getId()), false);
                 return new CollabRequestResponse(collabRequest, sender, receiver);
             } else {
                 if(!collabRequest.getReceiverId().equals(artistId)) {
@@ -182,6 +194,7 @@ public class CollabServiceImpl implements CollabService {
         }
     }
 
+    @SneakyThrows
     @Override
     public CollabRequestResponse acceptRequest(String artistId, String acceptRequestId) {
         Optional<CollabRequest> collabAcceptedByReceiver = collabRequestRepository.findById(acceptRequestId);
@@ -192,6 +205,8 @@ public class CollabServiceImpl implements CollabService {
             if( collabRequest.getReceiverId().equals(artistId) && collabRequest.getStatus().equals(Enums.CollabStatus.PENDING.toString())) {
                 collabRequest.setStatus(Enums.CollabStatus.ACTIVE.toString());
                 collabRequest = collabRequestRepository.save(collabRequest);
+
+                emailService.sendEmailFromStringFinal("An update on your collaboration request on Wondor", sender.getEmail(), CollabAcceptEmail.getContent(sender.getFirstName(), receiver.getFirstName(), collabRequest.getId()), false);
                 return new CollabRequestResponse(collabRequest, sender, receiver);
             } else {
                 if(!collabRequest.getReceiverId().equals(artistId)) {
