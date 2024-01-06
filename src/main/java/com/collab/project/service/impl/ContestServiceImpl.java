@@ -76,12 +76,12 @@ public class ContestServiceImpl implements ContestService {
             String winnerId = contest.getWinnerArtistId();
             if (winnerId != null) {
                 Artist artist = artistRepository.findByArtistId(winnerId);
-                List<Long> categories = artistCategoryRepository.findByArtistId(winnerId).
-                        stream().map(ArtistCategory::getArtId).collect(toList());
+//                List<Long> categories = artistCategoryRepository.findByArtistId(winnerId).
+//                        stream().map(ArtistCategory::getArtId).collect(toList());
+//
+//                List<ArtCategory> arts = artCategoryRepository.findByIdIn(categories);
 
-                List<ArtCategory> arts = artCategoryRepository.findByIdIn(categories);
-
-                contest.setWinner(new Winner(artist.getArtistId(), artist.getFirstName() + " " + artist.getLastName(), artist.getSlug(), artist.getProfilePicUrl(), arts));
+                contest.setWinner(new Winner(artist.getArtistId(), artist.getFirstName() + " " + artist.getLastName(), artist.getSlug(), artist.getProfilePicUrl()));
             }
 
         });

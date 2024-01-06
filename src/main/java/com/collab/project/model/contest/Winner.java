@@ -25,5 +25,5 @@ public class Winner {
 
     String profilePicUrl;
 
-    List<ArtCategory> artCategories;
+//    List<ArtCategory> artCategories;
 }
