@@ -59,7 +59,6 @@ public class ArtistSocialProspectusImpl implements ArtistSocialProspectusService
         rewardUtils.addPointsIfProfileComplete(artist, socialKey);
 
         if (prospectus.getUpForCollab().equals("true")) {
-            System.out.print(prospectus.getUpForCollab());
             ArtistPreference preference = new ArtistPreference(artist.getArtistId(), "upForCollaboration", "true");
             preference.setId(FALLBACK_ID);
             artistPreferenceRepository.save(preference);
