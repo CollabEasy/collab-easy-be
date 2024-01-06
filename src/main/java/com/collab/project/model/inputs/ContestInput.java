@@ -3,6 +3,7 @@ package com.collab.project.model.inputs;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class ContestInput {
@@ -12,4 +13,5 @@ public class ContestInput {
     String description;
     LocalDateTime startDate;
     LocalDateTime endDate;
+    List<String> categories;
 }

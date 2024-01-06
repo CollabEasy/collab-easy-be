@@ -48,6 +48,9 @@ public class Contest {
     @Column(name = "winner_artist_id")
     private String winnerArtistId;
 
+    @Column(name="categories")
+    private String categories;
+
     @Column(name="created_at", updatable = false, insertable = false, nullable = false)
     private Timestamp createdAt;
 

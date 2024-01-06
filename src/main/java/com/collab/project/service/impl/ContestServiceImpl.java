@@ -53,6 +53,7 @@ public class ContestServiceImpl implements ContestService {
         new_contest.setDescription(contestInput.getDescription());
         new_contest.setStartDate(Timestamp.valueOf(contestInput.getStartDate()));
         new_contest.setEndDate(Timestamp.valueOf(contestInput.getEndDate()));
+        new_contest.setCategories(String.join(",", contestInput.getCategories()));
 
         contestRepository.save(new_contest);
         return new_contest;
