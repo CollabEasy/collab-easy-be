@@ -47,7 +47,7 @@ public class GoogleUtils {
                 // Get profile information from payload
                 artistInput.setEmail(resObject.getString("email"));
                 artistInput.setFirstName(resObject.getString("given_name"));
-                artistInput.setLastName(resObject.getString("family_name"));
+                artistInput.setLastName(resObject.has("family_name") ? resObject.getString("family_name") : "");
                 artistInput.setProfilePicUrl(resObject.getString("picture"));
                 artistInput.setEmail(resObject.getString("email"));
                 return true;
