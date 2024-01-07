@@ -65,4 +65,18 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     public Map<String, Integer> getCollabsCreatedCount(String startTime, String endTime) {
         return null;
     }
+
+    @Override
+    public Map<String, Integer> getCountryLevelArtists() {
+        List<Artist> artistList = artistRepository.findAll();
+        Map<String ,Integer> result = new HashMap<>();
+        for (Artist artist : artistList) {
+            String country = artist.getCountry();
+            if (!result.containsKey(country)) {
+                result.put(country, 0);
+            }
+            result.put(country, result.get(country) + 1);
+        }
+        return result;
+    }
 }

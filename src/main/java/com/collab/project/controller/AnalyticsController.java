@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/admin/v1/analytics")
@@ -24,6 +25,14 @@ public class AnalyticsController {
     public ResponseEntity<SuccessResponse> getSearchResults(@RequestParam("start_date") String startDate, @RequestParam("end_date") String endDate) {
         UserAnalytics userAnalytics = analyticsService.getUsersJoinedCount(startDate, endDate);
         SuccessResponse successResponse = new SuccessResponse(userAnalytics);
+        return new ResponseEntity<>(successResponse, HttpStatus.OK);
+    }
+
+    @GetMapping
+    @RequestMapping(value = "/users/byCountry", method = RequestMethod.GET)
+    public ResponseEntity<SuccessResponse> getSearchResultsByCountry() {
+        Map<String, Integer> result = analyticsService.getCountryLevelArtists();
+        SuccessResponse successResponse = new SuccessResponse(result);
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 }
