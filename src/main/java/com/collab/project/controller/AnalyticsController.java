@@ -5,6 +5,7 @@ import com.collab.project.model.response.SearchResponse;
 import com.collab.project.model.response.SuccessResponse;
 import com.collab.project.service.AnalyticsService;
 import com.collab.project.service.SearchService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public class AnalyticsController {
     @Autowired
     AnalyticsService analyticsService;
 
+    @Autowired
+    ObjectMapper mapper;
+
     @GetMapping
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getSearchResults(@RequestParam("start_date") String startDate, @RequestParam("end_date") String endDate) {
@@ -33,7 +37,8 @@ public class AnalyticsController {
     public ResponseEntity<SuccessResponse> getSearchResultsByCountry() {
         Map<String, Integer> result = analyticsService.getCountryLevelArtists();
         System.out.println(result.size());
-        SuccessResponse successResponse = new SuccessResponse(result);
+        Map<String, Object> hashMapresult = mapper.convertValue(result, Map.class);
+        SuccessResponse successResponse = new SuccessResponse(hashMapresult);
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 }
