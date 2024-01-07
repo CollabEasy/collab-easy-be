@@ -53,6 +53,10 @@ public class AnalyticsServiceImpl implements AnalyticsService {
             date.setTime(joinedOn.getTime());
             String formattedDate = sf.format(date);
             count.put(formattedDate, count.getOrDefault(formattedDate, 0) + 1);
+        }
+
+        List<Artist> allArtist = artistRepository.findAll();
+        for (Artist artist : allArtist) {
             if (!countryCount.containsKey(artist.getCountry())) {
                 countryCount.put(artist.getCountry(), 0);
             }
