@@ -40,9 +40,6 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
         startDate += " 00:00:00";
         endDate += " 23:59:59";
-        Date startTs = Date.from(start.atStartOfDay().toInstant(ZoneOffset.UTC));
-        Date endTs = Date.from(end.atStartOfDay().toInstant(ZoneOffset.UTC));
-//        List<Artist> artistList = artistRepository.findArtistBetweenDates(startTs, endTs);
         List<Artist> artistList = artistRepository.findArtistBetweenDatesString(startDate, endDate);
         int total = artistRepository.getTotalArtists();
 

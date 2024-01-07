@@ -1,5 +1,8 @@
 package com.collab.project.model.analytics;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Comparator;
 import java.util.List;
 
@@ -65,6 +68,8 @@ class CountryWiseData {
     }
 }
 
+@Getter
+@Setter
 public class UserAnalytics {
     int totalUsers;
     List<DateWiseUsers> dateWiseUsersList;
