@@ -68,25 +68,12 @@ class CountryWiseData {
 public class UserAnalytics {
     int totalUsers;
     List<DateWiseUsers> dateWiseUsersList;
-
     List<CountryWiseData> countryWiseData;
 
     public UserAnalytics(int totalUsers, List<DateWiseUsers> dateWiseUsersList, List<CountryWiseData> countryWiseData) {
         this.totalUsers = totalUsers;
         this.dateWiseUsersList = dateWiseUsersList;
         this.countryWiseData = countryWiseData;
-    }
-
-    public int getTotalUsers() {
-        return totalUsers;
-    }
-
-    public void setTotalUsers(int totalUsers) {
-        this.totalUsers = totalUsers;
-    }
-
-    public List<DateWiseUsers> getDateWiseUsersList() {
-        return dateWiseUsersList;
     }
 
     public void addNewDateUserDetail(String date, int count) {
@@ -103,7 +90,4 @@ public class UserAnalytics {
         dateWiseUsersList.sort(Comparator.comparing(DateWiseUsers::getDate));
     }
 
-    public void setDateWiseUsersList(List<DateWiseUsers> dateWiseUsersList) {
-        this.dateWiseUsersList = dateWiseUsersList;
-    }
 }
