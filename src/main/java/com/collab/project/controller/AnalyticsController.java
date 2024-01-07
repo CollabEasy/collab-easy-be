@@ -32,6 +32,7 @@ public class AnalyticsController {
     @RequestMapping(value = "/users/byCountry", method = RequestMethod.GET)
     public ResponseEntity<SuccessResponse> getSearchResultsByCountry() {
         Map<String, Integer> result = analyticsService.getCountryLevelArtists();
+        System.out.println(result.size());
         SuccessResponse successResponse = new SuccessResponse(result);
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }

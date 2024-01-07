@@ -69,12 +69,15 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     @Override
     public Map<String, Integer> getCountryLevelArtists() {
         List<Artist> artistList = artistRepository.findAll();
-        Map<String ,Integer> result = new HashMap<>();
+        System.out.println("artists fetched : " + artistList.size());
+        Map<String, Integer> result = new HashMap<>();
         for (Artist artist : artistList) {
             String country = artist.getCountry();
+            System.out.println("contry : " + country);
             if (!result.containsKey(country)) {
                 result.put(country, 0);
             }
+            System.out.println("setting country countr : " + country + " " + result.get(country));
             result.put(country, result.get(country) + 1);
         }
         return result;
