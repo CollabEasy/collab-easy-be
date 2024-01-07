@@ -31,14 +31,4 @@ public class AnalyticsController {
         SuccessResponse successResponse = new SuccessResponse(userAnalytics);
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
-
-    @GetMapping
-    @RequestMapping(value = "/users/byCountry", method = RequestMethod.GET)
-    public ResponseEntity<SuccessResponse> getSearchResultsByCountry() {
-        Map<String, Integer> result = analyticsService.getCountryLevelArtists();
-        System.out.println(result.size());
-        Map<String, Object> hashMapresult = mapper.convertValue(result, Map.class);
-        SuccessResponse successResponse = new SuccessResponse(hashMapresult);
-        return new ResponseEntity<>(successResponse, HttpStatus.OK);
-    }
 }

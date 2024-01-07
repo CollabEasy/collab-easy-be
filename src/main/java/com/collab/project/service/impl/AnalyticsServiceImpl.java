@@ -31,6 +31,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         LocalDate end = LocalDate.parse(endDate);
         DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
         Map<String, Integer> count = new HashMap<String, Integer>();
+        Map<String, Integer> countryCount = new HashMap<String, Integer>();
         while (!start.isAfter(end)) {
             count.put(start.format(customFormatter), 0);
             start = start.plusDays(1);
@@ -52,10 +53,18 @@ public class AnalyticsServiceImpl implements AnalyticsService {
             date.setTime(joinedOn.getTime());
             String formattedDate = sf.format(date);
             count.put(formattedDate, count.getOrDefault(formattedDate, 0) + 1);
+            if (!countryCount.containsKey(artist.getCountry())) {
+                countryCount.put(artist.getCountry(), 0);
+            }
+            countryCount.put(artist.getCountry(), countryCount.get(artist.getCountry()) + 1);
         }
-        UserAnalytics analytics = new UserAnalytics(total, new ArrayList<>());
+        UserAnalytics analytics = new UserAnalytics(total, new ArrayList<>(), new ArrayList<>());
         for (Map.Entry<String, Integer> entry : count.entrySet()) {
             analytics.addNewDateUserDetail(entry.getKey(), entry.getValue());
+        }
+
+        for (Map.Entry<String, Integer> entry : countryCount.entrySet()) {
+            analytics.addNewCountryUserDetail(entry.getKey(), entry.getValue());
         }
         analytics.sortOnDate();
         return analytics;
@@ -64,22 +73,5 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     @Override
     public Map<String, Integer> getCollabsCreatedCount(String startTime, String endTime) {
         return null;
-    }
-
-    @Override
-    public Map<String, Integer> getCountryLevelArtists() {
-        List<Artist> artistList = artistRepository.findAll();
-        System.out.println("artists fetched : " + artistList.size());
-        Map<String, Integer> result = new HashMap<>();
-        for (Artist artist : artistList) {
-            String country = artist.getCountry();
-            System.out.println("contry : " + country);
-            if (!result.containsKey(country)) {
-                result.put(country, 0);
-            }
-            System.out.println("setting country countr : " + country + " " + result.get(country));
-            result.put(country, result.get(country) + 1);
-        }
-        return result;
     }
 }

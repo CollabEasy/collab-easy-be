@@ -16,6 +16,7 @@ class DateWiseUsers {
 
     }
 
+
     public String getDate() {
         return date;
     }
@@ -32,13 +33,48 @@ class DateWiseUsers {
         this.count = count;
     }
 }
+
+class CountryWiseData {
+    String country;
+    int count;
+
+    public CountryWiseData(String date, int count) {
+        this.country = date;
+        this.count = count;
+    }
+
+    public CountryWiseData() {
+
+    }
+
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String date) {
+        this.country = date;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+}
+
 public class UserAnalytics {
     int totalUsers;
     List<DateWiseUsers> dateWiseUsersList;
 
-    public UserAnalytics(int totalUsers, List<DateWiseUsers> dateWiseUsersList) {
+    List<CountryWiseData> countryWiseData;
+
+    public UserAnalytics(int totalUsers, List<DateWiseUsers> dateWiseUsersList, List<CountryWiseData> countryWiseData) {
         this.totalUsers = totalUsers;
         this.dateWiseUsersList = dateWiseUsersList;
+        this.countryWiseData = countryWiseData;
     }
 
     public int getTotalUsers() {
@@ -56,6 +92,11 @@ public class UserAnalytics {
     public void addNewDateUserDetail(String date, int count) {
         if (dateWiseUsersList == null) return;
         dateWiseUsersList.add(new DateWiseUsers(date, count));
+    }
+
+    public void addNewCountryUserDetail(String country, int count) {
+        if (countryWiseData == null) return;
+        countryWiseData.add(new CountryWiseData(country, count));
     }
 
     public void sortOnDate() {

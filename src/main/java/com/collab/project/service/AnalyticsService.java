@@ -9,6 +9,4 @@ public interface AnalyticsService {
     public UserAnalytics getUsersJoinedCount(String startTime, String endTime);
 
     public Map<String, Integer> getCollabsCreatedCount(String startTime, String endTime);
-
-    public Map<String, Integer> getCountryLevelArtists();
 }
