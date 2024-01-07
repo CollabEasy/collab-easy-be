@@ -90,7 +90,10 @@ public class ArtistServiceImpl implements ArtistService {
         if (Objects.isNull(artist)) {
             String slug = getSlug(inp.getFirstName(), inp.getLastName());
             String newSlug = getNewSlug(slug + "-");
-            String referralCode = ((inp.getFirstName() + inp.getLastName())).substring(0, 4).toUpperCase(Locale.ROOT)
+            String firstName = inp.getFirstName();
+            String lastName = inp.getLastName();
+            String refCodeName = (firstName + lastName).length() > 4 ? (firstName + lastName).substring(0, 4) :  (firstName + lastName + "WONDORART").substring(0, 4);
+            String referralCode = refCodeName.toUpperCase(Locale.ROOT)
                     + "-"
                     + Utils.getSHA256(newSlug).substring(0, 4).toUpperCase();
             artist =
