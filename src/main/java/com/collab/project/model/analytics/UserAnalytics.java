@@ -6,6 +6,9 @@ import lombok.Setter;
 import java.util.Comparator;
 import java.util.List;
 
+
+@Getter
+@Setter
 class DateWiseUsers {
     String date;
     int count;
@@ -37,6 +40,8 @@ class DateWiseUsers {
     }
 }
 
+@Getter
+@Setter
 class CountryWiseData {
     String country;
     int count;
