@@ -31,6 +31,9 @@ public interface ArtistRepository extends JpaRepository<Artist, String> {
     @Query(value = "SELECT * FROM artists WHERE slug like ?1%", nativeQuery = true)
     List<Artist> findBySlugStartsWith(String queryStr);
 
+    @Query(value = "SELECT * FROM artists WHERE first_name like ?1%", nativeQuery = true)
+    List<Artist> findByFirstNameStartsWith(String queryStr);
+
     @Query(value = "SELECT * FROM artists WHERE created_at between ?1 AND ?2", nativeQuery = true)
     List<Artist> findArtistBetweenDates(Date startTime, Date endTime);
 

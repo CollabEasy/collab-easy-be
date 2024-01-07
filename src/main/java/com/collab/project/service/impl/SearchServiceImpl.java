@@ -69,9 +69,9 @@ public class SearchServiceImpl implements SearchService {
         String queryStrSlug = Strings.replace(queryStr, " ", "-");
         List<SearchResponse> searchResults = new ArrayList<>();
 
-//        // Storing exact match art names first
-//        List<ArtCategory> artCategories = artCategoryRepository.findBySlug(queryStrSlug);
-//        updateListWithArtCategories(searchResponseSet, searchResults, artCategories);
+        // Storing exact match art names first
+        List<Artist> artistsWithName = artistRepository.findByFirstNameStartsWith(queryStrSlug);
+        updateListWithArtists(searchResponseSet, searchResults, artistsWithName);
 
         // Then goes prefix match art names
         Set<ArtCategory> artCategories = new HashSet<>(artCategoryRepository.findBySlugStartsWith(queryStrSlug));
