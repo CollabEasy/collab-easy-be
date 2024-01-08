@@ -35,7 +35,7 @@ import java.util.UUID;
 @Slf4j
 public class ArtistServiceImpl implements ArtistService {
 
-    String bucketName = "wondor-profile-pictures";
+    String bucketName = "wondor-profile-pictures-new-new";
 
     String bioKey = "BASIC_INFO";
 

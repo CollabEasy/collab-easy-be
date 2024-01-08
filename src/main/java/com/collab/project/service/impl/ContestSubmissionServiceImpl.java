@@ -31,7 +31,7 @@ import static com.collab.project.helpers.Constants.FALLBACK_ID;
 @Service
 public class ContestSubmissionServiceImpl implements ContestSubmissionService {
 
-    String bucketName = "contest-submission";
+    String bucketName = "contest-submissions-new";
 
     @Autowired
     S3Utils s3Utils;

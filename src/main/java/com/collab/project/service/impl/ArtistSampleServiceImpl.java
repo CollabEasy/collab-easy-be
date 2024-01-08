@@ -28,7 +28,7 @@ import java.util.List;
 @Service
 public class ArtistSampleServiceImpl implements ArtistSampleService {
 
-    String bucketName = "artist-samples";
+    String bucketName = "artist-samples-new";
 
     String sampleKey = "SAMPLES";
 
